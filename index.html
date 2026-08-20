@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ANIMESH D. KULKARNI // FLIGHT DECK & ENGINEERING TELEMETRY</title>
-    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -21,8 +20,7 @@
                             green: '#00ff88',
                             purple: '#b026ff',
                             crimson: '#ff0055',
-                            ruby: '#e11d48',
-                            flame: '#ff3344'
+                            ruby: '#e11d48'
                         }
                     },
                     fontFamily: {
@@ -34,7 +32,6 @@
             }
         }
     </script>
-    <!-- Aerospace & HUD Monospace Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=JetBrains+Mono:ital,wght@0,300;0,400;0,700;0,800;1,400&family=Orbitron:wght@600;800;900&display=swap" rel="stylesheet">
@@ -51,9 +48,7 @@
             background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.35) 50%);
             background-size: 100% 3px;
         }
-        .hud-reticle {
-            position: relative;
-        }
+        .hud-reticle { position: relative; }
         .hud-reticle::before, .hud-reticle::after {
             content: '';
             position: absolute;
@@ -64,30 +59,19 @@
         }
         .hud-reticle::before { top: -1px; left: -1px; border-top-width: 2px; border-left-width: 2px; }
         .hud-reticle::after { bottom: -1px; right: -1px; border-bottom-width: 2px; border-right-width: 2px; }
-        
         .hud-reticle-crimson::before, .hud-reticle-crimson::after { border-color: #ff0055 !important; }
         .hud-reticle-amber::before, .hud-reticle-amber::after { border-color: #ffaa00 !important; }
         .hud-reticle-green::before, .hud-reticle-green::after { border-color: #00ff88 !important; }
         
         .glow-crimson { box-shadow: 0 0 25px -2px rgba(255, 0, 85, 0.45); }
         .glow-text-crimson { text-shadow: 0 0 16px rgba(255, 0, 85, 0.85); }
-        .glow-cyan { box-shadow: 0 0 20px -2px rgba(0, 240, 255, 0.35); }
-        
-        @keyframes pulse-lock {
-            0%, 100% { transform: scale(1); opacity: 0.9; }
-            50% { transform: scale(1.08); opacity: 1; }
-        }
-        .animate-lock {
-            animation: pulse-lock 1.8s ease-in-out infinite;
-        }
     </style>
 </head>
 <body class="bg-hud-black text-slate-200 font-sans antialiased selection:bg-hud-crimson selection:text-white hud-grid relative min-h-screen flex flex-col justify-between overflow-x-hidden">
     
-    <!-- CRT Scanline Overlay -->
     <div class="fixed inset-0 pointer-events-none scanlines z-50 opacity-30"></div>
 
-    <!-- Dynamic Telemetry Flight Ticker -->
+    <!-- Telemetry Ticker -->
     <div class="bg-hud-panel border-b border-hud-border/70 py-1.5 px-4 font-mono text-[10px] text-slate-400 flex items-center justify-between tracking-widest uppercase overflow-hidden sticky top-0 z-50 backdrop-blur-md">
         <div class="flex items-center gap-6">
             <span class="flex items-center gap-1.5 text-hud-crimson font-bold">
@@ -107,20 +91,17 @@
     <!-- Navigation Deck -->
     <header class="bg-hud-black/90 border-b border-hud-border/80 relative z-40">
         <div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
-            <a href="#" class="font-display font-black text-base tracking-widest text-white flex items-center gap-3 hover:text-hud-crimson transition group">
-                <!-- Custom Aerospace "A" Initial Logo (Vectorized from Flight Insignia) -->
-                <svg class="w-9 h-9 text-hud-crimson group-hover:drop-shadow-[0_0_8px_#ff0055] transition-all duration-300" viewBox="0 0 160 100" fill="currentColor">
-                    <!-- Left Loop into Vertical Spine -->
-                    <path d="M 54 16 L 63 16 L 63 70 C 63 88 40 92 26 84 C 15 77 16 60 27 50 C 37 41 50 47 50 47 L 50 54 C 50 54 39 49 32 55 C 26 61 24 72 31 77 C 39 82 54 79 54 68 Z"/>
-                    <!-- Right Leg -->
-                    <path d="M 56 16 L 77 44 L 97 84 L 86 84 L 70 51 L 62 40 Z"/>
-                    <!-- Contrail Jet Streak -->
-                    <polygon points="63,46 126,53 63,52"/>
-                    <!-- Climbing Jet Aircraft Silhouette -->
-                    <path d="M 124 63 L 132 53 L 137 40 L 140 40 L 136 49 L 149 46 L 157 38 L 160 40 L 157 48 L 146 56 L 139 63 L 124 63 Z"/>
+            
+            <!-- Custom Aerospace A Initial Logo Integrated into Name -->
+            <a href="#" class="font-display font-black text-base tracking-widest text-white flex items-center gap-1 hover:text-hud-crimson transition group">
+                <svg class="h-7 w-auto text-hud-crimson group-hover:drop-shadow-[0_0_10px_#ff0055] transition-all duration-300 inline-block -mr-1" viewBox="0 0 220 120" fill="currentColor">
+                    <path d="M 75 20 L 87 20 L 87 78 C 87 98 62 104 46 95 C 32 86 31 68 44 57 C 56 46 72 52 72 52 L 72 61 C 72 61 59 55 50 62 C 42 70 41 81 50 87 C 61 93 75 88 75 75 Z"/>
+                    <path d="M 77 20 L 102 54 L 126 98 L 112 98 L 94 62 L 85 49 Z"/>
+                    <polygon points="87,55 165,63 87,62"/>
+                    <path d="M 163 76 C 165 72 172 62 176 56 L 182 41 L 186 41 L 182 52 L 198 48 L 208 38 L 212 40 L 208 50 L 195 61 L 186 70 L 168 76 Z"/>
                 </svg>
-                <span>ANIMESH<span class="text-hud-crimson">_KULKARNI</span></span>
-                <span class="text-[10px] font-mono font-normal text-slate-400 px-1.5 py-0.5 rounded bg-hud-panel border border-hud-border">M.S. AERO</span>
+                <span class="tracking-widest">NIMESH<span class="text-hud-crimson">_KULKARNI</span></span>
+                <span class="text-[10px] font-mono font-normal text-slate-400 px-1.5 py-0.5 rounded bg-hud-panel border border-hud-border ml-2">M.S. AERO</span>
             </a>
             
             <nav class="hidden md:flex items-center gap-8 text-xs font-mono tracking-widest uppercase text-slate-400">
@@ -138,7 +119,7 @@
         </div>
     </header>
 
-    <!-- Hero HUD Section: Pilot Deck & Interactive Clickable Radar -->
+    <!-- Hero HUD Section: Pilot Deck & Clickable Radar -->
     <section id="mission" class="max-w-7xl mx-auto px-6 pt-8 pb-12 relative">
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
             
@@ -147,7 +128,7 @@
                 
                 <div class="inline-flex items-center gap-2 px-3 py-1 rounded bg-hud-panel border border-hud-crimson/40 text-hud-crimson font-mono text-[11px] font-bold tracking-wider">
                     <span class="w-1.5 h-1.5 rounded-full bg-hud-crimson animate-ping"></span>
-                    INTERACTIVE RADAR // CLICK TARGETS TO ENGAGE DOSSIERS
+                    DRIVEN BY AEROSPACE RIGOR & UNYIELDING PASSION
                 </div>
 
                 <h1 class="text-3xl sm:text-5xl font-display font-black text-white tracking-tight uppercase leading-tight">
@@ -155,7 +136,7 @@
                     <span class="text-transparent bg-clip-text bg-gradient-to-r from-hud-crimson via-rose-500 to-hud-amber glow-text-crimson">& PRECISION DYNAMICS</span>
                 </h1>
 
-                <!-- Interactive Quick Subsystem Triggers -->
+                <!-- Direct Subsystem Jump Cards -->
                 <div class="grid grid-cols-2 gap-2.5 font-mono text-xs">
                     <div onclick="openModal('modal-solver')" class="hud-reticle hud-reticle-crimson p-3 bg-hud-panel/80 hover:bg-hud-panel border border-hud-border hover:border-hud-crimson rounded cursor-pointer transition">
                         <div class="text-[10px] text-hud-crimson uppercase font-bold flex items-center justify-between">
@@ -203,11 +184,10 @@
 
             </div>
 
-            <!-- Right: Interactive Tactical HUD Radar (Clickable Blips) -->
+            <!-- Right: Interactive Tactical HUD Radar with Jet Insignia Core -->
             <div class="lg:col-span-6 flex flex-col items-center">
                 <div class="relative w-full max-w-[420px] aspect-square bg-hud-panel/90 rounded-full border border-hud-crimson/40 p-2 shadow-[0_0_45px_rgba(255,0,85,0.18)] flex items-center justify-center">
                     
-                    <!-- HTML5 Radar Canvas -->
                     <canvas id="radarCanvas" width="400" height="400" class="w-full h-full cursor-crosshair rounded-full"></canvas>
 
                     <!-- Azimuth Ticks -->
@@ -216,21 +196,20 @@
                     <div class="absolute left-2 font-mono text-[9px] text-hud-crimson/80 font-bold select-none pointer-events-none">270° [W]</div>
                     <div class="absolute right-2 font-mono text-[9px] text-hud-crimson/80 font-bold select-none pointer-events-none">090° [E]</div>
 
-                    <!-- Center Insignia Core with Custom Jet-A Monogram -->
-                    <a href="#projects" class="absolute w-16 h-16 rounded-full border border-hud-crimson/70 flex flex-col items-center justify-center bg-hud-black/85 backdrop-blur-sm shadow-[0_0_15px_rgba(255,0,85,0.4)] hover:scale-110 transition duration-300 group z-20" title="Click to view all telemetry logs">
-                        <svg class="w-9 h-9 text-hud-crimson group-hover:scale-110 transition duration-300" viewBox="0 0 160 100" fill="currentColor">
-                            <path d="M 54 16 L 63 16 L 63 70 C 63 88 40 92 26 84 C 15 77 16 60 27 50 C 37 41 50 47 50 47 L 50 54 C 50 54 39 49 32 55 C 26 61 24 72 31 77 C 39 82 54 79 54 68 Z"/>
-                            <path d="M 56 16 L 77 44 L 97 84 L 86 84 L 70 51 L 62 40 Z"/>
-                            <polygon points="63,46 126,53 63,52"/>
-                            <path d="M 124 63 L 132 53 L 137 40 L 140 40 L 136 49 L 149 46 L 157 38 L 160 40 L 157 48 L 146 56 L 139 63 L 124 63 Z"/>
+                    <!-- Center Core: Jet-A Initial -->
+                    <a href="#projects" class="absolute w-16 h-16 rounded-full border border-hud-crimson/70 flex flex-col items-center justify-center bg-hud-black/85 backdrop-blur-sm shadow-[0_0_15px_rgba(255,0,85,0.4)] hover:scale-110 transition duration-300 group z-20" title="Click to view all flight logs">
+                        <svg class="h-8 w-auto text-hud-crimson group-hover:scale-110 transition duration-300" viewBox="0 0 220 120" fill="currentColor">
+                            <path d="M 75 20 L 87 20 L 87 78 C 87 98 62 104 46 95 C 32 86 31 68 44 57 C 56 46 72 52 72 52 L 72 61 C 72 61 59 55 50 62 C 42 70 41 81 50 87 C 61 93 75 88 75 75 Z"/>
+                            <path d="M 77 20 L 102 54 L 126 98 L 112 98 L 94 62 L 85 49 Z"/>
+                            <polygon points="87,55 165,63 87,62"/>
+                            <path d="M 163 76 C 165 72 172 62 176 56 L 182 41 L 186 41 L 182 52 L 198 48 L 208 38 L 212 40 L 208 50 L 195 61 L 186 70 L 168 76 Z"/>
                         </svg>
                     </a>
                 </div>
 
-                <!-- Sub-Radar Interactive Telemetry Output Bar (Displays Click Instructions) -->
-                <div id="radar-hud-bar" class="w-full max-w-[420px] mt-4 p-3 bg-hud-panel border border-hud-border rounded font-mono text-xs flex items-center justify-between transition duration-300">
+                <div class="w-full max-w-[420px] mt-4 p-3 bg-hud-panel border border-hud-border rounded font-mono text-xs flex items-center justify-between">
                     <div class="flex items-center gap-2">
-                        <span id="target-beacon" class="w-2 h-2 rounded-full bg-hud-crimson animate-pulse"></span>
+                        <span class="w-2 h-2 rounded-full bg-hud-crimson animate-pulse"></span>
                         <span class="text-slate-400">ENGAGE:</span>
                         <span id="target-name" class="text-hud-crimson font-bold uppercase">SWEEPING ACTIVE</span>
                     </div>
@@ -294,7 +273,6 @@
                 <h2 class="text-2xl sm:text-4xl font-display font-black text-white tracking-tight uppercase mt-1">Engineering Projects</h2>
             </div>
             
-            <!-- Filters -->
             <div class="inline-flex p-1 rounded bg-hud-panel border border-hud-border font-mono text-xs">
                 <button onclick="filterProjects('all')" id="btn-all" class="filter-btn px-3 py-1.5 rounded bg-hud-crimson text-white font-extrabold transition">ALL</button>
                 <button onclick="filterProjects('design')" id="btn-design" class="filter-btn px-3 py-1.5 rounded text-slate-400 hover:text-white transition">DESIGN / DFM</button>
@@ -535,7 +513,7 @@
         </div>
     </footer>
 
-    <!-- Modals -->
+    <!-- Interactive Dossier Modals -->
     <div id="modal-coupling" class="fixed inset-0 z-50 bg-hud-black/90 backdrop-blur-md hidden items-center justify-center p-4">
         <div class="hud-reticle hud-reticle-amber bg-hud-panel border-2 border-hud-amber max-w-xl w-full max-h-[90vh] overflow-y-auto p-6 shadow-[0_0_40px_rgba(255,170,0,0.25)]">
             <div class="flex items-center justify-between pb-3 border-b border-hud-border text-hud-amber font-mono text-xs font-bold">
@@ -624,7 +602,6 @@
         </div>
     </div>
 
-    <!-- Interactive JavaScript Engine -->
     <script>
         function updateClock() {
             const now = new Date();
@@ -641,17 +618,17 @@
             document.getElementById('telemetry-alt').textContent = alt;
         });
 
-        // --- Radar Engine with Click-to-Open-Section Interactivity ---
+        // --- Radar Canvas Engine ---
         const canvas = document.getElementById('radarCanvas');
         const ctx = canvas.getContext('2d');
         let sweepAngle = 0;
         let mouseX = -100, mouseY = -100;
 
         const targets = [
-            { x: 260, y: 130, r: 7, color: '#ffaa00', name: 'SYS_130NM', spec: '130 Nm / H7-h6 GD&T', modalId: 'modal-coupling', cardId: 'card-coupling' },
-            { x: 130, y: 250, r: 7, color: '#ff0055', name: 'PASSION_SOLVER', spec: '16-DOF / <2.4% Res.', modalId: 'modal-solver', cardId: 'card-solver' },
-            { x: 280, y: 270, r: 7, color: '#00ff88', name: 'HPC_ABAQUS', spec: 'Explicit / >100 kHz', modalId: 'modal-abaqus', cardId: 'card-abaqus' },
-            { x: 140, y: 140, r: 7, color: '#ff3344', name: 'CFRP_CORE', spec: '-32.4% Mass / SIMP', modalId: 'modal-chassis', cardId: 'card-chassis' }
+            { x: 260, y: 130, r: 7, color: '#ffaa00', name: 'SYS_130NM', spec: '130 Nm / H7-h6 GD&T', modalId: 'modal-coupling' },
+            { x: 130, y: 250, r: 7, color: '#ff0055', name: 'PASSION_SOLVER', spec: '16-DOF / <2.4% Res.', modalId: 'modal-solver' },
+            { x: 280, y: 270, r: 7, color: '#00ff88', name: 'HPC_ABAQUS', spec: 'Explicit / >100 kHz', modalId: 'modal-abaqus' },
+            { x: 140, y: 140, r: 7, color: '#ff0055', name: 'CFRP_CORE', spec: '-32.4% Mass / SIMP', modalId: 'modal-chassis' }
         ];
 
         function getMousePos(e) {
@@ -662,7 +639,6 @@
             };
         }
 
-        // Hover Detection
         canvas.addEventListener('mousemove', (e) => {
             const pos = getMousePos(e);
             mouseX = pos.x;
@@ -691,13 +667,11 @@
             }
         });
 
-        // Click Detection to Engage Dossier / Jump to Section
         canvas.addEventListener('click', (e) => {
             const pos = getMousePos(e);
             targets.forEach(t => {
                 const dist = Math.hypot(pos.x - t.x, pos.y - t.y);
                 if (dist < 22) {
-                    // Open modal report directly
                     openModal(t.modalId);
                 }
             });
@@ -717,7 +691,6 @@
             const cy = canvas.height / 2;
             const radius = 180;
 
-            // Grid Rings
             ctx.strokeStyle = 'rgba(255, 0, 85, 0.2)';
             ctx.lineWidth = 1;
             [40, 85, 130, radius].forEach(r => {
@@ -726,14 +699,12 @@
                 ctx.stroke();
             });
 
-            // Grid Axes
             ctx.strokeStyle = 'rgba(255, 0, 85, 0.15)';
             ctx.beginPath();
             ctx.moveTo(cx, cy - radius); ctx.lineTo(cx, cy + radius);
             ctx.moveTo(cx - radius, cy); ctx.lineTo(cx + radius, cy);
             ctx.stroke();
 
-            // Radar Sweep Beam
             ctx.save();
             ctx.translate(cx, cy);
             ctx.rotate(sweepAngle);
@@ -750,27 +721,23 @@
             ctx.fill();
             ctx.restore();
 
-            // Draw Clickable Targets
             targets.forEach(t => {
                 ctx.fillStyle = t.color;
                 ctx.beginPath();
                 ctx.arc(t.x, t.y, t.r, 0, Math.PI * 2);
                 ctx.fill();
 
-                // Pulsing Target Lock Rings
                 ctx.strokeStyle = t.color;
                 ctx.lineWidth = 1.5;
                 ctx.beginPath();
                 ctx.arc(t.x, t.y, 11 + Math.sin(Date.now() / 200) * 3, 0, Math.PI * 2);
                 ctx.stroke();
 
-                // Target ID label on radar
                 ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
                 ctx.font = '8px JetBrains Mono';
                 ctx.fillText(t.name, t.x + 12, t.y + 3);
             });
 
-            // Mouse Interactive Reticle
             if (mouseX > 0 && mouseY > 0) {
                 ctx.strokeStyle = 'rgba(255, 0, 85, 0.85)';
                 ctx.lineWidth = 1;
@@ -786,7 +753,6 @@
         }
         drawRadar();
 
-        // --- Filters & Modals ---
         function filterProjects(category) {
             const cards = document.querySelectorAll('.project-card');
             const buttons = document.querySelectorAll('.filter-btn');
