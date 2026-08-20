@@ -13,16 +13,15 @@
                     colors: {
                         hud: {
                             black: '#030712',
-                            panel: '#070d1a',
-                            panelAlt: '#0b1528',
-                            border: '#1e3a5f',
-                            borderBright: '#2a5a8c',
+                            panel: '#070f1e',
+                            panelAlt: '#0c182e',
+                            border: '#163252',
+                            borderBright: '#25558a',
                             cyan: '#00f0ff',        // Primary Electric Cyan
-                            sky: '#38bdf8',         // Ice Blue
+                            sky: '#38bdf8',         // Ice Sky Blue
                             blue: '#0284c7',        // Tactical Blue
-                            amber: '#ffaa00',       // Hardware / DFM Accent
-                            green: '#00ff88',       // Telemetry Nominal
-                            purple: '#b026ff'
+                            amber: '#fbbf24',       // Hardware DFM Accent
+                            green: '#00ff88'        // Verification Green
                         }
                     },
                     fontFamily: {
@@ -34,10 +33,10 @@
             }
         }
     </script>
-    <!-- Aerospace Fonts & Icons -->
+    <!-- Fonts & Icons -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=JetBrains+Mono:ital,wght@0,300;0,400;0,700;0,800;1,400&family=Orbitron:wght@600;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:ital,wght@0,300;0,400;0,700;0,800&family=Orbitron:wght@600;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
@@ -48,7 +47,7 @@
                 linear-gradient(to bottom, rgba(56, 189, 248, 0.03) 1px, transparent 1px);
         }
         .scanlines {
-            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.35) 50%);
+            background: linear-gradient(rgba(3, 7, 18, 0) 50%, rgba(0, 0, 0, 0.35) 50%);
             background-size: 100% 3px;
         }
         .hud-reticle {
@@ -66,26 +65,26 @@
         .hud-reticle::after { bottom: -1px; right: -1px; border-bottom-width: 2px; border-right-width: 2px; }
         
         .hud-reticle-cyan::before, .hud-reticle-cyan::after { border-color: #00f0ff !important; }
-        .hud-reticle-amber::before, .hud-reticle-amber::after { border-color: #ffaa00 !important; }
+        .hud-reticle-amber::before, .hud-reticle-amber::after { border-color: #fbbf24 !important; }
         .hud-reticle-green::before, .hud-reticle-green::after { border-color: #00ff88 !important; }
         
-        .glow-cyan { box-shadow: 0 0 25px -2px rgba(0, 240, 255, 0.45); }
+        .glow-cyan { box-shadow: 0 0 25px -2px rgba(0, 240, 255, 0.4); }
         .glow-text-cyan { text-shadow: 0 0 16px rgba(0, 240, 255, 0.85); }
     </style>
 </head>
 <body class="bg-hud-black text-slate-200 font-sans antialiased selection:bg-hud-cyan selection:text-black hud-grid relative min-h-screen flex flex-col justify-between overflow-x-hidden">
     
     <!-- CRT Overlay -->
-    <div class="fixed inset-0 pointer-events-none scanlines z-50 opacity-30"></div>
+    <div class="fixed inset-0 pointer-events-none scanlines z-50 opacity-25"></div>
 
     <!-- Top Telemetry Flight Ticker -->
-    <div class="bg-hud-panel border-b border-hud-border/70 py-1.5 px-4 font-mono text-[10px] text-slate-400 flex items-center justify-between tracking-widest uppercase overflow-hidden sticky top-0 z-50 backdrop-blur-md">
+    <div class="bg-hud-panel border-b border-hud-border/80 py-1.5 px-4 font-mono text-[10px] text-slate-400 flex items-center justify-between tracking-widest uppercase overflow-hidden sticky top-0 z-50 backdrop-blur-md">
         <div class="flex items-center gap-6">
             <span class="flex items-center gap-1.5 text-hud-cyan font-bold">
                 <span class="w-2 h-2 rounded-full bg-hud-cyan inline-block animate-ping"></span>
                 CORE_TELEMETRY: ONLINE
             </span>
-            <span class="hidden sm:inline text-slate-400">VT-AERO // CYAN GLASS AVIONICS</span>
+            <span class="hidden sm:inline text-slate-400">VT-AERO // ELECTRIC CYAN AVIONICS</span>
             <span class="hidden md:inline text-hud-sky">UTC: <span id="telemetry-time">00:00:00</span></span>
         </div>
         <div class="flex items-center gap-4 text-hud-cyan font-bold">
@@ -197,7 +196,7 @@
 
             </div>
 
-            <!-- Right: Dynamic Radar HUD (Stationary Solid Cyan Jet + Active Radar Sweep) -->
+            <!-- Right: Dynamic Radar HUD (Large Solid Cyan Jet + Active Sweep) -->
             <div class="lg:col-span-6 flex flex-col items-center">
                 <div class="relative w-full max-w-[440px] aspect-square bg-hud-panel/95 rounded-full border-2 border-hud-cyan/50 p-2 shadow-[0_0_50px_rgba(0,240,255,0.25)] flex items-center justify-center">
                     
@@ -753,7 +752,7 @@
                 angle: 0.8, 
                 speed: 0.012, 
                 r: 7, 
-                color: '#ffaa00', 
+                color: '#fbbf24', 
                 name: 'SYS_130NM', 
                 spec: '130 Nm / H7-h6 GD&T', 
                 modalId: 'modal-coupling',
