@@ -84,7 +84,7 @@
                 <span class="w-2 h-2 rounded-full bg-hud-cyan inline-block animate-ping"></span>
                 CORE_TELEMETRY: ONLINE
             </span>
-            <span class="hidden sm:inline text-slate-400">VT-AERO // ELECTRIC CYAN AVIONICS</span>
+            <span class="hidden sm:inline text-slate-400">VT-AERO // LOW-RPM TACTICAL SWEEP</span>
             <span class="hidden md:inline text-hud-sky">UTC: <span id="telemetry-time">00:00:00</span></span>
         </div>
         <div class="flex items-center gap-4 text-hud-cyan font-bold">
@@ -196,7 +196,7 @@
 
             </div>
 
-            <!-- Right: Dynamic Radar HUD (Big Solid Cyan Plane + Calibrated Sweep) -->
+            <!-- Right: Radar HUD (Large Solid Cyan Jet + Calm, Steady Sweep) -->
             <div class="lg:col-span-6 flex flex-col items-center">
                 <div class="relative w-full max-w-[440px] aspect-square bg-hud-panel/95 rounded-full border-2 border-hud-cyan/50 p-2 shadow-[0_0_50px_rgba(0,240,255,0.25)] flex items-center justify-center">
                     
@@ -212,7 +212,6 @@
                             
                             <!-- Large Solid Filled Cyan Fighter Jet SVG -->
                             <svg class="w-16 h-16 text-hud-cyan drop-shadow-[0_0_12px_#00f0ff]" viewBox="0 0 100 100" fill="currentColor">
-                                <!-- Solid Delta Wing Jet Body -->
                                 <path d="M 50 5 
                                          L 56 30 
                                          L 68 35 
@@ -233,9 +232,7 @@
                                          L 44 30 Z" 
                                       stroke="#ffffff" 
                                       stroke-width="1.5" />
-                                <!-- Cockpit Canopy Window -->
                                 <ellipse cx="50" cy="32" rx="3.5" ry="9" fill="#070f1e" />
-                                <!-- Stabilizer Accents -->
                                 <line x1="45" y1="62" x2="43" y2="76" stroke="#fbbf24" stroke-width="1.5" />
                                 <line x1="55" y1="62" x2="57" y2="76" stroke="#fbbf24" stroke-width="1.5" />
                             </svg>
@@ -251,7 +248,7 @@
                     <!-- Reticle Status Badge -->
                     <div class="absolute bottom-5 font-mono text-[8px] text-slate-400 bg-hud-black/90 px-2.5 py-0.5 rounded border border-hud-border pointer-events-none flex items-center gap-2">
                         <span>STATIONARY CORE: <span class="text-hud-cyan font-bold">LOCKED [000° N]</span></span>
-                        <span>RADAR: <span class="text-hud-sky font-bold animate-pulse">ACTIVE 60FPS</span></span>
+                        <span>RADAR: <span class="text-hud-sky font-bold">STEADY SCAN</span></span>
                     </div>
                 </div>
 
@@ -532,7 +529,7 @@
                 </ul>
             </div>
 
-            <div class="hud-reticle hud-reticle-cyan p-6 bg-hud-panel border border-hud-border rounded">
+            <div class="hud-reticle p-6 bg-hud-panel border border-hud-border rounded">
                 <div class="text-hud-cyan font-bold text-sm tracking-wider uppercase mb-4 flex items-center gap-2">
                     <i class="fa-solid fa-wave-square"></i> CAE & WAVE DYNAMICS
                 </div>
@@ -777,19 +774,19 @@
             document.getElementById('telemetry-alt').textContent = alt;
         });
 
-        // --- Active Cyan Radar Engine ---
+        // --- Low-RPM Steady Cyan Radar Canvas Engine ---
         const canvas = document.getElementById('radarCanvas');
         const ctx = canvas.getContext('2d');
         let sweepAngle = 0;
         let ringAngle = 0;
         let mouseX = -100, mouseY = -100;
 
-        // Dynamic Moving Targets in Calibrated Slow Orbit
+        // Dynamic Moving Targets in Steady Orbital Drift
         const targets = [
             { 
                 baseRadius: 140, 
                 angle: 0.8, 
-                speed: 0.003, 
+                speed: 0.002, 
                 r: 7, 
                 color: '#fbbf24', 
                 name: 'SYS_130NM', 
@@ -800,7 +797,7 @@
             { 
                 baseRadius: 85, 
                 angle: 2.7, 
-                speed: -0.004, 
+                speed: -0.0025, 
                 r: 7, 
                 color: '#00f0ff', 
                 name: 'CAE_SOLVER', 
@@ -811,7 +808,7 @@
             { 
                 baseRadius: 165, 
                 angle: 4.2, 
-                speed: 0.0025, 
+                speed: 0.0015, 
                 r: 7, 
                 color: '#00ff88', 
                 name: 'HPC_ABAQUS', 
@@ -822,7 +819,7 @@
             { 
                 baseRadius: 110, 
                 angle: 5.6, 
-                speed: -0.003, 
+                speed: -0.002, 
                 r: 7, 
                 color: '#38bdf8', 
                 name: 'CFRP_CORE', 
@@ -886,7 +883,7 @@
             document.getElementById('target-spec').textContent = 'CLICK MOVING TARGET';
         });
 
-        // 60FPS Continuous Radar Loop
+        // 60FPS Continuous Radar Loop (Low RPM Calm Sweep)
         function drawRadar() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             const cx = canvas.width / 2;
@@ -902,7 +899,7 @@
                 ctx.stroke();
             });
 
-            // 2. Rotating Outer Compass Ticks (Smooth & Slow)
+            // 2. Rotating Outer Compass Ticks
             ctx.save();
             ctx.translate(cx, cy);
             ctx.rotate(ringAngle);
@@ -925,7 +922,7 @@
             ctx.moveTo(cx - radius, cy); ctx.lineTo(cx + radius, cy);
             ctx.stroke();
 
-            // 4. Rotating Radar Sweep Beam (Calibrated Slow Rate)
+            // 4. Smooth Calm Radar Sweep Beam (Electric Cyan / Sky Blue Gradient)
             ctx.save();
             ctx.translate(cx, cy);
             ctx.rotate(sweepAngle);
@@ -942,7 +939,7 @@
             ctx.fill();
             ctx.restore();
 
-            // 5. Update and Render Moving Target Blips (Smooth Slow Drift)
+            // 5. Update and Render Moving Target Blips
             targets.forEach(t => {
                 t.angle += t.speed;
                 t.x = cx + Math.cos(t.angle) * t.baseRadius;
@@ -954,11 +951,11 @@
                 ctx.arc(t.x, t.y, t.r, 0, Math.PI * 2);
                 ctx.fill();
 
-                // Pulsing Echo Ring
+                // Calm Pulsing Echo Ring
                 ctx.strokeStyle = t.color;
                 ctx.lineWidth = 1.4;
                 ctx.beginPath();
-                ctx.arc(t.x, t.y, 11 + Math.sin(Date.now() / 250 + t.baseRadius) * 2.5, 0, Math.PI * 2);
+                ctx.arc(t.x, t.y, 11 + Math.sin(Date.now() / 450 + t.baseRadius) * 2, 0, Math.PI * 2);
                 ctx.stroke();
 
                 // Motion Trail Line
@@ -986,9 +983,9 @@
                 ctx.stroke();
             }
 
-            // Calibrated Slow Animation Rates
-            sweepAngle += 0.012;
-            ringAngle -= 0.001;
+            // Calibrated Steady RPM Rates
+            sweepAngle += 0.008;
+            ringAngle -= 0.0008;
             requestAnimationFrame(drawRadar);
         }
         drawRadar();
