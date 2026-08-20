@@ -12,17 +12,17 @@
                 extend: {
                     colors: {
                         hud: {
-                            black: '#030712',
-                            panel: '#070f1e',
-                            panelAlt: '#0a162b',
-                            border: '#163252',
-                            // Night-Vision Avionics Palette (Calm, High-Readability & Focus)
-                            cyan: '#00f0ff',        // Primary telemetry uplink
-                            teal: '#00e5a3',        // Soothing operational green
-                            cobalt: '#38bdf8',      // Deep sky focus
-                            amber: '#f59e0b',       // DFM & Hardware accent
-                            indigo: '#818cf8',      // Solver computation
-                            glow: 'rgba(0, 240, 255, 0.35)'
+                            // Deep Aerospace Avionics Palette (Calm, Glare-Free, Authoritative)
+                            black: '#070b14',
+                            panel: '#0c1322',
+                            panelAlt: '#111b30',
+                            border: '#1a2742',
+                            borderBright: '#263b63',
+                            sky: '#38bdf8',         // Primary Flight Telemetry (Ice Blue)
+                            emerald: '#34d399',     // Nominal Status / Validation (Soft Mint)
+                            amber: '#fbbf24',       // Hardware / DFM Focus (Burnished Gold)
+                            indigo: '#818cf8',      // Solver Matrix Dynamics
+                            slate: '#94a3b8'        // Subdued Text
                         }
                     },
                     fontFamily: {
@@ -34,21 +34,21 @@
             }
         }
     </script>
-    <!-- Aerospace & HUD Monospace Fonts -->
+    <!-- Fonts & Icons -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=JetBrains+Mono:ital,wght@0,300;0,400;0,700;0,800;1,400&family=Orbitron:wght@600;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Orbitron:wght@600;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
         .hud-grid {
             background-size: 36px 36px;
             background-image: 
-                linear-gradient(to right, rgba(0, 240, 255, 0.035) 1px, transparent 1px),
-                linear-gradient(to bottom, rgba(0, 229, 163, 0.025) 1px, transparent 1px);
+                linear-gradient(to right, rgba(56, 189, 248, 0.025) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(52, 211, 153, 0.02) 1px, transparent 1px);
         }
         .scanlines {
-            background: linear-gradient(rgba(3, 7, 18, 0) 50%, rgba(0, 0, 0, 0.28) 50%);
+            background: linear-gradient(rgba(7, 11, 20, 0) 50%, rgba(0, 0, 0, 0.2) 50%);
             background-size: 100% 3px;
         }
         .hud-reticle {
@@ -57,69 +57,66 @@
         .hud-reticle::before, .hud-reticle::after {
             content: '';
             position: absolute;
-            width: 8px;
-            height: 8px;
-            border-color: #00f0ff;
+            width: 7px;
+            height: 7px;
+            border-color: #38bdf8;
             pointer-events: none;
         }
         .hud-reticle::before { top: -1px; left: -1px; border-top-width: 2px; border-left-width: 2px; }
         .hud-reticle::after { bottom: -1px; right: -1px; border-bottom-width: 2px; border-right-width: 2px; }
         
-        .hud-reticle-teal::before, .hud-reticle-teal::after { border-color: #00e5a3 !important; }
-        .hud-reticle-amber::before, .hud-reticle-amber::after { border-color: #f59e0b !important; }
-        .hud-reticle-cobalt::before, .hud-reticle-cobalt::after { border-color: #38bdf8 !important; }
+        .hud-reticle-emerald::before, .hud-reticle-emerald::after { border-color: #34d399 !important; }
+        .hud-reticle-amber::before, .hud-reticle-amber::after { border-color: #fbbf24 !important; }
         
-        .glow-cyan { box-shadow: 0 0 24px -2px rgba(0, 240, 255, 0.3); }
-        .glow-text-cyan { text-shadow: 0 0 14px rgba(0, 240, 255, 0.6); }
-        .glow-teal { box-shadow: 0 0 24px -2px rgba(0, 229, 163, 0.3); }
+        .glow-sky { box-shadow: 0 0 20px -2px rgba(56, 189, 248, 0.22); }
+        .glow-text-sky { text-shadow: 0 0 14px rgba(56, 189, 248, 0.45); }
     </style>
 </head>
-<body class="bg-hud-black text-slate-200 font-sans antialiased selection:bg-hud-cyan selection:text-black hud-grid relative min-h-screen flex flex-col justify-between overflow-x-hidden">
+<body class="bg-hud-black text-slate-200 font-sans antialiased selection:bg-hud-sky selection:text-black hud-grid relative min-h-screen flex flex-col justify-between overflow-x-hidden">
     
-    <!-- CRT Scanline Overlay -->
     <div class="fixed inset-0 pointer-events-none scanlines z-50 opacity-25"></div>
 
     <!-- Telemetry Ticker -->
-    <div class="bg-hud-panel border-b border-hud-border/70 py-1.5 px-4 font-mono text-[10px] text-slate-400 flex items-center justify-between tracking-widest uppercase overflow-hidden sticky top-0 z-50 backdrop-blur-md">
+    <div class="bg-hud-panel border-b border-hud-border py-1.5 px-4 font-mono text-[10px] text-slate-400 flex items-center justify-between tracking-widest uppercase overflow-hidden sticky top-0 z-50 backdrop-blur-md">
         <div class="flex items-center gap-6">
-            <span class="flex items-center gap-1.5 text-hud-teal font-bold">
-                <span class="w-2 h-2 rounded-full bg-hud-teal inline-block animate-ping"></span>
+            <span class="flex items-center gap-1.5 text-hud-emerald font-bold">
+                <span class="w-1.5 h-1.5 rounded-full bg-hud-emerald inline-block animate-ping"></span>
                 SYSTEMS: NOMINAL
             </span>
-            <span class="hidden sm:inline text-slate-400">PROPULSION // GLASS AVIONICS ACTIVE</span>
-            <span class="hidden md:inline text-hud-cyan">UTC: <span id="telemetry-time">00:00:00</span></span>
+            <span class="hidden sm:inline text-slate-400">VT-AERO-PROPULSION // GLASS AVIONICS ACTIVE</span>
+            <span class="hidden md:inline text-hud-sky">UTC: <span id="telemetry-time">00:00:00</span></span>
         </div>
-        <div class="flex items-center gap-4 text-hud-cyan font-bold">
+        <div class="flex items-center gap-4 text-hud-sky font-bold">
             <span>MACH: <span id="telemetry-mach">0.00</span></span>
-            <span class="text-slate-300">ALT: <span id="telemetry-alt" class="text-hud-cyan">2,080</span> FT</span>
+            <span class="text-slate-300">ALT: <span id="telemetry-alt" class="text-hud-sky">2,080</span> FT</span>
             <span class="text-hud-amber hidden sm:inline">VISA: STEM OPT (JAN 2027)</span>
         </div>
     </div>
 
     <!-- Navigation Deck -->
-    <header class="bg-hud-black/90 border-b border-hud-border/80 relative z-40">
+    <header class="bg-hud-black/95 border-b border-hud-border relative z-40">
         <div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
             
             <!-- Custom Aerospace "A" Initial Integrated into Name -->
-            <a href="#" class="font-display font-black text-base tracking-widest text-white flex items-center gap-1 hover:text-hud-cyan transition group">
-                <svg class="h-7 w-auto text-hud-cyan group-hover:drop-shadow-[0_0_10px_#00f0ff] transition-all duration-300 inline-block -mr-1" viewBox="0 0 220 120" fill="currentColor">
+            <a href="#" class="font-display font-bold text-base tracking-widest text-white flex items-center gap-1 hover:text-hud-sky transition group">
+                <svg class="h-7 w-auto text-hud-sky group-hover:drop-shadow-[0_0_8px_#38bdf8] transition-all duration-300 inline-block -mr-1" viewBox="0 0 220 120" fill="currentColor">
                     <path d="M 75 20 L 87 20 L 87 78 C 87 98 62 104 46 95 C 32 86 31 68 44 57 C 56 46 72 52 72 52 L 72 61 C 72 61 59 55 50 62 C 42 70 41 81 50 87 C 61 93 75 88 75 75 Z"/>
                     <path d="M 77 20 L 102 54 L 126 98 L 112 98 L 94 62 L 85 49 Z"/>
                     <polygon points="87,55 165,63 87,62"/>
                     <path d="M 163 76 C 165 72 172 62 176 56 L 182 41 L 186 41 L 182 52 L 198 48 L 208 38 L 212 40 L 208 50 L 195 61 L 186 70 L 168 76 Z"/>
                 </svg>
-                <span class="tracking-widest">NIMESH<span class="text-hud-cyan">_KULKARNI</span></span>
+                <span class="tracking-widest">NIMESH<span class="text-hud-sky">_KULKARNI</span></span>
                 <span class="text-[10px] font-mono font-normal text-slate-400 px-1.5 py-0.5 rounded bg-hud-panel border border-hud-border ml-2">M.S. AERO</span>
             </a>
             
             <nav class="hidden md:flex items-center gap-8 text-xs font-mono tracking-widest uppercase text-slate-400">
-                <a href="#mission" class="hover:text-hud-cyan transition"><span class="text-hud-cyan font-bold">01//</span>MISSION</a>
-                <a href="#projects" class="hover:text-hud-cyan transition"><span class="text-hud-cyan font-bold">02//</span>TELEMETRY_LOGS</a>
-                <a href="#skills" class="hover:text-hud-cyan transition"><span class="text-hud-cyan font-bold">03//</span>SYS_SPECS</a>
-                <a href="#experience" class="hover:text-hud-cyan transition"><span class="text-hud-cyan font-bold">04//</span>SERVICE_LOG</a>
+                <a href="#mission" class="hover:text-hud-sky transition"><span class="text-hud-sky font-bold">01//</span>MISSION</a>
+                <a href="#projects" class="hover:text-hud-sky transition"><span class="text-hud-sky font-bold">02//</span>TELEMETRY_LOGS</a>
+                <a href="#skills" class="hover:text-hud-sky transition"><span class="text-hud-sky font-bold">03//</span>SYS_SPECS</a>
+                <a href="#experience" class="hover:text-hud-sky transition"><span class="text-hud-sky font-bold">04//</span>SERVICE_LOG</a>
             </nav>
 
-            <a href="mailto:animeshdk@vt.edu" class="px-3.5 py-1.5 rounded bg-hud-cyan/10 hover:bg-hud-cyan text-hud-cyan hover:text-black border border-hud-cyan font-mono text-xs font-bold transition duration-300 flex items-center gap-2 shadow-[0_0_15px_rgba(0,240,255,0.15)]">
+            <a href="mailto:animeshdk@vt.edu" class="px-3.5 py-1.5 rounded bg-hud-sky/10 hover:bg-hud-sky text-hud-sky hover:text-black border border-hud-sky/40 font-mono text-xs font-bold transition duration-300 flex items-center gap-2">
                 <i class="fa-solid fa-satellite-dish"></i>
                 <span class="hidden sm:inline">ESTABLISH_UPLINK</span>
                 <span class="sm:hidden">CONTACT</span>
@@ -127,34 +124,34 @@
         </div>
     </header>
 
-    <!-- Hero HUD Section: Pilot Deck & Interactive Clickable Radar -->
+    <!-- Hero Section: Flight Deck Console & Radar -->
     <section id="mission" class="max-w-7xl mx-auto px-6 pt-8 pb-12 relative">
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
             
-            <!-- Left Command Console -->
+            <!-- Left Console -->
             <div class="lg:col-span-6 space-y-6">
                 
-                <div class="inline-flex items-center gap-2 px-3 py-1 rounded bg-hud-panel border border-hud-cyan/40 text-hud-cyan font-mono text-[11px] font-bold tracking-wider">
-                    <span class="w-1.5 h-1.5 rounded-full bg-hud-cyan animate-ping"></span>
-                    TACTICAL HUD // CLICK RADAR BLIPS TO OPEN TELEMETRY
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded bg-hud-panel border border-hud-border text-hud-sky font-mono text-[11px] font-bold tracking-wider">
+                    <span class="w-1.5 h-1.5 rounded-full bg-hud-sky animate-ping"></span>
+                    FLIGHT DIRECTORY // CLICK TARGETS TO ENGAGE CASE STUDIES
                 </div>
 
                 <h1 class="text-3xl sm:text-5xl font-display font-black text-white tracking-tight uppercase leading-tight">
                     HIGH-LOAD CAE <br>
-                    <span class="text-transparent bg-clip-text bg-gradient-to-r from-hud-cyan via-sky-300 to-hud-teal glow-text-cyan">& PRECISION DYNAMICS</span>
+                    <span class="text-transparent bg-clip-text bg-gradient-to-r from-hud-sky via-indigo-200 to-hud-emerald glow-text-sky">& PRECISION DYNAMICS</span>
                 </h1>
 
-                <!-- Direct Subsystem Jump Cards -->
+                <!-- Subsystem Quick Triggers -->
                 <div class="grid grid-cols-2 gap-2.5 font-mono text-xs">
-                    <div onclick="openModal('modal-solver')" class="hud-reticle hud-reticle-cobalt p-3 bg-hud-panel/80 hover:bg-hud-panel border border-hud-border hover:border-hud-cyan rounded cursor-pointer transition">
-                        <div class="text-[10px] text-hud-cyan uppercase font-bold flex items-center justify-between">
+                    <div onclick="openModal('modal-solver')" class="hud-reticle p-3 bg-hud-panel hover:bg-hud-panelAlt border border-hud-border hover:border-hud-sky rounded cursor-pointer transition">
+                        <div class="text-[10px] text-hud-sky uppercase font-bold flex items-center justify-between">
                             <span>// WAVE DYNAMICS</span>
                             <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
                         </div>
                         <div class="text-white font-bold mt-0.5">Dynamic FEA Solver</div>
                         <div class="text-[11px] text-slate-400">Explicit Propagation (>100 kHz)</div>
                     </div>
-                    <div onclick="openModal('modal-coupling')" class="p-3 bg-hud-panel/80 hover:bg-hud-panel border border-hud-border hover:border-hud-amber rounded cursor-pointer transition">
+                    <div onclick="openModal('modal-coupling')" class="hud-reticle hud-reticle-amber p-3 bg-hud-panel hover:bg-hud-panelAlt border border-hud-border hover:border-hud-amber rounded cursor-pointer transition">
                         <div class="text-[10px] text-hud-amber uppercase font-bold flex items-center justify-between">
                             <span>// HARDWARE DFM</span>
                             <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
@@ -162,16 +159,16 @@
                         <div class="text-white font-bold mt-0.5">ASME Y14.5 GD&T</div>
                         <div class="text-[11px] text-slate-400">Runout < 0.02 mm (130 Nm)</div>
                     </div>
-                    <div onclick="openModal('modal-abaqus')" class="p-3 bg-hud-panel/80 hover:bg-hud-panel border border-hud-border hover:border-hud-teal rounded cursor-pointer transition">
-                        <div class="text-[10px] text-hud-teal uppercase font-bold flex items-center justify-between">
+                    <div onclick="openModal('modal-abaqus')" class="hud-reticle hud-reticle-emerald p-3 bg-hud-panel hover:bg-hud-panelAlt border border-hud-border hover:border-hud-emerald rounded cursor-pointer transition">
+                        <div class="text-[10px] text-hud-emerald uppercase font-bold flex items-center justify-between">
                             <span>// AUTOMATION</span>
                             <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
                         </div>
                         <div class="text-white font-bold mt-0.5">Python HPC Solvers</div>
                         <div class="text-[11px] text-slate-400">Headless .inp / .odb Pipeline</div>
                     </div>
-                    <div onclick="openModal('modal-chassis')" class="p-3 bg-hud-panel/80 hover:bg-hud-panel border border-hud-border hover:border-hud-cyan rounded cursor-pointer transition">
-                        <div class="text-[10px] text-hud-cyan uppercase font-bold flex items-center justify-between">
+                    <div onclick="openModal('modal-chassis')" class="hud-reticle p-3 bg-hud-panel hover:bg-hud-panelAlt border border-hud-border hover:border-hud-sky rounded cursor-pointer transition">
+                        <div class="text-[10px] text-hud-sky uppercase font-bold flex items-center justify-between">
                             <span>// COMPOSITES</span>
                             <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
                         </div>
@@ -182,31 +179,31 @@
 
                 <!-- Action Triggers -->
                 <div class="flex flex-wrap gap-3 pt-2 font-mono text-xs font-bold">
-                    <a href="#projects" class="px-5 py-3 rounded bg-hud-cyan hover:bg-white text-hud-black transition flex items-center gap-2 glow-cyan uppercase tracking-wider">
+                    <a href="#projects" class="px-5 py-3 rounded bg-hud-sky hover:bg-white text-hud-black transition flex items-center gap-2 glow-sky uppercase tracking-wider">
                         <i class="fa-solid fa-crosshairs text-sm"></i> EXECUTE CASE STUDIES
                     </a>
-                    <a href="https://www.linkedin.com/in/animeshkulkarni" target="_blank" class="px-5 py-3 rounded bg-hud-panel hover:bg-hud-panelAlt border border-hud-border text-slate-300 hover:border-hud-cyan transition flex items-center gap-2 uppercase tracking-wider">
-                        <i class="fa-brands fa-linkedin text-hud-cyan"></i> DOSSIER
+                    <a href="https://www.linkedin.com/in/animeshkulkarni" target="_blank" class="px-5 py-3 rounded bg-hud-panel hover:bg-hud-panelAlt border border-hud-border text-slate-300 hover:border-hud-sky transition flex items-center gap-2 uppercase tracking-wider">
+                        <i class="fa-brands fa-linkedin text-hud-sky"></i> DOSSIER
                     </a>
                 </div>
 
             </div>
 
-            <!-- Right: Interactive Tactical HUD Radar with Custom Jet Insignia Core -->
+            <!-- Right Interactive Radar -->
             <div class="lg:col-span-6 flex flex-col items-center">
-                <div class="relative w-full max-w-[420px] aspect-square bg-hud-panel/90 rounded-full border border-hud-cyan/40 p-2 shadow-[0_0_45px_rgba(0,240,255,0.12)] flex items-center justify-center">
+                <div class="relative w-full max-w-[420px] aspect-square bg-hud-panel/90 rounded-full border border-hud-borderBright p-2 shadow-[0_0_40px_rgba(56,189,248,0.08)] flex items-center justify-center">
                     
                     <canvas id="radarCanvas" width="400" height="400" class="w-full h-full cursor-crosshair rounded-full"></canvas>
 
                     <!-- Azimuth Ticks -->
-                    <div class="absolute top-2 font-mono text-[9px] text-hud-cyan/80 font-bold select-none pointer-events-none">000° [N]</div>
-                    <div class="absolute bottom-2 font-mono text-[9px] text-hud-cyan/80 font-bold select-none pointer-events-none">180° [S]</div>
-                    <div class="absolute left-2 font-mono text-[9px] text-hud-cyan/80 font-bold select-none pointer-events-none">270° [W]</div>
-                    <div class="absolute right-2 font-mono text-[9px] text-hud-cyan/80 font-bold select-none pointer-events-none">090° [E]</div>
+                    <div class="absolute top-2 font-mono text-[9px] text-hud-sky/70 font-bold select-none pointer-events-none">000° [N]</div>
+                    <div class="absolute bottom-2 font-mono text-[9px] text-hud-sky/70 font-bold select-none pointer-events-none">180° [S]</div>
+                    <div class="absolute left-2 font-mono text-[9px] text-hud-sky/70 font-bold select-none pointer-events-none">270° [W]</div>
+                    <div class="absolute right-2 font-mono text-[9px] text-hud-sky/70 font-bold select-none pointer-events-none">090° [E]</div>
 
-                    <!-- Center Core: Jet-A Initial Logo -->
-                    <a href="#projects" class="absolute w-16 h-16 rounded-full border border-hud-cyan/70 flex flex-col items-center justify-center bg-hud-black/85 backdrop-blur-sm shadow-[0_0_15px_rgba(0,240,255,0.3)] hover:scale-110 transition duration-300 group z-20" title="Click to view flight logs">
-                        <svg class="h-8 w-auto text-hud-cyan group-hover:scale-110 transition duration-300" viewBox="0 0 220 120" fill="currentColor">
+                    <!-- Center Core: Jet-A Initial -->
+                    <a href="#projects" class="absolute w-16 h-16 rounded-full border border-hud-sky/60 flex flex-col items-center justify-center bg-hud-black/90 backdrop-blur-sm shadow-[0_0_12px_rgba(56,189,248,0.25)] hover:scale-110 transition duration-300 group z-20" title="Click to view flight logs">
+                        <svg class="h-8 w-auto text-hud-sky group-hover:scale-110 transition duration-300" viewBox="0 0 220 120" fill="currentColor">
                             <path d="M 75 20 L 87 20 L 87 78 C 87 98 62 104 46 95 C 32 86 31 68 44 57 C 56 46 72 52 72 52 L 72 61 C 72 61 59 55 50 62 C 42 70 41 81 50 87 C 61 93 75 88 75 75 Z"/>
                             <path d="M 77 20 L 102 54 L 126 98 L 112 98 L 94 62 L 85 49 Z"/>
                             <polygon points="87,55 165,63 87,62"/>
@@ -215,28 +212,28 @@
                     </a>
                 </div>
 
-                <div class="w-full max-w-[420px] mt-4 p-3 bg-hud-panel border border-hud-border rounded font-mono text-xs flex items-center justify-between transition duration-300">
+                <div class="w-full max-w-[420px] mt-4 p-3 bg-hud-panel border border-hud-border rounded font-mono text-xs flex items-center justify-between">
                     <div class="flex items-center gap-2">
-                        <span class="w-2 h-2 rounded-full bg-hud-cyan animate-pulse"></span>
+                        <span class="w-2 h-2 rounded-full bg-hud-sky animate-pulse"></span>
                         <span class="text-slate-400">ENGAGE:</span>
-                        <span id="target-name" class="text-hud-cyan font-bold uppercase">SWEEPING ACTIVE</span>
+                        <span id="target-name" class="text-hud-sky font-bold uppercase">SWEEPING ACTIVE</span>
                     </div>
                     <div class="text-slate-400 text-right">
-                        <span id="target-spec" class="text-hud-teal font-bold">CLICK BLIP TO OPEN</span>
+                        <span id="target-spec" class="text-hud-emerald font-bold">CLICK BLIP TO OPEN</span>
                     </div>
                 </div>
             </div>
 
         </div>
 
-        <!-- Telemetry Data Matrix -->
+        <!-- Telemetry Metrics Bar -->
         <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mt-12 font-mono">
-            <div class="hud-reticle hud-reticle-cobalt p-4 bg-hud-panel border border-hud-border">
+            <div class="hud-reticle p-4 bg-hud-panel border border-hud-border">
                 <div class="text-[10px] text-slate-400 uppercase flex items-center justify-between">
                     <span>ACADEMIC_INDEX</span>
-                    <i class="fa-solid fa-graduation-cap text-hud-cyan"></i>
+                    <i class="fa-solid fa-graduation-cap text-hud-sky"></i>
                 </div>
-                <div class="text-2xl sm:text-3xl font-display font-black text-white mt-1">3.77<span class="text-xs text-hud-cyan font-mono">/4.00</span></div>
+                <div class="text-2xl sm:text-3xl font-display font-black text-white mt-1">3.77<span class="text-xs text-hud-sky font-mono">/4.00</span></div>
                 <div class="text-[10px] text-slate-400">Virginia Tech • M.S. Aerospace</div>
             </div>
 
@@ -252,39 +249,40 @@
             <div class="hud-reticle p-4 bg-hud-panel border border-hud-border">
                 <div class="text-[10px] text-slate-400 uppercase flex items-center justify-between">
                     <span>BENCHMARK_ERROR</span>
-                    <i class="fa-solid fa-chart-line text-hud-cyan"></i>
+                    <i class="fa-solid fa-chart-line text-hud-sky"></i>
                 </div>
-                <div class="text-2xl sm:text-3xl font-display font-black text-hud-cyan mt-1">< 2.4%</div>
+                <div class="text-2xl sm:text-3xl font-display font-black text-hud-sky mt-1">< 2.4%</div>
                 <div class="text-[10px] text-slate-400">Custom 16-DOF Modal Solver</div>
             </div>
 
-            <div class="hud-reticle hud-reticle-teal p-4 bg-hud-panel border border-hud-border">
+            <div class="hud-reticle hud-reticle-emerald p-4 bg-hud-panel border border-hud-border">
                 <div class="text-[10px] text-slate-400 uppercase flex items-center justify-between">
                     <span>TORQUE_MAX</span>
-                    <i class="fa-solid fa-bolt text-hud-teal"></i>
+                    <i class="fa-solid fa-bolt text-hud-emerald"></i>
                 </div>
-                <div class="text-2xl sm:text-3xl font-display font-black text-hud-teal mt-1">130 <span class="text-xs font-mono">Nm</span></div>
+                <div class="text-2xl sm:text-3xl font-display font-black text-hud-emerald mt-1">130 <span class="text-xs font-mono">Nm</span></div>
                 <div class="text-[10px] text-slate-400">Motor-Gearbox Coupling (FoS > 1.5)</div>
             </div>
         </div>
     </section>
 
-    <!-- Project Flight Logs Section -->
+    <!-- Project Telemetry Section -->
     <section id="projects" class="max-w-7xl mx-auto px-6 py-14 border-t border-hud-border">
         
         <div class="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-4">
             <div>
-                <div class="text-xs font-mono font-bold tracking-widest text-hud-cyan uppercase flex items-center gap-2">
-                    <span class="w-2 h-2 bg-hud-cyan inline-block"></span>
+                <div class="text-xs font-mono font-bold tracking-widest text-hud-sky uppercase flex items-center gap-2">
+                    <span class="w-1.5 h-1.5 bg-hud-sky inline-block"></span>
                     // MISSION LOGS & CASE STUDIES
                 </div>
                 <h2 class="text-2xl sm:text-4xl font-display font-black text-white tracking-tight uppercase mt-1">Engineering Projects</h2>
             </div>
             
+            <!-- Filters -->
             <div class="inline-flex p-1 rounded bg-hud-panel border border-hud-border font-mono text-xs">
-                <button onclick="filterProjects('all')" id="btn-all" class="filter-btn px-3 py-1.5 rounded bg-hud-cyan text-black font-extrabold transition">ALL</button>
-                <button onclick="filterProjects('design')" id="btn-design" class="filter-btn px-3 py-1.5 rounded text-slate-400 hover:text-white transition">DESIGN / DFM</button>
-                <button onclick="filterProjects('cae')" id="btn-cae" class="filter-btn px-3 py-1.5 rounded text-slate-400 hover:text-white transition">CAE / DYNAMICS</button>
+                <button onclick="filterProjects('all')" id="btn-all" class="filter-btn px-3.5 py-1.5 rounded bg-hud-sky text-black font-extrabold transition">ALL</button>
+                <button onclick="filterProjects('design')" id="btn-design" class="filter-btn px-3.5 py-1.5 rounded text-slate-400 hover:text-white transition">DESIGN / DFM</button>
+                <button onclick="filterProjects('cae')" id="btn-cae" class="filter-btn px-3.5 py-1.5 rounded text-slate-400 hover:text-white transition">CAE / DYNAMICS</button>
             </div>
         </div>
 
@@ -294,7 +292,7 @@
             <!-- PROJECT 1: 130 Nm Coupling -->
             <div id="card-coupling" class="project-card design hud-reticle hud-reticle-amber bg-hud-panel border border-hud-border p-6 rounded flex flex-col justify-between hover:border-hud-amber transition duration-300">
                 <div>
-                    <div class="flex items-center justify-between text-[11px] font-mono pb-3 border-b border-hud-border/80 text-hud-amber font-bold">
+                    <div class="flex items-center justify-between text-[11px] font-mono pb-3 border-b border-hud-border text-hud-amber font-bold">
                         <span><i class="fa-solid fa-gear mr-1"></i> SYS_ID: MECH-130NM</span>
                         <span class="px-2 py-0.5 rounded bg-hud-amber/10 border border-hud-amber/30 text-hud-amber">DFM // HARDWARE</span>
                     </div>
@@ -304,7 +302,7 @@
                         Engineered mechanical coupling in SolidWorks for high-RPM dynamic loads. Formulated ISO transitional fits (H7/h6) and performed SLA/FDM 3D fit checks.
                     </p>
 
-                    <div class="space-y-1.5 text-xs font-mono text-slate-400 mb-4 bg-hud-black/60 p-3 border border-hud-border/60 rounded">
+                    <div class="space-y-1.5 text-xs font-mono text-slate-400 mb-4 bg-hud-black/60 p-3 border border-hud-border rounded">
                         <div><strong class="text-hud-amber">> GD&T:</strong> Total runout <0.02 mm & positional datum controls.</div>
                         <div><strong class="text-hud-amber">> DFM:</strong> Modified internal corner radii for standard 3/8" tooling (-9% cost).</div>
                         <div><strong class="text-hud-amber">> FEA:</strong> Simulated 130 Nm torque in ANSYS (Von Mises FoS > 1.5).</div>
@@ -317,18 +315,18 @@
                         <span class="px-2 py-0.5 rounded bg-hud-black border border-hud-border">ASME Y14.5</span>
                         <span class="px-2 py-0.5 rounded bg-hud-black border border-hud-border">ANSYS FEA</span>
                     </div>
-                    <button onclick="openModal('modal-coupling')" class="w-full py-2 rounded bg-hud-amber/10 hover:bg-hud-amber text-hud-amber hover:text-black border border-hud-amber/40 font-mono text-xs font-bold transition flex items-center justify-center gap-2">
+                    <button onclick="openModal('modal-coupling')" class="w-full py-2 rounded bg-hud-amber/10 hover:bg-hud-amber text-hud-amber hover:text-black border border-hud-amber/30 font-mono text-xs font-bold transition flex items-center justify-center gap-2">
                         <span>OPEN TELEMETRY REPORT</span> <i class="fa-solid fa-arrow-right"></i>
                     </button>
                 </div>
             </div>
 
             <!-- PROJECT 2: Custom MATLAB Solver -->
-            <div id="card-solver" class="project-card cae hud-reticle hud-reticle-cobalt bg-hud-panel border border-hud-border p-6 rounded flex flex-col justify-between hover:border-hud-cyan transition duration-300">
+            <div id="card-solver" class="project-card cae hud-reticle bg-hud-panel border border-hud-border p-6 rounded flex flex-col justify-between hover:border-hud-sky transition duration-300">
                 <div>
-                    <div class="flex items-center justify-between text-[11px] font-mono pb-3 border-b border-hud-border/80 text-hud-cyan font-bold">
+                    <div class="flex items-center justify-between text-[11px] font-mono pb-3 border-b border-hud-border text-hud-sky font-bold">
                         <span><i class="fa-solid fa-wave-square mr-1"></i> SYS_ID: CAE-16DOF-CLPT</span>
-                        <span class="px-2 py-0.5 rounded bg-hud-cyan/10 border border-hud-cyan/30 text-hud-cyan">CAE // FIRST-PRINCIPLES</span>
+                        <span class="px-2 py-0.5 rounded bg-hud-sky/10 border border-hud-sky/30 text-hud-sky">CAE // FIRST-PRINCIPLES</span>
                     </div>
 
                     <h3 class="text-lg font-display font-bold text-white mt-3 mb-2">16-DOF Plate Dynamic Solver & CLPT</h3>
@@ -336,10 +334,10 @@
                         Coded a coupled electromechanical FEA solver in MATLAB using Classical Laminated Plate Theory and 16-DOF Bogner-Fox-Schmit (BFS) elements.
                     </p>
 
-                    <div class="space-y-1.5 text-xs font-mono text-slate-400 mb-4 bg-hud-black/60 p-3 border border-hud-border/60 rounded">
-                        <div><strong class="text-hud-cyan">> Formulation:</strong> [M], [K], and coupled piezoelectric matrices [Kuφ].</div>
-                        <div><strong class="text-hud-cyan">> Validation:</strong> Modal frequency error <2.4% vs. published literature.</div>
-                        <div><strong class="text-hud-cyan">> Actuation:</strong> Tuned PZT placement at high modal strain anti-nodes.</div>
+                    <div class="space-y-1.5 text-xs font-mono text-slate-400 mb-4 bg-hud-black/60 p-3 border border-hud-border rounded">
+                        <div><strong class="text-hud-sky">> Formulation:</strong> [M], [K], and coupled piezoelectric matrices [Kuφ].</div>
+                        <div><strong class="text-hud-sky">> Validation:</strong> Modal frequency error <2.4% vs. published literature.</div>
+                        <div><strong class="text-hud-sky">> Actuation:</strong> Tuned PZT placement at high modal strain anti-nodes.</div>
                     </div>
                 </div>
 
@@ -349,18 +347,18 @@
                         <span class="px-2 py-0.5 rounded bg-hud-black border border-hud-border">CLPT</span>
                         <span class="px-2 py-0.5 rounded bg-hud-black border border-hud-border">MODAL SOLVER</span>
                     </div>
-                    <button onclick="openModal('modal-solver')" class="w-full py-2 rounded bg-hud-cyan/10 hover:bg-hud-cyan text-hud-cyan hover:text-black border border-hud-cyan/40 font-mono text-xs font-bold transition flex items-center justify-center gap-2">
+                    <button onclick="openModal('modal-solver')" class="w-full py-2 rounded bg-hud-sky/10 hover:bg-hud-sky text-hud-sky hover:text-black border border-hud-sky/30 font-mono text-xs font-bold transition flex items-center justify-center gap-2">
                         <span>OPEN TELEMETRY REPORT</span> <i class="fa-solid fa-arrow-right"></i>
                     </button>
                 </div>
             </div>
 
             <!-- PROJECT 3: Abaqus Python Automation Pipeline -->
-            <div id="card-abaqus" class="project-card cae hud-reticle hud-reticle-teal bg-hud-panel border border-hud-border p-6 rounded flex flex-col justify-between hover:border-hud-teal transition duration-300">
+            <div id="card-abaqus" class="project-card cae hud-reticle hud-reticle-emerald bg-hud-panel border border-hud-border p-6 rounded flex flex-col justify-between hover:border-hud-emerald transition duration-300">
                 <div>
-                    <div class="flex items-center justify-between text-[11px] font-mono pb-3 border-b border-hud-border/80 text-hud-teal font-bold">
+                    <div class="flex items-center justify-between text-[11px] font-mono pb-3 border-b border-hud-border text-hud-emerald font-bold">
                         <span><i class="fa-solid fa-terminal mr-1"></i> SYS_ID: HPC-ABAQUS-AUTO</span>
-                        <span class="px-2 py-0.5 rounded bg-hud-teal/10 border border-hud-teal/30 text-hud-teal">HPC // SCRIPTING</span>
+                        <span class="px-2 py-0.5 rounded bg-hud-emerald/10 border border-hud-emerald/30 text-hud-emerald">HPC // SCRIPTING</span>
                     </div>
 
                     <h3 class="text-lg font-display font-bold text-white mt-3 mb-2">Headless Python & Explicit Wave Pipeline</h3>
@@ -368,10 +366,10 @@
                         Automated high-frequency (>100 kHz) ultrasonic guided wave simulations in Abaqus/Explicit with strict stability constraints on HPC clusters.
                     </p>
 
-                    <div class="space-y-1.5 text-xs font-mono text-slate-400 mb-4 bg-hud-black/60 p-3 border border-hud-border/60 rounded">
-                        <div><strong class="text-hud-teal">> Stability:</strong> Automated CFL timestep control (Δt ≤ L_min / c_d).</div>
-                        <div><strong class="text-hud-teal">> Mesh:</strong> Enforced >10 elements/λ spatial discretization.</div>
-                        <div><strong class="text-hud-teal">> Pipeline:</strong> Headless .inp creation, batch run, and binary .odb extraction.</div>
+                    <div class="space-y-1.5 text-xs font-mono text-slate-400 mb-4 bg-hud-black/60 p-3 border border-hud-border rounded">
+                        <div><strong class="text-hud-emerald">> Stability:</strong> Automated CFL timestep control (Δt ≤ L_min / c_d).</div>
+                        <div><strong class="text-hud-emerald">> Mesh:</strong> Enforced >10 elements/λ spatial discretization.</div>
+                        <div><strong class="text-hud-emerald">> Pipeline:</strong> Headless .inp creation, batch run, and binary .odb extraction.</div>
                     </div>
                 </div>
 
@@ -381,18 +379,18 @@
                         <span class="px-2 py-0.5 rounded bg-hud-black border border-hud-border">ABAQUS EXPLICIT</span>
                         <span class="px-2 py-0.5 rounded bg-hud-black border border-hud-border">LINUX HPC</span>
                     </div>
-                    <button onclick="openModal('modal-abaqus')" class="w-full py-2 rounded bg-hud-teal/10 hover:bg-hud-teal text-hud-teal hover:text-black border border-hud-teal/40 font-mono text-xs font-bold transition flex items-center justify-center gap-2">
+                    <button onclick="openModal('modal-abaqus')" class="w-full py-2 rounded bg-hud-emerald/10 hover:bg-hud-emerald text-hud-emerald hover:text-black border border-hud-emerald/30 font-mono text-xs font-bold transition flex items-center justify-center gap-2">
                         <span>OPEN TELEMETRY REPORT</span> <i class="fa-solid fa-arrow-right"></i>
                     </button>
                 </div>
             </div>
 
             <!-- PROJECT 4: Chassis Topology Opt -->
-            <div id="card-chassis" class="project-card design hud-reticle hud-reticle-cobalt bg-hud-panel border border-hud-border p-6 rounded flex flex-col justify-between hover:border-hud-cyan transition duration-300">
+            <div id="card-chassis" class="project-card design hud-reticle bg-hud-panel border border-hud-border p-6 rounded flex flex-col justify-between hover:border-hud-sky transition duration-300">
                 <div>
-                    <div class="flex items-center justify-between text-[11px] font-mono pb-3 border-b border-hud-border/80 text-hud-cyan font-bold">
+                    <div class="flex items-center justify-between text-[11px] font-mono pb-3 border-b border-hud-border text-hud-sky font-bold">
                         <span><i class="fa-solid fa-cube mr-1"></i> SYS_ID: OPT-CHASSIS-CFRP</span>
-                        <span class="px-2 py-0.5 rounded bg-hud-cyan/10 border border-hud-cyan/30 text-hud-cyan">LIGHTWEIGHTING</span>
+                        <span class="px-2 py-0.5 rounded bg-hud-sky/10 border border-hud-sky/30 text-hud-sky">LIGHTWEIGHTING</span>
                     </div>
 
                     <h3 class="text-lg font-display font-bold text-white mt-3 mb-2">Chassis Topology & Carbon Fiber Conversion</h3>
@@ -400,9 +398,9 @@
                         Applied SIMP density topology optimization in ANSYS, transitioning 6061-T6 aluminum brackets to 3K carbon fiber composite structure.
                     </p>
 
-                    <div class="space-y-1.5 text-xs font-mono text-slate-400 mb-4 bg-hud-black/60 p-3 border border-hud-border/60 rounded">
-                        <div><strong class="text-hud-cyan">> Mass Cut:</strong> Reduced weight 32.4% (7.4 kg → 5.0 kg).</div>
-                        <div><strong class="text-hud-cyan">> Resonance:</strong> Separated fundamental modes (>140 Hz) from motor harmonics.</div>
+                    <div class="space-y-1.5 text-xs font-mono text-slate-400 mb-4 bg-hud-black/60 p-3 border border-hud-border rounded">
+                        <div><strong class="text-hud-sky">> Mass Cut:</strong> Reduced weight 32.4% (7.4 kg → 5.0 kg).</div>
+                        <div><strong class="text-hud-sky">> Resonance:</strong> Separated fundamental modes (>140 Hz) from motor harmonics.</div>
                     </div>
                 </div>
 
@@ -412,7 +410,7 @@
                         <span class="px-2 py-0.5 rounded bg-hud-black border border-hud-border">3K CFRP</span>
                         <span class="px-2 py-0.5 rounded bg-hud-black border border-hud-border">MODAL TUNING</span>
                     </div>
-                    <button onclick="openModal('modal-chassis')" class="w-full py-2 rounded bg-hud-cyan/10 hover:bg-hud-cyan text-hud-cyan hover:text-black border border-hud-cyan/40 font-mono text-xs font-bold transition flex items-center justify-center gap-2">
+                    <button onclick="openModal('modal-chassis')" class="w-full py-2 rounded bg-hud-sky/10 hover:bg-hud-sky text-hud-sky hover:text-black border border-hud-sky/30 font-mono text-xs font-bold transition flex items-center justify-center gap-2">
                         <span>OPEN TELEMETRY REPORT</span> <i class="fa-solid fa-arrow-right"></i>
                     </button>
                 </div>
@@ -423,8 +421,8 @@
 
     <!-- Subsystem Competency Matrix -->
     <section id="skills" class="max-w-7xl mx-auto px-6 py-14 border-t border-hud-border">
-        <div class="text-xs font-mono font-bold tracking-widest text-hud-cyan uppercase flex items-center gap-2">
-            <span class="w-2 h-2 bg-hud-cyan inline-block"></span>
+        <div class="text-xs font-mono font-bold tracking-widest text-hud-sky uppercase flex items-center gap-2">
+            <span class="w-1.5 h-1.5 bg-hud-sky inline-block"></span>
             // SUBSYSTEM COMPETENCY MATRIX
         </div>
         <h2 class="text-2xl sm:text-4xl font-display font-black text-white tracking-tight uppercase mt-1 mb-8">Technical Arsenal</h2>
@@ -442,36 +440,36 @@
                 </ul>
             </div>
 
-            <div class="hud-reticle hud-reticle-cobalt p-5 bg-hud-panel border border-hud-border">
-                <div class="text-hud-cyan font-bold text-sm tracking-wider uppercase mb-3 flex items-center gap-2">
+            <div class="hud-reticle p-5 bg-hud-panel border border-hud-border">
+                <div class="text-hud-sky font-bold text-sm tracking-wider uppercase mb-3 flex items-center gap-2">
                     <i class="fa-solid fa-wave-square"></i> CAE & WAVE DYNAMICS
                 </div>
                 <ul class="space-y-2 text-slate-300">
-                    <li><span class="text-hud-cyan">></span> Abaqus (Explicit & Standard)</li>
-                    <li><span class="text-hud-cyan">></span> ANSYS Mechanical (Static, Modal, Dynamic)</li>
-                    <li><span class="text-hud-cyan">></span> Classical Laminated Plate Theory (CLPT)</li>
-                    <li><span class="text-hud-cyan">></span> Dynamic Resonance & Harmonic Margin</li>
+                    <li><span class="text-hud-sky">></span> Abaqus (Explicit & Standard)</li>
+                    <li><span class="text-hud-sky">></span> ANSYS Mechanical (Static, Modal, Dynamic)</li>
+                    <li><span class="text-hud-sky">></span> Classical Laminated Plate Theory (CLPT)</li>
+                    <li><span class="text-hud-sky">></span> Dynamic Resonance & Harmonic Margin</li>
                 </ul>
             </div>
 
-            <div class="hud-reticle hud-reticle-teal p-5 bg-hud-panel border border-hud-border">
-                <div class="text-hud-teal font-bold text-sm tracking-wider uppercase mb-3 flex items-center gap-2">
+            <div class="hud-reticle hud-reticle-emerald p-5 bg-hud-panel border border-hud-border">
+                <div class="text-hud-emerald font-bold text-sm tracking-wider uppercase mb-3 flex items-center gap-2">
                     <i class="fa-solid fa-terminal"></i> COMPUTATION & HPC
                 </div>
                 <ul class="space-y-2 text-slate-300">
-                    <li><span class="text-hud-teal">></span> Python (Abaqus API, NumPy, SciPy)</li>
-                    <li><span class="text-hud-teal">></span> MATLAB Custom Matrix Solvers</li>
-                    <li><span class="text-hud-teal">></span> Linux HPC / PBS Cluster Workflows</li>
-                    <li><span class="text-hud-teal">></span> Automated FFT & Signal Dispersion</li>
+                    <li><span class="text-hud-emerald">></span> Python (Abaqus API, NumPy, SciPy)</li>
+                    <li><span class="text-hud-emerald">></span> MATLAB Custom Matrix Solvers</li>
+                    <li><span class="text-hud-emerald">></span> Linux HPC / PBS Cluster Workflows</li>
+                    <li><span class="text-hud-emerald">></span> Automated FFT & Signal Dispersion</li>
                 </ul>
             </div>
         </div>
     </section>
 
-    <!-- Service Chronology -->
+    <!-- Experience Timeline -->
     <section id="experience" class="max-w-7xl mx-auto px-6 py-14 border-t border-hud-border">
-        <div class="text-xs font-mono font-bold tracking-widest text-hud-cyan uppercase flex items-center gap-2">
-            <span class="w-2 h-2 bg-hud-cyan inline-block"></span>
+        <div class="text-xs font-mono font-bold tracking-widest text-hud-sky uppercase flex items-center gap-2">
+            <span class="w-1.5 h-1.5 bg-hud-sky inline-block"></span>
             // SERVICE CHRONOLOGY
         </div>
         <h2 class="text-2xl sm:text-4xl font-display font-black text-white tracking-tight uppercase mt-1 mb-8">Field Experience</h2>
@@ -486,13 +484,13 @@
                 <div class="text-hud-amber bg-hud-amber/10 px-3 py-1 rounded border border-hud-amber/30 whitespace-nowrap self-start">DEC 2024 – PRESENT</div>
             </div>
 
-            <div class="hud-reticle hud-reticle-cobalt p-5 bg-hud-panel border border-hud-border flex flex-col md:flex-row md:items-start justify-between gap-4">
+            <div class="hud-reticle p-5 bg-hud-panel border border-hud-border flex flex-col md:flex-row md:items-start justify-between gap-4">
                 <div>
-                    <div class="text-hud-cyan font-bold uppercase">Virginia Tech • Aerospace Engineering</div>
+                    <div class="text-hud-sky font-bold uppercase">Virginia Tech • Aerospace Engineering</div>
                     <div class="text-base font-display font-bold text-white mt-0.5">Graduate Research Assistant — Structural Dynamics & Wave FEA</div>
                     <p class="text-slate-300 mt-1.5">Formulate transient dynamic models in Abaqus/Explicit; built automated Python data extraction pipeline on HPC clusters.</p>
                 </div>
-                <div class="text-hud-cyan bg-hud-cyan/10 px-3 py-1 rounded border border-hud-cyan/30 whitespace-nowrap self-start">SEP 2024 – PRESENT</div>
+                <div class="text-hud-sky bg-hud-sky/10 px-3 py-1 rounded border border-hud-sky/30 whitespace-nowrap self-start">SEP 2024 – PRESENT</div>
             </div>
 
             <div class="hud-reticle p-5 bg-hud-panel border border-hud-border flex flex-col md:flex-row md:items-start justify-between gap-4">
@@ -510,20 +508,20 @@
     <footer class="border-t border-hud-border bg-hud-black py-8">
         <div class="max-w-7xl mx-auto px-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs font-mono text-slate-500">
             <div class="flex items-center gap-2">
-                <span class="w-2 h-2 rounded-full bg-hud-teal animate-ping"></span>
+                <span class="w-2 h-2 rounded-full bg-hud-emerald"></span>
                 <span>ANIMESH D. KULKARNI // BLACKSBURG, VA</span>
             </div>
             <div class="flex items-center gap-6">
-                <a href="mailto:animeshdk@vt.edu" class="hover:text-hud-cyan transition">animeshdk@vt.edu</a>
-                <a href="https://www.linkedin.com/in/animeshkulkarni" target="_blank" class="hover:text-hud-cyan transition">LinkedIn</a>
-                <a href="#mission" class="hover:text-hud-cyan transition text-hud-cyan font-bold">TOP_LEVEL ↑</a>
+                <a href="mailto:animeshdk@vt.edu" class="hover:text-hud-sky transition">animeshdk@vt.edu</a>
+                <a href="https://www.linkedin.com/in/animeshkulkarni" target="_blank" class="hover:text-hud-sky transition">LinkedIn</a>
+                <a href="#mission" class="hover:text-hud-sky transition text-hud-sky font-bold">TOP_LEVEL ↑</a>
             </div>
         </div>
     </footer>
 
     <!-- Interactive Dossier Modals -->
     <div id="modal-coupling" class="fixed inset-0 z-50 bg-hud-black/90 backdrop-blur-md hidden items-center justify-center p-4">
-        <div class="hud-reticle hud-reticle-amber bg-hud-panel border-2 border-hud-amber max-w-xl w-full max-h-[90vh] overflow-y-auto p-6 shadow-[0_0_40px_rgba(245,158,11,0.25)]">
+        <div class="hud-reticle hud-reticle-amber bg-hud-panel border-2 border-hud-amber max-w-xl w-full max-h-[90vh] overflow-y-auto p-6 shadow-[0_0_30px_rgba(251,191,36,0.15)]">
             <div class="flex items-center justify-between pb-3 border-b border-hud-border text-hud-amber font-mono text-xs font-bold">
                 <span>// DOSSIER: MECH-130NM</span>
                 <button onclick="closeModal('modal-coupling')" class="text-slate-400 hover:text-white text-lg">&times;</button>
@@ -548,65 +546,65 @@
     </div>
 
     <div id="modal-solver" class="fixed inset-0 z-50 bg-hud-black/90 backdrop-blur-md hidden items-center justify-center p-4">
-        <div class="hud-reticle hud-reticle-cobalt bg-hud-panel border-2 border-hud-cyan max-w-xl w-full max-h-[90vh] overflow-y-auto p-6 shadow-[0_0_40px_rgba(0,240,255,0.25)]">
-            <div class="flex items-center justify-between pb-3 border-b border-hud-border text-hud-cyan font-mono text-xs font-bold">
+        <div class="hud-reticle bg-hud-panel border-2 border-hud-sky max-w-xl w-full max-h-[90vh] overflow-y-auto p-6 shadow-[0_0_30px_rgba(56,189,248,0.15)]">
+            <div class="flex items-center justify-between pb-3 border-b border-hud-border text-hud-sky font-mono text-xs font-bold">
                 <span>// DOSSIER: CAE-16DOF-CLPT</span>
                 <button onclick="closeModal('modal-solver')" class="text-slate-400 hover:text-white text-lg">&times;</button>
             </div>
             <h3 class="text-xl font-display font-black text-white mt-3 mb-2">Custom 16-DOF BFS Plate Dynamic Solver</h3>
             <div class="space-y-3 text-xs font-mono text-slate-300">
                 <div class="p-3 bg-hud-black border border-hud-border rounded">
-                    <strong class="text-hud-cyan block mb-1">Formulation:</strong>
+                    <strong class="text-hud-sky block mb-1">Formulation:</strong>
                     Used 16-DOF Bogner-Fox-Schmit (BFS) C1 elements. Derived mass [M], stiffness [K], and coupled piezoelectric matrices [Kuφ] via Hamilton's Principle.
                 </div>
                 <div class="p-3 bg-hud-black border border-hud-border rounded">
-                    <strong class="text-hud-cyan block mb-1">Validation:</strong>
+                    <strong class="text-hud-sky block mb-1">Validation:</strong>
                     Extracted natural frequencies via generalized eigenvalue solution with <2.4% residual error vs published benchmark data.
                 </div>
             </div>
-            <button onclick="closeModal('modal-solver')" class="mt-4 w-full py-2.5 rounded bg-hud-cyan text-hud-black font-mono font-bold text-xs">CLOSE REPORT</button>
+            <button onclick="closeModal('modal-solver')" class="mt-4 w-full py-2.5 rounded bg-hud-sky text-black font-mono font-bold text-xs">CLOSE REPORT</button>
         </div>
     </div>
 
     <div id="modal-abaqus" class="fixed inset-0 z-50 bg-hud-black/90 backdrop-blur-md hidden items-center justify-center p-4">
-        <div class="hud-reticle hud-reticle-teal bg-hud-panel border-2 border-hud-teal max-w-xl w-full max-h-[90vh] overflow-y-auto p-6 shadow-[0_0_40px_rgba(0,229,163,0.25)]">
-            <div class="flex items-center justify-between pb-3 border-b border-hud-border text-hud-teal font-mono text-xs font-bold">
+        <div class="hud-reticle hud-reticle-emerald bg-hud-panel border-2 border-hud-emerald max-w-xl w-full max-h-[90vh] overflow-y-auto p-6 shadow-[0_0_30px_rgba(52,211,153,0.15)]">
+            <div class="flex items-center justify-between pb-3 border-b border-hud-border text-hud-emerald font-mono text-xs font-bold">
                 <span>// DOSSIER: HPC-ABAQUS-AUTO</span>
                 <button onclick="closeModal('modal-abaqus')" class="text-slate-400 hover:text-white text-lg">&times;</button>
             </div>
             <h3 class="text-xl font-display font-black text-white mt-3 mb-2">Ultrasonic Wave Automation Pipeline</h3>
             <div class="space-y-3 text-xs font-mono text-slate-300">
                 <div class="p-3 bg-hud-black border border-hud-border rounded">
-                    <strong class="text-hud-teal block mb-1">CFL Stability:</strong>
+                    <strong class="text-hud-emerald block mb-1">CFL Stability:</strong>
                     Enforced strict Courant-Friedrichs-Lewy stable time increments (Δt ≤ L_min / c_d) and >10 elements per acoustic wavelength.
                 </div>
                 <div class="p-3 bg-hud-black border border-hud-border rounded">
-                    <strong class="text-hud-teal block mb-1">Cluster Scripting:</strong>
+                    <strong class="text-hud-emerald block mb-1">Cluster Scripting:</strong>
                     Automated .inp generation, Linux cluster job submission, and binary .odb data mining for automated FFT signal dispersion curves.
                 </div>
             </div>
-            <button onclick="closeModal('modal-abaqus')" class="mt-4 w-full py-2.5 rounded bg-hud-teal text-hud-black font-mono font-bold text-xs">CLOSE REPORT</button>
+            <button onclick="closeModal('modal-abaqus')" class="mt-4 w-full py-2.5 rounded bg-hud-emerald text-black font-mono font-bold text-xs">CLOSE REPORT</button>
         </div>
     </div>
 
     <div id="modal-chassis" class="fixed inset-0 z-50 bg-hud-black/90 backdrop-blur-md hidden items-center justify-center p-4">
-        <div class="hud-reticle hud-reticle-cobalt bg-hud-panel border-2 border-hud-cyan max-w-xl w-full max-h-[90vh] overflow-y-auto p-6 shadow-[0_0_40px_rgba(0,240,255,0.25)]">
-            <div class="flex items-center justify-between pb-3 border-b border-hud-border text-hud-cyan font-mono text-xs font-bold">
+        <div class="hud-reticle bg-hud-panel border-2 border-hud-sky max-w-xl w-full max-h-[90vh] overflow-y-auto p-6 shadow-[0_0_30px_rgba(56,189,248,0.15)]">
+            <div class="flex items-center justify-between pb-3 border-b border-hud-border text-hud-sky font-mono text-xs font-bold">
                 <span>// DOSSIER: OPT-CHASSIS-CFRP</span>
                 <button onclick="closeModal('modal-chassis')" class="text-slate-400 hover:text-white text-lg">&times;</button>
             </div>
             <h3 class="text-xl font-display font-black text-white mt-3 mb-2">Chassis Topology Optimization</h3>
             <div class="space-y-3 text-xs font-mono text-slate-300">
                 <div class="p-3 bg-hud-black border border-hud-border rounded">
-                    <strong class="text-hud-cyan block mb-1">SIMP Optimization:</strong>
+                    <strong class="text-hud-sky block mb-1">SIMP Optimization:</strong>
                     Converted aluminum structural brackets to 3K carbon fiber composites, cutting mass 32.4% (7.4 kg → 5.0 kg) while maintaining structural yield.
                 </div>
                 <div class="p-3 bg-hud-black border border-hud-border rounded">
-                    <strong class="text-hud-cyan block mb-1">Modal Separation:</strong>
+                    <strong class="text-hud-sky block mb-1">Modal Separation:</strong>
                     Tuned fundamental natural frequencies (>140 Hz) beyond motor operational RPM harmonics.
                 </div>
             </div>
-            <button onclick="closeModal('modal-chassis')" class="mt-4 w-full py-2.5 rounded bg-hud-cyan text-hud-black font-mono font-bold text-xs">CLOSE REPORT</button>
+            <button onclick="closeModal('modal-chassis')" class="mt-4 w-full py-2.5 rounded bg-hud-sky text-black font-mono font-bold text-xs">CLOSE REPORT</button>
         </div>
     </div>
 
@@ -626,17 +624,17 @@
             document.getElementById('telemetry-alt').textContent = alt;
         });
 
-        // --- Calm Night-Vision Radar Engine ---
+        // --- Calm Tactical Radar Engine ---
         const canvas = document.getElementById('radarCanvas');
         const ctx = canvas.getContext('2d');
         let sweepAngle = 0;
         let mouseX = -100, mouseY = -100;
 
         const targets = [
-            { x: 260, y: 130, r: 7, color: '#f59e0b', name: 'SYS_130NM', spec: '130 Nm / H7-h6 GD&T', modalId: 'modal-coupling' },
-            { x: 130, y: 250, r: 7, color: '#00f0ff', name: 'BFS_SOLVER', spec: '16-DOF / <2.4% Res.', modalId: 'modal-solver' },
-            { x: 280, y: 270, r: 7, color: '#00e5a3', name: 'HPC_ABAQUS', spec: 'Explicit / >100 kHz', modalId: 'modal-abaqus' },
-            { x: 140, y: 140, r: 7, color: '#38bdf8', name: 'CFRP_CORE', spec: '-32.4% Mass / SIMP', modalId: 'modal-chassis' }
+            { x: 260, y: 130, r: 6.5, color: '#fbbf24', name: 'SYS_130NM', spec: '130 Nm / H7-h6 GD&T', modalId: 'modal-coupling' },
+            { x: 130, y: 250, r: 6.5, color: '#38bdf8', name: 'BFS_SOLVER', spec: '16-DOF / <2.4% Res.', modalId: 'modal-solver' },
+            { x: 280, y: 270, r: 6.5, color: '#34d399', name: 'HPC_ABAQUS', spec: 'Explicit / >100 kHz', modalId: 'modal-abaqus' },
+            { x: 140, y: 140, r: 6.5, color: '#818cf8', name: 'CFRP_CORE', spec: '-32.4% Mass / SIMP', modalId: 'modal-chassis' }
         ];
 
         function getMousePos(e) {
@@ -655,7 +653,7 @@
             let hovered = false;
             targets.forEach(t => {
                 const dist = Math.hypot(mouseX - t.x, mouseY - t.y);
-                if (dist < 22) {
+                if (dist < 20) {
                     document.getElementById('target-name').textContent = t.name;
                     document.getElementById('target-name').style.color = t.color;
                     document.getElementById('target-spec').textContent = '[CLICK TO ENGAGE]';
@@ -670,7 +668,7 @@
                 let angle = Math.atan2(mouseY - cy, mouseX - cx) * (180 / Math.PI) + 90;
                 if (angle < 0) angle += 360;
                 document.getElementById('target-name').textContent = `AZ: ${Math.floor(angle).toString().padStart(3, '0')}°`;
-                document.getElementById('target-name').style.color = '#00f0ff';
+                document.getElementById('target-name').style.color = '#38bdf8';
                 document.getElementById('target-spec').textContent = `RNG: ${(Math.hypot(mouseX - cx, mouseY - cy) / 20).toFixed(1)} NM`;
             }
         });
@@ -679,7 +677,7 @@
             const pos = getMousePos(e);
             targets.forEach(t => {
                 const dist = Math.hypot(pos.x - t.x, pos.y - t.y);
-                if (dist < 22) {
+                if (dist < 20) {
                     openModal(t.modalId);
                 }
             });
@@ -689,7 +687,7 @@
             mouseX = -100;
             mouseY = -100;
             document.getElementById('target-name').textContent = 'SWEEPING ACTIVE';
-            document.getElementById('target-name').style.color = '#00f0ff';
+            document.getElementById('target-name').style.color = '#38bdf8';
             document.getElementById('target-spec').textContent = 'CLICK BLIP TO OPEN';
         });
 
@@ -699,8 +697,8 @@
             const cy = canvas.height / 2;
             const radius = 180;
 
-            // Concentric Range Rings (Soothing Cyan)
-            ctx.strokeStyle = 'rgba(0, 240, 255, 0.16)';
+            // Concentric Range Rings (Subdued Flight Blue)
+            ctx.strokeStyle = 'rgba(56, 189, 248, 0.12)';
             ctx.lineWidth = 1;
             [40, 85, 130, radius].forEach(r => {
                 ctx.beginPath();
@@ -709,19 +707,19 @@
             });
 
             // Grid Axes
-            ctx.strokeStyle = 'rgba(0, 240, 255, 0.12)';
+            ctx.strokeStyle = 'rgba(56, 189, 248, 0.08)';
             ctx.beginPath();
             ctx.moveTo(cx, cy - radius); ctx.lineTo(cx, cy + radius);
             ctx.moveTo(cx - radius, cy); ctx.lineTo(cx + radius, cy);
             ctx.stroke();
 
-            // Radar Sweep Beam
+            // Radar Sweep Beam (Smooth Ice-Blue to Mint Gradient)
             ctx.save();
             ctx.translate(cx, cy);
             ctx.rotate(sweepAngle);
             const grad = ctx.createRadialGradient(0, 0, 10, 0, 0, radius);
-            grad.addColorStop(0, 'rgba(0, 240, 255, 0.35)');
-            grad.addColorStop(0.5, 'rgba(0, 229, 163, 0.08)');
+            grad.addColorStop(0, 'rgba(56, 189, 248, 0.28)');
+            grad.addColorStop(0.5, 'rgba(52, 211, 153, 0.06)');
             grad.addColorStop(1, 'transparent');
             
             ctx.fillStyle = grad;
@@ -740,28 +738,28 @@
                 ctx.fill();
 
                 ctx.strokeStyle = t.color;
-                ctx.lineWidth = 1.5;
+                ctx.lineWidth = 1.2;
                 ctx.beginPath();
-                ctx.arc(t.x, t.y, 11 + Math.sin(Date.now() / 220) * 2.5, 0, Math.PI * 2);
+                ctx.arc(t.x, t.y, 10 + Math.sin(Date.now() / 220) * 2, 0, Math.PI * 2);
                 ctx.stroke();
 
-                ctx.fillStyle = 'rgba(255, 255, 255, 0.85)';
+                ctx.fillStyle = 'rgba(203, 213, 225, 0.8)';
                 ctx.font = '8px JetBrains Mono';
-                ctx.fillText(t.name, t.x + 12, t.y + 3);
+                ctx.fillText(t.name, t.x + 11, t.y + 3);
             });
 
             // Crosshairs
             if (mouseX > 0 && mouseY > 0) {
-                ctx.strokeStyle = 'rgba(0, 240, 255, 0.8)';
+                ctx.strokeStyle = 'rgba(56, 189, 248, 0.7)';
                 ctx.lineWidth = 1;
                 ctx.beginPath();
-                ctx.arc(mouseX, mouseY, 10, 0, Math.PI * 2);
-                ctx.moveTo(mouseX - 14, mouseY); ctx.lineTo(mouseX + 14, mouseY);
-                ctx.moveTo(mouseX, mouseY - 14); ctx.lineTo(mouseX, mouseY + 14);
+                ctx.arc(mouseX, mouseY, 9, 0, Math.PI * 2);
+                ctx.moveTo(mouseX - 13, mouseY); ctx.lineTo(mouseX + 13, mouseY);
+                ctx.moveTo(mouseX, mouseY - 13); ctx.lineTo(mouseX, mouseY + 13);
                 ctx.stroke();
             }
 
-            sweepAngle += 0.025;
+            sweepAngle += 0.022;
             requestAnimationFrame(drawRadar);
         }
         drawRadar();
@@ -771,12 +769,12 @@
             const buttons = document.querySelectorAll('.filter-btn');
 
             buttons.forEach(btn => {
-                btn.classList.remove('bg-hud-cyan', 'text-black', 'font-extrabold');
+                btn.classList.remove('bg-hud-sky', 'text-black', 'font-extrabold');
                 btn.classList.add('text-slate-400');
             });
 
             const activeBtn = document.getElementById(`btn-${category}`);
-            activeBtn.classList.add('bg-hud-cyan', 'text-black', 'font-extrabold');
+            activeBtn.classList.add('bg-hud-sky', 'text-black', 'font-extrabold');
             activeBtn.classList.remove('text-slate-400');
 
             cards.forEach(card => {
