@@ -18,10 +18,10 @@
                             card: '#0f172a',
                             border: '#1a2742',
                             borderBright: '#263b63',
-                            sky: '#38bdf8',         // Primary Flight Telemetry (Ice Blue)
-                            emerald: '#34d399',     // Nominal Status / Validation (Soft Mint)
-                            amber: '#fbbf24',       // Hardware / DFM Focus (Burnished Gold)
-                            indigo: '#818cf8',      // Solver Dynamics Accent
+                            sky: '#38bdf8',         // Primary Telemetry & Avionics
+                            emerald: '#34d399',     // Nominal Status & Verification
+                            amber: '#fbbf24',       // Hardware DFM / Mechanical
+                            indigo: '#818cf8',      // Computational Solvers
                             slate: '#94a3b8'        // Subdued Text
                         }
                     },
@@ -74,6 +74,7 @@
 </head>
 <body class="bg-hud-black text-slate-200 font-sans antialiased selection:bg-hud-sky selection:text-black hud-grid relative min-h-screen flex flex-col justify-between overflow-x-hidden">
     
+    <!-- CRT Overlay -->
     <div class="fixed inset-0 pointer-events-none scanlines z-50 opacity-25"></div>
 
     <!-- Top Telemetry Stream Bar -->
@@ -83,7 +84,7 @@
                 <span class="w-1.5 h-1.5 rounded-full bg-hud-emerald inline-block animate-ping"></span>
                 SYSTEMS: NOMINAL
             </span>
-            <span class="hidden sm:inline text-slate-400">VT-AERO // STATIONARY RADAR COORD ACTIVE</span>
+            <span class="hidden sm:inline text-slate-400">RELATIVE AIRSPACE VECTOR ACTIVE</span>
             <span class="hidden md:inline text-hud-sky">UTC: <span id="telemetry-time">00:00:00</span></span>
         </div>
         <div class="flex items-center gap-4 text-hud-sky font-bold">
@@ -93,7 +94,7 @@
         </div>
     </div>
 
-    <!-- Sticky Navigation Deck -->
+    <!-- Navigation Deck -->
     <header class="bg-hud-black/95 border-b border-hud-border relative z-40">
         <div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
             
@@ -109,6 +110,7 @@
                 <span class="text-[10px] font-mono font-normal text-slate-400 px-1.5 py-0.5 rounded bg-hud-panel border border-hud-border ml-2">M.S. AERO</span>
             </a>
             
+            <!-- Distinct Modular Nav Links -->
             <nav class="hidden lg:flex items-center gap-7 text-xs font-mono tracking-widest uppercase text-slate-400">
                 <a href="#mission" class="hover:text-hud-sky transition"><span class="text-hud-sky font-bold">01//</span>MISSION</a>
                 <a href="#about" class="hover:text-hud-sky transition"><span class="text-hud-sky font-bold">02//</span>PROFILE</a>
@@ -125,7 +127,7 @@
         </div>
     </header>
 
-    <!-- SECTION 1: HERO & STATIONARY RADAR FLIGHT DECK -->
+    <!-- SECTION 1: HERO & RELATIVE-MOTION RADAR -->
     <section id="mission" class="max-w-7xl mx-auto px-6 pt-10 pb-16 relative">
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
             
@@ -133,7 +135,7 @@
             <div class="lg:col-span-6 space-y-6">
                 <div class="inline-flex items-center gap-2 px-3 py-1 rounded bg-hud-panel border border-hud-border text-hud-sky font-mono text-[11px] font-bold tracking-wider">
                     <span class="w-1.5 h-1.5 rounded-full bg-hud-sky animate-ping"></span>
-                    FLIGHT DECK TELEMETRY // ACTIVE WORKFORCE ENTRY (JAN 2027)
+                    FLIGHT DECK TELEMETRY // ACTIVE FOR JAN 2027 ROLES
                 </div>
 
                 <h1 class="text-3xl sm:text-5xl font-display font-black text-white tracking-tight uppercase leading-tight">
@@ -142,7 +144,7 @@
                 </h1>
 
                 <p class="text-sm text-slate-300 font-mono leading-relaxed border-l-2 border-hud-sky/60 pl-4 py-1">
-                    Aerospace & Mechanical Engineer specializing in <strong>130 Nm dynamic drivetrains, ASME Y14.5 GD&T production drafting, high-frequency ultrasonic wave propagation (>100 kHz), and headless Python FEA automation</strong>.
+                    Aerospace & Mechanical Engineer specializing in <strong>130 Nm dynamic powertrains, ASME Y14.5 GD&T production drafting, high-frequency ultrasonic wave mechanics (>100 kHz), and headless Python FEA automation</strong>.
                 </p>
 
                 <!-- Action Triggers -->
@@ -159,7 +161,7 @@
                 </div>
             </div>
 
-            <!-- Right: Interactive Tactical HUD Radar with STATIONARY Jet at Center -->
+            <!-- Right: Stationary Center Plane + Moving Airspace Radar -->
             <div class="lg:col-span-6 flex flex-col items-center">
                 <div class="relative w-full max-w-[420px] aspect-square bg-hud-panel/90 rounded-full border border-hud-borderBright p-2 shadow-[0_0_40px_rgba(56,189,248,0.08)] flex items-center justify-center">
                     
@@ -171,9 +173,10 @@
                     <div class="absolute left-2 font-mono text-[9px] text-hud-sky/70 font-bold select-none pointer-events-none">270° [W]</div>
                     <div class="absolute right-2 font-mono text-[9px] text-hud-sky/70 font-bold select-none pointer-events-none">090° [E]</div>
 
-                    <!-- Fixed Stationary Center Heading Reticle -->
-                    <div class="absolute bottom-5 font-mono text-[8px] text-slate-400 bg-hud-black/80 px-2 py-0.5 rounded border border-hud-border pointer-events-none">
-                        <span>CENTER FIX: <span class="text-hud-sky font-bold">STATIONARY [000° N]</span></span>
+                    <!-- HUD Status Tag -->
+                    <div class="absolute bottom-5 font-mono text-[8px] text-slate-400 bg-hud-black/80 px-2 py-0.5 rounded border border-hud-border pointer-events-none flex items-center gap-2">
+                        <span>AIRCRAFT: <span class="text-hud-sky font-bold">LOCKED AT RETICLE</span></span>
+                        <span>SPACE: <span class="text-hud-emerald font-bold">DYNAMIC DRIFT</span></span>
                     </div>
                 </div>
 
@@ -182,17 +185,17 @@
                     <div class="flex items-center gap-2">
                         <span class="w-2 h-2 rounded-full bg-hud-sky animate-pulse"></span>
                         <span class="text-slate-400">ENGAGE:</span>
-                        <span id="target-name" class="text-hud-sky font-bold uppercase">SWEEPING ACTIVE</span>
+                        <span id="target-name" class="text-hud-sky font-bold uppercase">SWEEPING AIRSPACE</span>
                     </div>
                     <div class="text-slate-400 text-right">
-                        <span id="target-spec" class="text-hud-emerald font-bold">CLICK BLIP TO OPEN</span>
+                        <span id="target-spec" class="text-hud-emerald font-bold">CLICK MOVING BLIP</span>
                     </div>
                 </div>
             </div>
 
         </div>
 
-        <!-- Telemetry Metrics Strip -->
+        <!-- Telemetry Metrics Bar -->
         <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mt-12 font-mono">
             <div class="hud-reticle p-4 bg-hud-panel border border-hud-border">
                 <div class="text-[10px] text-slate-400 uppercase flex items-center justify-between">
@@ -232,7 +235,7 @@
         </div>
     </section>
 
-    <!-- SECTION 2: ABOUT / ENGINEERING PROFILE (Distinct Section) -->
+    <!-- SECTION 2: ABOUT / ENGINEERING PROFILE -->
     <section id="about" class="max-w-7xl mx-auto px-6 py-16 border-t border-hud-border">
         <div class="text-xs font-mono font-bold tracking-widest text-hud-sky uppercase flex items-center gap-2 mb-2">
             <span class="w-1.5 h-1.5 bg-hud-sky inline-block"></span>
@@ -249,7 +252,7 @@
                     Bridging classical continuum mechanics with high-performance computational solvers. Deriving variational formulations (Hamilton's Principle, Classical Laminated Plate Theory) and converting them into validated numerical solvers.
                 </p>
                 <div class="text-[11px] text-slate-400 bg-hud-black/60 p-3 rounded border border-hud-border">
-                    <span class="text-hud-emerald font-bold">> KEY FOCUS:</span> High-frequency explicit wave mechanics & eigenvalue extraction.
+                    <span class="text-hud-emerald font-bold">> FOCUS:</span> High-frequency explicit wave mechanics & modal eigenvalue extraction.
                 </div>
             </div>
 
@@ -261,7 +264,7 @@
                     Transforming concept geometry into production-ready flight hardware. Rigorous application of ASME Y14.5-2018 standards, 1D/3D RSS tolerance stack-ups, ISO transitional fits, and tooling diameter optimizations.
                 </p>
                 <div class="text-[11px] text-slate-400 bg-hud-black/60 p-3 rounded border border-hud-border">
-                    <span class="text-hud-amber font-bold">> KEY FOCUS:</span> Zero-backlash motor interfaces & 5-axis CNC cost reduction.
+                    <span class="text-hud-amber font-bold">> FOCUS:</span> Zero-backlash motor interfaces & 5-axis CNC cost reduction.
                 </div>
             </div>
 
@@ -273,13 +276,13 @@
                     Building robust headless Python automation pipelines for cluster FEA execution. Automating parameterized geometry creation, .inp mesh generation, batch cluster job dispatching, and binary .odb signal extraction.
                 </p>
                 <div class="text-[11px] text-slate-400 bg-hud-black/60 p-3 rounded border border-hud-border">
-                    <span class="text-hud-emerald font-bold">> KEY FOCUS:</span> CFL timestep stability & automated FFT dispersion mining.
+                    <span class="text-hud-emerald font-bold">> FOCUS:</span> CFL timestep stability & automated FFT dispersion mining.
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- SECTION 3: PROJECT TELEMETRY LOGS (Distinct Section) -->
+    <!-- SECTION 3: PROJECT TELEMETRY LOGS -->
     <section id="projects" class="max-w-7xl mx-auto px-6 py-16 border-t border-hud-border">
         
         <div class="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-4">
@@ -431,7 +434,7 @@
         </div>
     </section>
 
-    <!-- SECTION 4: TECHNICAL ARSENAL / COMPETENCY MATRIX (Distinct Section) -->
+    <!-- SECTION 4: TECHNICAL ARSENAL -->
     <section id="skills" class="max-w-7xl mx-auto px-6 py-16 border-t border-hud-border">
         <div class="text-xs font-mono font-bold tracking-widest text-hud-sky uppercase flex items-center gap-2 mb-2">
             <span class="w-1.5 h-1.5 bg-hud-sky inline-block"></span>
@@ -481,7 +484,7 @@
         </div>
     </section>
 
-    <!-- SECTION 5: FIELD EXPERIENCE & SERVICE CHRONOLOGY (Distinct Section) -->
+    <!-- SECTION 5: FIELD EXPERIENCE -->
     <section id="experience" class="max-w-7xl mx-auto px-6 py-16 border-t border-hud-border">
         <div class="text-xs font-mono font-bold tracking-widest text-hud-sky uppercase flex items-center gap-2 mb-2">
             <span class="w-1.5 h-1.5 bg-hud-sky inline-block"></span>
@@ -519,7 +522,7 @@
         </div>
     </section>
 
-    <!-- SECTION 6: EDUCATION & FLIGHT CREDENTIALS (Distinct Section) -->
+    <!-- SECTION 6: EDUCATION & FLIGHT RATINGS -->
     <section id="education" class="max-w-7xl mx-auto px-6 py-16 border-t border-hud-border">
         <div class="text-xs font-mono font-bold tracking-widest text-hud-sky uppercase flex items-center gap-2 mb-2">
             <span class="w-1.5 h-1.5 bg-hud-sky inline-block"></span>
@@ -554,7 +557,7 @@
         </div>
     </section>
 
-    <!-- SECTION 7: UPLINK TERMINAL / CONTACT (Distinct Section) -->
+    <!-- SECTION 7: UPLINK TERMINAL / CONTACT -->
     <section id="contact" class="max-w-7xl mx-auto px-6 py-16 border-t border-hud-border">
         <div class="text-xs font-mono font-bold tracking-widest text-hud-emerald uppercase flex items-center gap-2 mb-2">
             <span class="w-1.5 h-1.5 bg-hud-emerald inline-block"></span>
@@ -681,7 +684,7 @@
         </div>
     </div>
 
-    <!-- Interactive JavaScript Engine -->
+    <!-- Interactive JavaScript Engine: STATIONARY PLANE + RELATIVE AIRSPACE MOTION -->
     <script>
         function updateClock() {
             const now = new Date();
@@ -698,17 +701,70 @@
             document.getElementById('telemetry-alt').textContent = alt;
         });
 
-        // --- Radar Canvas Engine with STATIONARY Aircraft Fixed at Center ---
+        // --- Radar Canvas Engine ---
         const canvas = document.getElementById('radarCanvas');
         const ctx = canvas.getContext('2d');
         let sweepAngle = 0;
         let mouseX = -100, mouseY = -100;
 
+        // Dynamic Moving Airspace Particles (flowing downward past stationary plane)
+        const particles = [];
+        for (let i = 0; i < 28; i++) {
+            particles.push({
+                x: Math.random() * 400,
+                y: Math.random() * 400,
+                speed: 0.6 + Math.random() * 1.2,
+                length: 4 + Math.random() * 8,
+                alpha: 0.15 + Math.random() * 0.35
+            });
+        }
+
+        // Dynamic Moving Target Blips (Smooth relative orbital drift in radar airspace)
         const targets = [
-            { x: 260, y: 130, r: 6.5, color: '#fbbf24', name: 'SYS_130NM', spec: '130 Nm / H7-h6 GD&T', modalId: 'modal-coupling' },
-            { x: 130, y: 250, r: 6.5, color: '#38bdf8', name: 'BFS_SOLVER', spec: '16-DOF / <2.4% Res.', modalId: 'modal-solver' },
-            { x: 280, y: 270, r: 6.5, color: '#34d399', name: 'HPC_ABAQUS', spec: 'Explicit / >100 kHz', modalId: 'modal-abaqus' },
-            { x: 140, y: 140, r: 6.5, color: '#818cf8', name: 'CFRP_CORE', spec: '-32.4% Mass / SIMP', modalId: 'modal-chassis' }
+            { 
+                baseRadius: 110, 
+                angle: 0.8, 
+                speed: 0.006, 
+                r: 6.5, 
+                color: '#fbbf24', 
+                name: 'SYS_130NM', 
+                spec: '130 Nm / H7-h6 GD&T', 
+                modalId: 'modal-coupling',
+                x: 0, y: 0 
+            },
+            { 
+                baseRadius: 75, 
+                angle: 2.7, 
+                speed: -0.008, 
+                r: 6.5, 
+                color: '#38bdf8', 
+                name: 'BFS_SOLVER', 
+                spec: '16-DOF / <2.4% Res.', 
+                modalId: 'modal-solver',
+                x: 0, y: 0 
+            },
+            { 
+                baseRadius: 135, 
+                angle: 4.2, 
+                speed: 0.005, 
+                r: 6.5, 
+                color: '#34d399', 
+                name: 'HPC_ABAQUS', 
+                spec: 'Explicit / >100 kHz', 
+                modalId: 'modal-abaqus',
+                x: 0, y: 0 
+            },
+            { 
+                baseRadius: 95, 
+                angle: 5.6, 
+                speed: -0.006, 
+                r: 6.5, 
+                color: '#818cf8', 
+                name: 'CFRP_CORE', 
+                spec: '-32.4% Mass / SIMP', 
+                modalId: 'modal-chassis',
+                x: 0, y: 0 
+            }
         ];
 
         function getMousePos(e) {
@@ -719,6 +775,7 @@
             };
         }
 
+        // Dynamic Hover Detection (checks live moving target positions)
         canvas.addEventListener('mousemove', (e) => {
             const pos = getMousePos(e);
             mouseX = pos.x;
@@ -727,7 +784,7 @@
             let hovered = false;
             targets.forEach(t => {
                 const dist = Math.hypot(mouseX - t.x, mouseY - t.y);
-                if (dist < 20) {
+                if (dist < 22) {
                     document.getElementById('target-name').textContent = t.name;
                     document.getElementById('target-name').style.color = t.color;
                     document.getElementById('target-spec').textContent = '[CLICK TO ENGAGE]';
@@ -747,11 +804,12 @@
             }
         });
 
+        // Dynamic Click Detection for Moving Blips
         canvas.addEventListener('click', (e) => {
             const pos = getMousePos(e);
             targets.forEach(t => {
                 const dist = Math.hypot(pos.x - t.x, pos.y - t.y);
-                if (dist < 20) {
+                if (dist < 22) {
                     openModal(t.modalId);
                 }
             });
@@ -760,30 +818,39 @@
         canvas.addEventListener('mouseleave', () => {
             mouseX = -100;
             mouseY = -100;
-            document.getElementById('target-name').textContent = 'SWEEPING ACTIVE';
+            document.getElementById('target-name').textContent = 'SWEEPING AIRSPACE';
             document.getElementById('target-name').style.color = '#38bdf8';
-            document.getElementById('target-spec').textContent = 'CLICK BLIP TO OPEN';
+            document.getElementById('target-spec').textContent = 'CLICK MOVING BLIP';
         });
 
-        // Crisp STATIONARY Center Plane (Fixed at 000° North Orientation)
+        // FIXED STATIONARY JET LOCKED EXACTLY AT HUD CENTER
         function drawStationaryCenterPlane(cx, cy) {
             ctx.save();
             ctx.translate(cx, cy);
 
-            // Subtle fixed center target ring
-            ctx.strokeStyle = 'rgba(56, 189, 248, 0.4)';
+            // Stationary Reticle Box
+            ctx.strokeStyle = 'rgba(56, 189, 248, 0.35)';
             ctx.lineWidth = 1;
-            ctx.beginPath();
-            ctx.arc(0, 0, 24, 0, Math.PI * 2);
-            ctx.stroke();
+            ctx.strokeRect(-22, -22, 44, 44);
 
-            // Stationary Aircraft Silhouette
+            // Constant Subtle Afterburner Glow (Stationary at nozzle)
+            const flameLen = 6 + Math.sin(Date.now() / 80) * 2;
+            const gradFlame = ctx.createLinearGradient(0, 10, 0, 10 + flameLen);
+            gradFlame.addColorStop(0, 'rgba(56, 189, 248, 0.85)');
+            gradFlame.addColorStop(1, 'transparent');
+            ctx.fillStyle = gradFlame;
+            ctx.beginPath();
+            ctx.moveTo(-2.5, 9); ctx.lineTo(2.5, 9); ctx.lineTo(0, 9 + flameLen);
+            ctx.closePath();
+            ctx.fill();
+
+            // Stationary Aircraft Silhouette (North 000° Alignment)
             ctx.fillStyle = '#070b14';
             ctx.strokeStyle = '#38bdf8';
             ctx.lineWidth = 1.6;
 
             ctx.beginPath();
-            // Nose Cone (pointing exactly Up / North)
+            // Nose Cone
             ctx.moveTo(0, -18);
             // Right Wing
             ctx.lineTo(3, -8);
@@ -793,7 +860,7 @@
             // Right Tail Stabilizer
             ctx.lineTo(7, 12);
             ctx.lineTo(2, 10);
-            // Engine Nozzle
+            // Engine Exhaust Nozzle
             ctx.lineTo(0, 9);
             // Left Tail Stabilizer
             ctx.lineTo(-2, 10);
@@ -814,7 +881,7 @@
             ctx.ellipse(0, -6, 1.6, 4, 0, 0, Math.PI * 2);
             ctx.fill();
 
-            // Twin Engine Accents
+            // Engine Accents
             ctx.strokeStyle = '#34d399';
             ctx.lineWidth = 1;
             ctx.beginPath();
@@ -825,13 +892,14 @@
             ctx.restore();
         }
 
+        // Radar Render Loop: Moving Airspace, Moving Sweep, Moving Targets, Fixed Center Plane
         function drawRadar() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             const cx = canvas.width / 2;
             const cy = canvas.height / 2;
             const radius = 180;
 
-            // Concentric Range Rings
+            // Range Rings
             ctx.strokeStyle = 'rgba(56, 189, 248, 0.12)';
             ctx.lineWidth = 1;
             [40, 85, 130, radius].forEach(r => {
@@ -847,7 +915,26 @@
             ctx.moveTo(cx - radius, cy); ctx.lineTo(cx + radius, cy);
             ctx.stroke();
 
-            // Radar Sweep Beam
+            // 1. Render Dynamic Flowing Airspace Particles (Moving Past the Stationary Plane)
+            particles.forEach(p => {
+                const distFromCenter = Math.hypot(p.x - cx, p.y - cy);
+                if (distFromCenter < radius - 5) {
+                    ctx.strokeStyle = `rgba(56, 189, 248, ${p.alpha})`;
+                    ctx.lineWidth = 1;
+                    ctx.beginPath();
+                    ctx.moveTo(p.x, p.y);
+                    ctx.lineTo(p.x, p.y + p.length);
+                    ctx.stroke();
+                }
+                // Stream downward simulating forward velocity
+                p.y += p.speed;
+                if (p.y > cy + radius) {
+                    p.y = cy - radius;
+                    p.x = cx + (Math.random() - 0.5) * (radius * 1.8);
+                }
+            });
+
+            // 2. Rotating Radar Sweep Beam
             ctx.save();
             ctx.translate(cx, cy);
             ctx.rotate(sweepAngle);
@@ -864,30 +951,46 @@
             ctx.fill();
             ctx.restore();
 
-            // Draw Targets
+            // 3. Update & Render Moving Target Blips
             targets.forEach(t => {
+                // Update orbital angle for continuous airspace motion
+                t.angle += t.speed;
+                t.x = cx + Math.cos(t.angle) * t.baseRadius;
+                t.y = cy + Math.sin(t.angle) * t.baseRadius;
+
+                // Blip Core
                 ctx.fillStyle = t.color;
                 ctx.beginPath();
                 ctx.arc(t.x, t.y, t.r, 0, Math.PI * 2);
                 ctx.fill();
 
+                // Blip Pulsing Ping Ring
                 ctx.strokeStyle = t.color;
                 ctx.lineWidth = 1.2;
                 ctx.beginPath();
-                ctx.arc(t.x, t.y, 10 + Math.sin(Date.now() / 220) * 2, 0, Math.PI * 2);
+                ctx.arc(t.x, t.y, 10 + Math.sin(Date.now() / 200 + t.baseRadius) * 2.5, 0, Math.PI * 2);
                 ctx.stroke();
 
-                ctx.fillStyle = 'rgba(203, 213, 225, 0.8)';
+                // Trailing Motion Vector Line
+                ctx.strokeStyle = `rgba(56, 189, 248, 0.3)`;
+                ctx.lineWidth = 1;
+                ctx.beginPath();
+                ctx.moveTo(t.x, t.y);
+                ctx.lineTo(t.x - Math.sin(t.angle) * 12 * Math.sign(t.speed), t.y + Math.cos(t.angle) * 12 * Math.sign(t.speed));
+                ctx.stroke();
+
+                // Telemetry Tag
+                ctx.fillStyle = 'rgba(203, 213, 225, 0.85)';
                 ctx.font = '8px JetBrains Mono';
                 ctx.fillText(t.name, t.x + 11, t.y + 3);
             });
 
-            // Render Stationary Plane at Center
+            // 4. Render Stationary Center Aircraft (Always Fixed)
             drawStationaryCenterPlane(cx, cy);
 
-            // Interactive Crosshair
+            // 5. Interactive Mouse Crosshair Reticle
             if (mouseX > 0 && mouseY > 0) {
-                ctx.strokeStyle = 'rgba(56, 189, 248, 0.7)';
+                ctx.strokeStyle = 'rgba(56, 189, 248, 0.75)';
                 ctx.lineWidth = 1;
                 ctx.beginPath();
                 ctx.arc(mouseX, mouseY, 9, 0, Math.PI * 2);
