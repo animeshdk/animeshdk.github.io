@@ -12,16 +12,15 @@
                 extend: {
                     colors: {
                         hud: {
-                            // Deep Aerospace Avionics Palette (Calm, Glare-Free, Authoritative)
                             black: '#070b14',
                             panel: '#0c1322',
                             panelAlt: '#111b30',
                             border: '#1a2742',
                             borderBright: '#263b63',
-                            sky: '#38bdf8',         // Primary Flight Telemetry (Ice Blue)
-                            emerald: '#34d399',     // Nominal Status / Validation (Soft Mint)
-                            amber: '#fbbf24',       // Hardware / DFM Focus (Burnished Gold)
-                            indigo: '#818cf8',      // Solver Matrix Dynamics
+                            sky: '#38bdf8',         // Ice Blue Telemetry
+                            emerald: '#34d399',     // Mint Nominal Status
+                            amber: '#fbbf24',       // Gold Hardware Focus
+                            indigo: '#818cf8',      // Matrix Dynamics
                             slate: '#94a3b8'        // Subdued Text
                         }
                     },
@@ -124,7 +123,7 @@
         </div>
     </header>
 
-    <!-- Hero Section: Flight Deck Console & Radar -->
+    <!-- Hero Section: Flight Deck Console & Interactive Radar -->
     <section id="mission" class="max-w-7xl mx-auto px-6 pt-8 pb-12 relative">
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
             
@@ -189,10 +188,11 @@
 
             </div>
 
-            <!-- Right Interactive Radar -->
+            <!-- Right Interactive Tactical Radar with Animated Patrolling Jet -->
             <div class="lg:col-span-6 flex flex-col items-center">
                 <div class="relative w-full max-w-[420px] aspect-square bg-hud-panel/90 rounded-full border border-hud-borderBright p-2 shadow-[0_0_40px_rgba(56,189,248,0.08)] flex items-center justify-center">
                     
+                    <!-- Tactical HTML5 Canvas with Moving Plane & Sweep -->
                     <canvas id="radarCanvas" width="400" height="400" class="w-full h-full cursor-crosshair rounded-full"></canvas>
 
                     <!-- Azimuth Ticks -->
@@ -200,16 +200,6 @@
                     <div class="absolute bottom-2 font-mono text-[9px] text-hud-sky/70 font-bold select-none pointer-events-none">180° [S]</div>
                     <div class="absolute left-2 font-mono text-[9px] text-hud-sky/70 font-bold select-none pointer-events-none">270° [W]</div>
                     <div class="absolute right-2 font-mono text-[9px] text-hud-sky/70 font-bold select-none pointer-events-none">090° [E]</div>
-
-                    <!-- Center Core: Jet-A Initial -->
-                    <a href="#projects" class="absolute w-16 h-16 rounded-full border border-hud-sky/60 flex flex-col items-center justify-center bg-hud-black/90 backdrop-blur-sm shadow-[0_0_12px_rgba(56,189,248,0.25)] hover:scale-110 transition duration-300 group z-20" title="Click to view flight logs">
-                        <svg class="h-8 w-auto text-hud-sky group-hover:scale-110 transition duration-300" viewBox="0 0 220 120" fill="currentColor">
-                            <path d="M 75 20 L 87 20 L 87 78 C 87 98 62 104 46 95 C 32 86 31 68 44 57 C 56 46 72 52 72 52 L 72 61 C 72 61 59 55 50 62 C 42 70 41 81 50 87 C 61 93 75 88 75 75 Z"/>
-                            <path d="M 77 20 L 102 54 L 126 98 L 112 98 L 94 62 L 85 49 Z"/>
-                            <polygon points="87,55 165,63 87,62"/>
-                            <path d="M 163 76 C 165 72 172 62 176 56 L 182 41 L 186 41 L 182 52 L 198 48 L 208 38 L 212 40 L 208 50 L 195 61 L 186 70 L 168 76 Z"/>
-                        </svg>
-                    </a>
                 </div>
 
                 <div class="w-full max-w-[420px] mt-4 p-3 bg-hud-panel border border-hud-border rounded font-mono text-xs flex items-center justify-between">
@@ -624,11 +614,12 @@
             document.getElementById('telemetry-alt').textContent = alt;
         });
 
-        // --- Calm Tactical Radar Engine ---
+        // --- Radar Canvas Engine with Center Moving Aircraft ---
         const canvas = document.getElementById('radarCanvas');
         const ctx = canvas.getContext('2d');
         let sweepAngle = 0;
         let mouseX = -100, mouseY = -100;
+        let contrailHistory = [];
 
         const targets = [
             { x: 260, y: 130, r: 6.5, color: '#fbbf24', name: 'SYS_130NM', spec: '130 Nm / H7-h6 GD&T', modalId: 'modal-coupling' },
@@ -691,13 +682,65 @@
             document.getElementById('target-spec').textContent = 'CLICK BLIP TO OPEN';
         });
 
+        // Function to draw sleek vector fighter jet
+        function drawMovingAircraft(x, y, heading) {
+            ctx.save();
+            ctx.translate(x, y);
+            ctx.rotate(heading);
+
+            // Afterburner Glow
+            const engineGlow = ctx.createRadialGradient(0, 12, 1, 0, 14, 8);
+            engineGlow.addColorStop(0, 'rgba(56, 189, 248, 0.9)');
+            engineGlow.addColorStop(0.6, 'rgba(52, 211, 153, 0.4)');
+            engineGlow.addColorStop(1, 'transparent');
+            ctx.fillStyle = engineGlow;
+            ctx.beginPath();
+            ctx.arc(0, 13, 7, 0, Math.PI * 2);
+            ctx.fill();
+
+            // Aircraft Silhouette
+            ctx.fillStyle = '#38bdf8';
+            ctx.strokeStyle = '#ffffff';
+            ctx.lineWidth = 1;
+
+            ctx.beginPath();
+            // Nose Cone
+            ctx.moveTo(0, -18);
+            // Right Wing
+            ctx.lineTo(3.5, -4);
+            ctx.lineTo(16, 6);
+            ctx.lineTo(14, 9);
+            ctx.lineTo(4, 7);
+            // Right Tail Fin
+            ctx.lineTo(6, 14);
+            ctx.lineTo(0, 12);
+            // Left Tail Fin
+            ctx.lineTo(-6, 14);
+            ctx.lineTo(-4, 7);
+            // Left Wing
+            ctx.lineTo(-14, 9);
+            ctx.lineTo(-16, 6);
+            ctx.lineTo(-3.5, -4);
+            ctx.closePath();
+            ctx.fill();
+            ctx.stroke();
+
+            // Cockpit Canopy Dot
+            ctx.fillStyle = '#ffffff';
+            ctx.beginPath();
+            ctx.ellipse(0, -6, 1.5, 3.5, 0, 0, Math.PI * 2);
+            ctx.fill();
+
+            ctx.restore();
+        }
+
         function drawRadar() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             const cx = canvas.width / 2;
             const cy = canvas.height / 2;
             const radius = 180;
 
-            // Concentric Range Rings (Subdued Flight Blue)
+            // Concentric Range Rings
             ctx.strokeStyle = 'rgba(56, 189, 248, 0.12)';
             ctx.lineWidth = 1;
             [40, 85, 130, radius].forEach(r => {
@@ -713,7 +756,7 @@
             ctx.moveTo(cx - radius, cy); ctx.lineTo(cx + radius, cy);
             ctx.stroke();
 
-            // Radar Sweep Beam (Smooth Ice-Blue to Mint Gradient)
+            // Radar Sweep Beam
             ctx.save();
             ctx.translate(cx, cy);
             ctx.rotate(sweepAngle);
@@ -748,7 +791,42 @@
                 ctx.fillText(t.name, t.x + 11, t.y + 3);
             });
 
-            // Crosshairs
+            // --- Moving Aircraft Physics & Flight Path around Center ---
+            const flightTime = Date.now() * 0.0009;
+            const orbitX = 42; // Horizontal orbit span near center
+            const orbitY = 28; // Vertical orbit span
+            
+            // Smooth Lissajous flight path around the central core
+            const jetX = cx + Math.sin(flightTime) * orbitX;
+            const jetY = cy + Math.cos(flightTime * 2) * (orbitY * 0.5);
+
+            // Compute instantaneous tangent heading angle
+            const dx = Math.cos(flightTime) * orbitX;
+            const dy = -Math.sin(flightTime * 2) * 2 * (orbitY * 0.5);
+            const heading = Math.atan2(dy, dx) + Math.PI / 2;
+
+            // Update & draw vapor contrail
+            contrailHistory.push({ x: jetX, y: jetY, alpha: 0.45 });
+            if (contrailHistory.length > 28) contrailHistory.shift();
+
+            for (let i = 0; i < contrailHistory.length; i++) {
+                const pt = contrailHistory[i];
+                pt.alpha *= 0.94;
+                ctx.fillStyle = `rgba(56, 189, 248, ${pt.alpha})`;
+                ctx.beginPath();
+                ctx.arc(pt.x, pt.y, (i / contrailHistory.length) * 2.5, 0, Math.PI * 2);
+                ctx.fill();
+            }
+
+            // Draw Central Moving Jet
+            drawMovingAircraft(jetX, jetY, heading);
+
+            // Mini Telemetry Flight Tag next to Jet
+            ctx.fillStyle = 'rgba(56, 189, 248, 0.85)';
+            ctx.font = '7.5px JetBrains Mono';
+            ctx.fillText('VT-01 [M 0.88]', jetX + 14, jetY - 6);
+
+            // Interactive Reticle on Mouse Hover
             if (mouseX > 0 && mouseY > 0) {
                 ctx.strokeStyle = 'rgba(56, 189, 248, 0.7)';
                 ctx.lineWidth = 1;
