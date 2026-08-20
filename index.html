@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Animesh D. Kulkarni | Mechanical & Aerospace Engineering Portfolio</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#f0f7ff',
+                            100: '#e0effe',
+                            500: '#0051a8',
+                            600: '#003e82',
+                            900: '#00224b',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-slate-950 text-slate-100 font-sans antialiased selection:bg-brand-500 selection:text-white">
+
+    <!-- Top Navigation Bar -->
+    <header class="sticky top-0 z-50 bg-slate-950/80 backdrop-blur-md border-b border-slate-800">
+        <div class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
+            <a href="#" class="font-bold text-lg tracking-tight text-white flex items-center gap-2">
+                <span class="w-3 h-3 rounded-full bg-blue-500 animate-pulse"></span>
+                Animesh D. Kulkarni
+            </a>
+            <nav class="hidden md:flex items-center gap-8 text-sm font-medium text-slate-400">
+                <a href="#projects" class="hover:text-white transition">Projects</a>
+                <a href="#skills" class="hover:text-white transition">Technical Skills</a>
+                <a href="#experience" class="hover:text-white transition">Experience</a>
+                <a href="#contact" class="hover:text-white transition">Contact</a>
+                <a href="mailto:animeshdk@vt.edu" class="px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-500 text-white font-medium transition shadow-lg shadow-blue-500/20">Get in Touch</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="max-w-6xl mx-auto px-6 pt-24 pb-16">
+        <div class="max-w-3xl">
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-950/80 border border-blue-800/60 text-blue-400 text-xs font-semibold uppercase tracking-wider mb-6">
+                MS Aerospace Engineering • Virginia Tech (GPA: 3.77)
+            </div>
+            <h1 class="text-4xl sm:text-6xl font-extrabold tracking-tight text-white leading-tight mb-6">
+                Hardware Design, Precision GD&T & First-Principles CAE Simulation.
+            </h1>
+            <p class="text-lg text-slate-400 leading-relaxed mb-8">
+                Specializing in electro-mechanical packaging, ASME Y14.5 GD&T drafting, dynamic structural analysis, and automated FEA solvers. Experienced in driving physical hardware from concept through additive prototyping, supplier-facing DFM, and experimental validation.
+            </p>
+            <div class="flex flex-wrap items-center gap-4">
+                <a href="#projects" class="px-6 py-3 rounded-lg bg-blue-600 hover:bg-blue-500 text-white font-semibold transition flex items-center gap-2 shadow-lg shadow-blue-600/25">
+                    <i class="fa-solid fa-layer-group text-sm"></i> View Case Studies
+                </a>
+                <a href="https://www.linkedin.com/in/animeshkulkarni" target="_blank" class="px-6 py-3 rounded-lg bg-slate-900 hover:bg-slate-800 text-slate-200 border border-slate-700 font-semibold transition flex items-center gap-2">
+                    <i class="fa-brands fa-linkedin text-blue-400"></i> LinkedIn Profile
+                </a>
+                <a href="mailto:animeshdk@vt.edu" class="px-6 py-3 rounded-lg bg-slate-900 hover:bg-slate-800 text-slate-200 border border-slate-700 font-semibold transition flex items-center gap-2">
+                    <i class="fa-solid fa-envelope text-slate-400"></i> animeshdk@vt.edu
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Portfolio Projects Section with Interactive Filtering -->
+    <section id="projects" class="max-w-6xl mx-auto px-6 py-16 border-t border-slate-800/80">
+        <div class="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-6">
+            <div>
+                <h2 class="text-2xl sm:text-3xl font-bold tracking-tight text-white mb-2">Featured Engineering Projects</h2>
+                <p class="text-slate-400 text-sm">Filter by core engineering track to review design deliverables or simulation mechanics.</p>
+            </div>
+            
+            <!-- Filter Controls -->
+            <div class="inline-flex p-1 rounded-xl bg-slate-900 border border-slate-800 text-xs font-semibold">
+                <button onclick="filterProjects('all')" id="btn-all" class="filter-btn active px-4 py-2 rounded-lg bg-blue-600 text-white transition">All Work</button>
+                <button onclick="filterProjects('design')" id="btn-design" class="filter-btn px-4 py-2 rounded-lg text-slate-400 hover:text-white transition">Mechanical Design & DFM</button>
+                <button onclick="filterProjects('cae')" id="btn-cae" class="filter-btn px-4 py-2 rounded-lg text-slate-400 hover:text-white transition">CAE & Structural Dynamics</button>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+
+            <!-- PROJECT 1: 130 Nm Coupling (Track B) -->
+            <div class="project-card design group rounded-2xl bg-slate-900/60 border border-slate-800 overflow-hidden hover:border-slate-700 transition flex flex-col">
+                <div class="h-56 bg-slate-800/70 relative overflow-hidden flex items-center justify-center p-6 border-b border-slate-800">
+                    <!-- Replace with: <img src="assets/coupling-cad.png" class="w-full h-full object-cover group-hover:scale-105 transition duration-300"> -->
+                    <div class="text-center">
+                        <i class="fa-solid fa-gears text-5xl text-blue-500/40 mb-3"></i>
+                        <p class="text-xs text-slate-400 font-mono">[ CAD & Exploded Drivetrain Assembly View ]</p>
+                    </div>
+                    <span class="absolute top-4 left-4 px-3 py-1 rounded-md bg-blue-500/20 border border-blue-400/30 text-blue-300 text-xs font-semibold">
+                        Mechanical Design • Track B
+                    </span>
+                </div>
+                <div class="p-6 flex-1 flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between gap-2 mb-2">
+                            <h3 class="text-xl font-bold text-white group-hover:text-blue-400 transition">130 Nm Motor-to-Gearbox High-Torque Coupling</h3>
+                        </div>
+                        <p class="text-slate-400 text-sm leading-relaxed mb-4">
+                            Designed high-torque coupling interfaces, bearing retention geometry, and fastener clearance envelopes in SolidWorks. Conducted vendor DFM reviews to eliminate 5-axis mill setups, cutting production costs by 9%.
+                        </p>
+                        <div class="space-y-2 mb-6">
+                            <div class="flex items-start gap-2 text-xs text-slate-300">
+                                <i class="fa-solid fa-check text-blue-400 mt-0.5"></i>
+                                <span><strong>GD&T & Fits:</strong> Applied ASME Y14.5 runout and location controls with ISO H7/h6 precision fits.</span>
+                            </div>
+                            <div class="flex items-start gap-2 text-xs text-slate-300">
+                                <i class="fa-solid fa-check text-blue-400 mt-0.5"></i>
+                                <span><strong>Prototyping:</strong> Built 1:1 functional SLA/FDM 3D prints to verify socket wrench and bolt accessibility.</span>
+                            </div>
+                            <div class="flex items-start gap-2 text-xs text-slate-300">
+                                <i class="fa-solid fa-check text-blue-400 mt-0.5"></i>
+                                <span><strong>FEA Validation:</strong> Verified peak localized shear stress under 130 Nm torque in ANSYS (FoS > 1.5).</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex flex-wrap gap-2 pt-4 border-t border-slate-800 text-[11px] font-mono text-slate-400">
+                        <span class="px-2 py-1 rounded bg-slate-800">SOLIDWORKS</span>
+                        <span class="px-2 py-1 rounded bg-slate-800">ASME Y14.5 GD&T</span>
+                        <span class="px-2 py-1 rounded bg-slate-800">SLA/FDM Prototyping</span>
+                        <span class="px-2 py-1 rounded bg-slate-800">ANSYS FEA</span>
+                        <span class="px-2 py-1 rounded bg-slate-800">DFM/DFA</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PROJECT 2: Custom MATLAB BFS Solver (Track A) -->
+            <div class="project-card cae group rounded-2xl bg-slate-900/60 border border-slate-800 overflow-hidden hover:border-slate-700 transition flex flex-col">
+                <div class="h-56 bg-slate-800/70 relative overflow-hidden flex items-center justify-center p-6 border-b border-slate-800">
+                    <!-- Replace with: <img src="assets/solver-modeshapes.png" class="w-full h-full object-cover group-hover:scale-105 transition duration-300"> -->
+                    <div class="text-center">
+                        <i class="fa-solid fa-wave-square text-5xl text-purple-500/40 mb-3"></i>
+                        <p class="text-xs text-slate-400 font-mono">[ MATLAB Eigenvalue Mode Shape Contours ]</p>
+                    </div>
+                    <span class="absolute top-4 left-4 px-3 py-1 rounded-md bg-purple-500/20 border border-purple-400/30 text-purple-300 text-xs font-semibold">
+                        Structural Dynamics & CAE • Track A
+                    </span>
+                </div>
+                <div class="p-6 flex-1 flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between gap-2 mb-2">
+                            <h3 class="text-xl font-bold text-white group-hover:text-purple-400 transition">Custom 16-DOF Dynamic Plate Solver & PZT Actuation</h3>
+                        </div>
+                        <p class="text-slate-400 text-sm leading-relaxed mb-4">
+                            Derived an electromechanical finite element solver from first principles in MATLAB using Classical Laminated Plate Theory (CLPT) and 16-DOF Bogner-Fox-Schmit (BFS) elements for composite dynamic modeling.
+                        </p>
+                        <div class="space-y-2 mb-6">
+                            <div class="flex items-start gap-2 text-xs text-slate-300">
+                                <i class="fa-solid fa-check text-purple-400 mt-0.5"></i>
+                                <span><strong>Matrix Formulation:</strong> Derived element $[M]$, $[K]$, and electromechanical $[K_{u\phi}]$ from Hamilton's Principle.</span>
+                            </div>
+                            <div class="flex items-start gap-2 text-xs text-slate-300">
+                                <i class="fa-solid fa-check text-purple-400 mt-0.5"></i>
+                                <span><strong>Test Correlation:</strong> Validated against experimental benchmark data (Her & Chen) with <2.4% error.</span>
+                            </div>
+                            <div class="flex items-start gap-2 text-xs text-slate-300">
+                                <i class="fa-solid fa-check text-purple-400 mt-0.5"></i>
+                                <span><strong>Transducer Placement:</strong> Optimized surface-mounted PZT patch locations at high-strain anti-nodes.</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex flex-wrap gap-2 pt-4 border-t border-slate-800 text-[11px] font-mono text-slate-400">
+                        <span class="px-2 py-1 rounded bg-slate-800">MATLAB</span>
+                        <span class="px-2 py-1 rounded bg-slate-800">CLPT Mechanics</span>
+                        <span class="px-2 py-1 rounded bg-slate-800">Eigenvalue Analysis</span>
+                        <span class="px-2 py-1 rounded bg-slate-800">PZT Sensing</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PROJECT 3: Abaqus Python Automation Pipeline (Track A) -->
+            <div class="project-card cae group rounded-2xl bg-slate-900/60 border border-slate-800 overflow-hidden hover:border-slate-700 transition flex flex-col">
+                <div class="h-56 bg-slate-800/70 relative overflow-hidden flex items-center justify-center p-6 border-b border-slate-800">
+                    <!-- Replace with: <img src="assets/wave-propagation.png" class="w-full h-full object-cover group-hover:scale-105 transition duration-300"> -->
+                    <div class="text-center">
+                        <i class="fa-solid fa-terminal text-5xl text-emerald-500/40 mb-3"></i>
+                        <p class="text-xs text-slate-400 font-mono">[ Headless Python -> Abaqus/Explicit Deck Pipeline ]</p>
+                    </div>
+                    <span class="absolute top-4 left-4 px-3 py-1 rounded-md bg-emerald-500/20 border border-emerald-400/30 text-emerald-300 text-xs font-semibold">
+                        CAE Automation • Track A
+                    </span>
+                </div>
+                <div class="p-6 flex-1 flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between gap-2 mb-2">
+                            <h3 class="text-xl font-bold text-white group-hover:text-emerald-400 transition">Guided Ultrasonic Wave Automation in Abaqus/Explicit</h3>
+                        </div>
+                        <p class="text-slate-400 text-sm leading-relaxed mb-4">
+                            Formulated transient dynamic FEA models in Abaqus/Explicit to simulate high-frequency (>100 kHz) guided waves, engineering an end-to-end Python pipeline for headless batch execution and signal parsing.
+                        </p>
+                        <div class="space-y-2 mb-6">
+                            <div class="flex items-start gap-2 text-xs text-slate-300">
+                                <i class="fa-solid fa-check text-emerald-400 mt-0.5"></i>
+                                <span><strong>CFL Stability:</strong> Enforced strict time-step criteria (&Delta;t &le; L_min / c_d) and >10 elements/&lambda; discretization.</span>
+                            </div>
+                            <div class="flex items-start gap-2 text-xs text-slate-300">
+                                <i class="fa-solid fa-check text-emerald-400 mt-0.5"></i>
+                                <span><strong>Python Pipeline:</strong> Automated parameterization, .inp deck generation, and binary .odb data mining.</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex flex-wrap gap-2 pt-4 border-t border-slate-800 text-[11px] font-mono text-slate-400">
+                        <span class="px-2 py-1 rounded bg-slate-800">Abaqus/Explicit</span>
+                        <span class="px-2 py-1 rounded bg-slate-800">Python Scripting</span>
+                        <span class="px-2 py-1 rounded bg-slate-800">Wave Mechanics</span>
+                        <span class="px-2 py-1 rounded bg-slate-800">CFL Stability</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PROJECT 4: Topology Optimization (Track B/A Hybrid) -->
+            <div class="project-card design group rounded-2xl bg-slate-900/60 border border-slate-800 overflow-hidden hover:border-slate-700 transition flex flex-col">
+                <div class="h-56 bg-slate-800/70 relative overflow-hidden flex items-center justify-center p-6 border-b border-slate-800">
+                    <!-- Replace with: <img src="assets/chassis-topology.png" class="w-full h-full object-cover group-hover:scale-105 transition duration-300"> -->
+                    <div class="text-center">
+                        <i class="fa-solid fa-cube text-5xl text-amber-500/40 mb-3"></i>
+                        <p class="text-xs text-slate-400 font-mono">[ Topology Optimization Density Map vs. Final CAD ]</p>
+                    </div>
+                    <span class="absolute top-4 left-4 px-3 py-1 rounded-md bg-amber-500/20 border border-amber-400/30 text-amber-300 text-xs font-semibold">
+                        Optimization & Composites • Track B
+                    </span>
+                </div>
+                <div class="p-6 flex-1 flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between gap-2 mb-2">
+                            <h3 class="text-xl font-bold text-white group-hover:text-amber-400 transition">Multi-Rotor Chassis Topology Optimization & Composite Redesign</h3>
+                        </div>
+                        <p class="text-slate-400 text-sm leading-relaxed mb-4">
+                            Applied density-based topology optimization (SIMP method) on chassis brackets, transitioning from 6061-T6 aluminum to 3K carbon fiber to deliver a 32% mass reduction (7.4 kg to 5.0 kg).
+                        </p>
+                        <div class="space-y-2 mb-6">
+                            <div class="flex items-start gap-2 text-xs text-slate-300">
+                                <i class="fa-solid fa-check text-amber-400 mt-0.5"></i>
+                                <span><strong>Mass Reduction:</strong> Cut assembly weight by 32% while preserving baseline dynamic stiffness.</span>
+                            </div>
+                            <div class="flex items-start gap-2 text-xs text-slate-300">
+                                <i class="fa-solid fa-check text-amber-400 mt-0.5"></i>
+                                <span><strong>Modal Tuning:</strong> Separated fundamental structural modes (>140 Hz) from motor RPM harmonics.</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex flex-wrap gap-2 pt-4 border-t border-slate-800 text-[11px] font-mono text-slate-400">
+                        <span class="px-2 py-1 rounded bg-slate-800">ANSYS Optimization</span>
+                        <span class="px-2 py-1 rounded bg-slate-800">3K Carbon Fiber</span>
+                        <span class="px-2 py-1 rounded bg-slate-800">Modal Dynamics</span>
+                        <span class="px-2 py-1 rounded bg-slate-800">DFM</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Technical Skills Section -->
+    <section id="skills" class="max-w-6xl mx-auto px-6 py-16 border-t border-slate-800/80">
+        <h2 class="text-2xl sm:text-3xl font-bold tracking-tight text-white mb-8">Technical Competencies</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="p-6 rounded-xl bg-slate-900/50 border border-slate-800">
+                <h3 class="text-blue-400 font-bold text-sm uppercase tracking-wider mb-4 flex items-center gap-2">
+                    <i class="fa-solid fa-compass-drafting"></i> CAD & Mechanical Design
+                </h3>
+                <ul class="space-y-2 text-sm text-slate-300">
+                    <li>SOLIDWORKS, PTC Creo, Autodesk Fusion 360</li>
+                    <li>ASME Y14.5-2018 GD&T Standards</li>
+                    <li>1D/3D Tolerance Stack-Ups (Worst-Case & RSS)</li>
+                    <li>DFM/DFA for CNC Machining, Sheet Metal, Molding</li>
+                    <li>SLA / FDM Rapid Prototyping & Assembly Verification</li>
+                </ul>
+            </div>
+            <div class="p-6 rounded-xl bg-slate-900/50 border border-slate-800">
+                <h3 class="text-purple-400 font-bold text-sm uppercase tracking-wider mb-4 flex items-center gap-2">
+                    <i class="fa-solid fa-chart-line"></i> CAE Solvers & Dynamics
+                </h3>
+                <ul class="space-y-2 text-sm text-slate-300">
+                    <li>Abaqus/Explicit & Abaqus/Standard</li>
+                    <li>ANSYS Mechanical (Static, Modal, Harmonic)</li>
+                    <li>Structural Dynamics & Modal Parameter Extraction</li>
+                    <li>Classical Laminated Plate Theory (CLPT)</li>
+                    <li>Explicit Wave Propagation & CFL Stability</li>
+                </ul>
+            </div>
+            <div class="p-6 rounded-xl bg-slate-900/50 border border-slate-800">
+                <h3 class="text-emerald-400 font-bold text-sm uppercase tracking-wider mb-4 flex items-center gap-2">
+                    <i class="fa-solid fa-code"></i> Scripting & Computation
+                </h3>
+                <ul class="space-y-2 text-sm text-slate-300">
+                    <li>Python (Abaqus API, NumPy, SciPy)</li>
+                    <li>Headless .inp Deck Generation & .odb Mining</li>
+                    <li>MATLAB (Custom FE Solvers, Signal Processing)</li>
+                    <li>Linux / HPC Batch Computing</li>
+                    <li>Experimental-to-FEA Correlation Pipelines</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="contact" class="max-w-6xl mx-auto px-6 py-12 border-t border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500">
+        <div>
+            © 2026 Animesh D. Kulkarni • Blacksburg, VA
+        </div>
+        <div class="flex items-center gap-6">
+            <a href="mailto:animeshdk@vt.edu" class="hover:text-slate-300 transition">animeshdk@vt.edu</a>
+            <a href="https://www.linkedin.com/in/animeshkulkarni" target="_blank" class="hover:text-slate-300 transition">LinkedIn</a>
+        </div>
+    </footer>
+
+    <!-- Interactive Filtering Script -->
+    <script>
+        function filterProjects(category) {
+            const cards = document.querySelectorAll('.project-card');
+            const buttons = document.querySelectorAll('.filter-btn');
+
+            buttons.forEach(btn => btn.classList.remove('bg-blue-600', 'text-white'));
+            buttons.forEach(btn => btn.classList.add('text-slate-400'));
+
+            const activeBtn = document.getElementById(`btn-${category}`);
+            activeBtn.classList.add('bg-blue-600', 'text-white');
+            activeBtn.classList.remove('text-slate-400');
+
+            cards.forEach(card => {
+                if (category === 'all') {
+                    card.style.display = 'flex';
+                } else if (card.classList.contains(category)) {
+                    card.style.display = 'flex';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+    </script>
+</body>
+</html>
