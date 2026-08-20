@@ -19,9 +19,9 @@
                             borderBright: '#25558a',
                             cyan: '#00f0ff',        // Primary Electric Cyan
                             sky: '#38bdf8',         // Ice Sky Blue
-                            blue: '#0284c7',        // Deep Tactical Blue
+                            blue: '#0284c7',        // Tactical Blue
                             amber: '#fbbf24',       // Hardware DFM Accent
-                            green: '#00ff88'        // Verification Green
+                            green: '#00ff88'        // Telemetry Green
                         }
                     },
                     fontFamily: {
@@ -33,7 +33,7 @@
             }
         }
     </script>
-    <!-- Fonts & Icons -->
+    <!-- Aerospace Fonts & Icons -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:ital,wght@0,300;0,400;0,700;0,800&family=Orbitron:wght@600;700;900&display=swap" rel="stylesheet">
@@ -84,13 +84,13 @@
                 <span class="w-2 h-2 rounded-full bg-hud-cyan inline-block animate-ping"></span>
                 CORE_TELEMETRY: ONLINE
             </span>
-            <span class="hidden sm:inline text-slate-400">VT-AERO // LOW-RPM TACTICAL SWEEP</span>
+            <span class="hidden sm:inline text-slate-400">VT-AERO // 37.2296° N, 80.4139° W</span>
             <span class="hidden md:inline text-hud-sky">UTC: <span id="telemetry-time">00:00:00</span></span>
         </div>
         <div class="flex items-center gap-4 text-hud-cyan font-bold">
             <span>MACH: <span id="telemetry-mach">0.00</span></span>
             <span class="text-slate-300">ALT: <span id="telemetry-alt" class="text-hud-cyan">2,080</span> FT</span>
-            <span class="text-hud-amber hidden sm:inline">VISA: STEM OPT (JAN 2027)</span>
+            <span class="text-hud-amber hidden sm:inline">VISA: 3-YR STEM OPT (AVAIL: JAN 2027)</span>
         </div>
     </div>
 
@@ -128,7 +128,7 @@
         </div>
     </header>
 
-    <!-- SECTION 1: HERO & ACTIVE HUD RADAR -->
+    <!-- SECTION 1: HERO & CALM RADAR FLIGHT DECK -->
     <section id="mission" class="max-w-7xl mx-auto px-6 pt-10 pb-16 relative">
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
             
@@ -181,22 +181,25 @@
                     </div>
                 </div>
 
-                <!-- Action Triggers -->
+                <!-- Action Triggers (Integrated Dual Resume Downloads) -->
                 <div class="flex flex-wrap gap-3 pt-2 font-mono text-xs font-bold">
-                    <a href="#projects" class="px-5 py-3 rounded bg-hud-cyan hover:bg-white text-hud-black transition flex items-center gap-2 glow-cyan uppercase tracking-wider font-extrabold">
-                        <i class="fa-solid fa-crosshairs text-sm"></i> EXECUTE CASE STUDIES
+                    <a href="#projects" class="px-4 py-3.5 rounded bg-hud-cyan hover:bg-white text-hud-black transition flex items-center gap-2 glow-cyan uppercase tracking-wider font-extrabold">
+                        <i class="fa-solid fa-crosshairs text-sm"></i> CASE STUDIES
                     </a>
-                    <a href="https://www.linkedin.com/in/animeshkulkarni" target="_blank" class="px-5 py-3 rounded bg-hud-panel hover:bg-hud-panelAlt border border-hud-border text-slate-300 hover:border-hud-cyan transition flex items-center gap-2 uppercase tracking-wider">
+                    <a href="assets/resume-track-a.pdf" download class="px-4 py-3.5 rounded bg-hud-panel hover:bg-hud-cyan hover:text-black border border-hud-cyan/40 text-hud-cyan transition flex items-center gap-2 uppercase tracking-wider">
+                        <i class="fa-solid fa-file-arrow-down"></i> TRACK_A (CAE)
+                    </a>
+                    <a href="assets/resume-track-b.pdf" download class="px-4 py-3.5 rounded bg-hud-panel hover:bg-hud-amber hover:text-black border border-hud-amber/40 text-hud-amber transition flex items-center gap-2 uppercase tracking-wider">
+                        <i class="fa-solid fa-file-arrow-down"></i> TRACK_B (DESIGN)
+                    </a>
+                    <a href="https://www.linkedin.com/in/animeshkulkarni" target="_blank" class="px-4 py-3.5 rounded bg-hud-panel hover:bg-hud-panelAlt border border-hud-border text-slate-300 hover:border-hud-cyan transition flex items-center gap-2 uppercase tracking-wider">
                         <i class="fa-brands fa-linkedin text-hud-cyan"></i> DOSSIER
-                    </a>
-                    <a href="#contact" class="px-5 py-3 rounded bg-hud-panel hover:bg-hud-panelAlt border border-hud-border text-slate-300 hover:border-hud-cyan transition flex items-center gap-2 uppercase tracking-wider">
-                        <i class="fa-solid fa-envelope text-hud-cyan"></i> CONTACT
                     </a>
                 </div>
 
             </div>
 
-            <!-- Right: Radar HUD (Large Solid Cyan Jet + Calm, Steady Sweep) -->
+            <!-- Right: Radar HUD (Centered Large Solid Plane + Steady Calm Scan) -->
             <div class="lg:col-span-6 flex flex-col items-center">
                 <div class="relative w-full max-w-[440px] aspect-square bg-hud-panel/95 rounded-full border-2 border-hud-cyan/50 p-2 shadow-[0_0_50px_rgba(0,240,255,0.25)] flex items-center justify-center">
                     
@@ -374,12 +377,24 @@
             </div>
         </div>
 
-        <!-- Projects Grid -->
+        <!-- Projects Grid (Enhanced with Technical Media Image Displays) -->
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
 
             <!-- PROJECT 1: 130 Nm Coupling -->
-            <div id="card-coupling" class="project-card design hud-reticle hud-reticle-amber bg-hud-panel border border-hud-border p-6 rounded flex flex-col justify-between hover:border-hud-amber transition duration-300">
+            <div id="card-coupling" class="project-card design hud-reticle hud-reticle-amber bg-hud-panel border border-hud-border p-6 rounded flex flex-col justify-between hover:border-hud-amber transition duration-300 group">
                 <div>
+                    <!-- CAD Visual Frame -->
+                    <div class="h-44 w-full bg-hud-black rounded border border-hud-border/80 overflow-hidden mb-4 relative flex items-center justify-center">
+                        <img src="assets/coupling-cad.png" alt="130 Nm Drivetrain Assembly" class="w-full h-full object-cover group-hover:scale-105 transition duration-300" onerror="this.style.display='none'">
+                        <div class="absolute inset-0 flex flex-col items-center justify-center font-mono text-[11px] text-slate-500 pointer-events-none">
+                            <i class="fa-solid fa-gear text-2xl text-hud-amber mb-1"></i>
+                            <span>[SOLIDWORKS_3D_ASSEMBLY.STEP]</span>
+                        </div>
+                        <span class="absolute bottom-2 right-2 px-1.5 py-0.5 rounded bg-hud-black/90 text-hud-amber font-mono text-[9px] border border-hud-amber/40">
+                            SOLIDWORKS RENDER
+                        </span>
+                    </div>
+
                     <div class="flex items-center justify-between text-[11px] font-mono pb-3 border-b border-hud-border text-hud-amber font-bold">
                         <span><i class="fa-solid fa-gear mr-1"></i> SYS_ID: MECH-130NM</span>
                         <span class="px-2 py-0.5 rounded bg-hud-amber/10 border border-hud-amber/30 text-hud-amber">DFM // HARDWARE</span>
@@ -410,8 +425,20 @@
             </div>
 
             <!-- PROJECT 2: Custom MATLAB Solver -->
-            <div id="card-solver" class="project-card cae hud-reticle hud-reticle-cyan bg-hud-panel border border-hud-border p-6 rounded flex flex-col justify-between hover:border-hud-cyan transition duration-300">
+            <div id="card-solver" class="project-card cae hud-reticle hud-reticle-cyan bg-hud-panel border border-hud-border p-6 rounded flex flex-col justify-between hover:border-hud-cyan transition duration-300 group">
                 <div>
+                    <!-- FEA Visual Frame -->
+                    <div class="h-44 w-full bg-hud-black rounded border border-hud-border/80 overflow-hidden mb-4 relative flex items-center justify-center">
+                        <img src="assets/solver-plot.png" alt="16-DOF Modal Eigenvalues" class="w-full h-full object-cover group-hover:scale-105 transition duration-300" onerror="this.style.display='none'">
+                        <div class="absolute inset-0 flex flex-col items-center justify-center font-mono text-[11px] text-slate-500 pointer-events-none">
+                            <i class="fa-solid fa-wave-square text-2xl text-hud-cyan mb-1"></i>
+                            <span>[BFS_MODAL_EIGENVALUES.MAT]</span>
+                        </div>
+                        <span class="absolute bottom-2 right-2 px-1.5 py-0.5 rounded bg-hud-black/90 text-hud-cyan font-mono text-[9px] border border-hud-cyan/40">
+                            MATLAB FEA PLOT
+                        </span>
+                    </div>
+
                     <div class="flex items-center justify-between text-[11px] font-mono pb-3 border-b border-hud-border text-hud-cyan font-bold">
                         <span><i class="fa-solid fa-wave-square mr-1"></i> SYS_ID: CAE-16DOF-CLPT</span>
                         <span class="px-2 py-0.5 rounded bg-hud-cyan/10 border border-hud-cyan/30 text-hud-cyan">CAE // FIRST-PRINCIPLES</span>
@@ -442,8 +469,20 @@
             </div>
 
             <!-- PROJECT 3: Abaqus Python Automation Pipeline -->
-            <div id="card-abaqus" class="project-card cae hud-reticle bg-hud-panel border border-hud-border p-6 rounded flex flex-col justify-between hover:border-hud-green transition duration-300">
+            <div id="card-abaqus" class="project-card cae hud-reticle bg-hud-panel border border-hud-border p-6 rounded flex flex-col justify-between hover:border-hud-green transition duration-300 group">
                 <div>
+                    <!-- Simulation Frame -->
+                    <div class="h-44 w-full bg-hud-black rounded border border-hud-border/80 overflow-hidden mb-4 relative flex items-center justify-center">
+                        <img src="assets/abaqus-wave.png" alt="Abaqus Ultrasonic Dispersion" class="w-full h-full object-cover group-hover:scale-105 transition duration-300" onerror="this.style.display='none'">
+                        <div class="absolute inset-0 flex flex-col items-center justify-center font-mono text-[11px] text-slate-500 pointer-events-none">
+                            <i class="fa-solid fa-terminal text-2xl text-hud-green mb-1"></i>
+                            <span>[WAVE_PROPAGATION_100KHZ.ODB]</span>
+                        </div>
+                        <span class="absolute bottom-2 right-2 px-1.5 py-0.5 rounded bg-hud-black/90 text-hud-green font-mono text-[9px] border border-hud-green/40">
+                            ABAQUS EXPLICIT
+                        </span>
+                    </div>
+
                     <div class="flex items-center justify-between text-[11px] font-mono pb-3 border-b border-hud-border text-hud-green font-bold">
                         <span><i class="fa-solid fa-terminal mr-1"></i> SYS_ID: HPC-ABAQUS-AUTO</span>
                         <span class="px-2 py-0.5 rounded bg-hud-green/10 border border-hud-green/30 text-hud-green">HPC // SCRIPTING</span>
@@ -474,8 +513,20 @@
             </div>
 
             <!-- PROJECT 4: Chassis Topology Opt -->
-            <div id="card-chassis" class="project-card design hud-reticle hud-reticle-cyan bg-hud-panel border border-hud-border p-6 rounded flex flex-col justify-between hover:border-hud-cyan transition duration-300">
+            <div id="card-chassis" class="project-card design hud-reticle hud-reticle-cyan bg-hud-panel border border-hud-border p-6 rounded flex flex-col justify-between hover:border-hud-cyan transition duration-300 group">
                 <div>
+                    <!-- Topology Optimization Frame -->
+                    <div class="h-44 w-full bg-hud-black rounded border border-hud-border/80 overflow-hidden mb-4 relative flex items-center justify-center">
+                        <img src="assets/chassis-simp.png" alt="ANSYS SIMP Optimization" class="w-full h-full object-cover group-hover:scale-105 transition duration-300" onerror="this.style.display='none'">
+                        <div class="absolute inset-0 flex flex-col items-center justify-center font-mono text-[11px] text-slate-500 pointer-events-none">
+                            <i class="fa-solid fa-cube text-2xl text-hud-cyan mb-1"></i>
+                            <span>[SIMP_DENSITY_MAP_CFRP.RST]</span>
+                        </div>
+                        <span class="absolute bottom-2 right-2 px-1.5 py-0.5 rounded bg-hud-black/90 text-hud-cyan font-mono text-[9px] border border-hud-cyan/40">
+                            ANSYS SIMP DENSITY
+                        </span>
+                    </div>
+
                     <div class="flex items-center justify-between text-[11px] font-mono pb-3 border-b border-hud-border text-hud-cyan font-bold">
                         <span><i class="fa-solid fa-cube mr-1"></i> SYS_ID: OPT-CHASSIS-CFRP</span>
                         <span class="px-2 py-0.5 rounded bg-hud-cyan/10 border border-hud-cyan/30 text-hud-cyan">LIGHTWEIGHTING</span>
@@ -529,7 +580,7 @@
                 </ul>
             </div>
 
-            <div class="hud-reticle p-6 bg-hud-panel border border-hud-border rounded">
+            <div class="hud-reticle hud-reticle-cyan p-6 bg-hud-panel border border-hud-border rounded">
                 <div class="text-hud-cyan font-bold text-sm tracking-wider uppercase mb-4 flex items-center gap-2">
                     <i class="fa-solid fa-wave-square"></i> CAE & WAVE DYNAMICS
                 </div>
@@ -1038,6 +1089,17 @@
                 document.body.style.overflow = 'auto';
             }
         };
+
+        // Desktop Escape Key Listener to Close Modals
+        document.addEventListener('keydown', function(event) {
+            if (event.key === "Escape") {
+                document.querySelectorAll('.fixed').forEach(modal => {
+                    modal.classList.add('hidden');
+                    modal.classList.remove('flex');
+                });
+                document.body.style.overflow = 'auto';
+            }
+        });
     </script>
 </body>
 </html>
