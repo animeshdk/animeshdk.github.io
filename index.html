@@ -20,7 +20,9 @@
                             amber: '#ffaa00',
                             green: '#00ff88',
                             purple: '#b026ff',
-                            crimson: '#ff2a5f'
+                            crimson: '#ff0055',  /* The Color of Passion / High Thermal */
+                            ruby: '#e11d48',
+                            flame: '#ff3344'
                         }
                     },
                     fontFamily: {
@@ -42,11 +44,11 @@
         .hud-grid {
             background-size: 32px 32px;
             background-image: 
-                linear-gradient(to right, rgba(0, 240, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(to right, rgba(255, 0, 85, 0.04) 1px, transparent 1px),
                 linear-gradient(to bottom, rgba(0, 240, 255, 0.03) 1px, transparent 1px);
         }
         .scanlines {
-            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.3) 50%);
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.35) 50%);
             background-size: 100% 3px;
         }
         .hud-reticle {
@@ -63,14 +65,16 @@
         .hud-reticle::before { top: -1px; left: -1px; border-top-width: 2px; border-left-width: 2px; }
         .hud-reticle::after { bottom: -1px; right: -1px; border-bottom-width: 2px; border-right-width: 2px; }
         
+        .hud-reticle-crimson::before, .hud-reticle-crimson::after { border-color: #ff0055 !important; }
         .hud-reticle-amber::before, .hud-reticle-amber::after { border-color: #ffaa00 !important; }
         .hud-reticle-green::before, .hud-reticle-green::after { border-color: #00ff88 !important; }
         
+        .glow-crimson { box-shadow: 0 0 25px -2px rgba(255, 0, 85, 0.45); }
+        .glow-text-crimson { text-shadow: 0 0 16px rgba(255, 0, 85, 0.85); }
         .glow-cyan { box-shadow: 0 0 20px -2px rgba(0, 240, 255, 0.35); }
-        .glow-text-cyan { text-shadow: 0 0 10px rgba(0, 240, 255, 0.7); }
     </style>
 </head>
-<body class="bg-hud-black text-slate-200 font-sans antialiased selection:bg-hud-cyan selection:text-black hud-grid relative min-h-screen flex flex-col justify-between overflow-x-hidden">
+<body class="bg-hud-black text-slate-200 font-sans antialiased selection:bg-hud-crimson selection:text-white hud-grid relative min-h-screen flex flex-col justify-between overflow-x-hidden">
     
     <!-- CRT Scanline Overlay -->
     <div class="fixed inset-0 pointer-events-none scanlines z-50 opacity-30"></div>
@@ -78,15 +82,15 @@
     <!-- Dynamic Telemetry Flight Ticker -->
     <div class="bg-hud-panel border-b border-hud-border/70 py-1.5 px-4 font-mono text-[10px] text-slate-400 flex items-center justify-between tracking-widest uppercase overflow-hidden sticky top-0 z-50 backdrop-blur-md">
         <div class="flex items-center gap-6">
-            <span class="flex items-center gap-1.5 text-hud-green font-bold">
-                <span class="w-2 h-2 rounded-full bg-hud-green inline-block animate-ping"></span>
-                SYS_STATUS: ONLINE
+            <span class="flex items-center gap-1.5 text-hud-crimson font-bold">
+                <span class="w-2 h-2 rounded-full bg-hud-crimson inline-block animate-ping"></span>
+                CORE_ENERGY: MAXIMUM
             </span>
-            <span class="hidden sm:inline text-slate-400">LOC: 37.2296°N, 80.4139°W [VT-AERO]</span>
+            <span class="hidden sm:inline text-slate-400">PROPULSION // THERMAL REGIME ACTIVE</span>
             <span class="hidden md:inline text-hud-cyan">UTC: <span id="telemetry-time">00:00:00</span></span>
         </div>
         <div class="flex items-center gap-4 text-hud-cyan font-bold">
-            <span>MACH: <span id="telemetry-mach">0.00</span></span>
+            <span class="text-hud-crimson">MACH: <span id="telemetry-mach">0.00</span></span>
             <span>ALT: <span id="telemetry-alt">2,080</span> FT</span>
             <span class="text-hud-amber hidden sm:inline">VISA: STEM OPT (JAN 2027)</span>
         </div>
@@ -95,20 +99,20 @@
     <!-- Navigation Deck -->
     <header class="bg-hud-black/90 border-b border-hud-border/80 relative z-40">
         <div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
-            <a href="#" class="font-display font-black text-base tracking-widest text-white flex items-center gap-2 hover:text-hud-cyan transition">
-                <span class="w-2.5 h-2.5 bg-hud-cyan rotate-45 shadow-[0_0_8px_#00f0ff]"></span>
-                <span>ANIMESH<span class="text-hud-cyan">_KULKARNI</span></span>
+            <a href="#" class="font-display font-black text-base tracking-widest text-white flex items-center gap-2 hover:text-hud-crimson transition group">
+                <span class="w-2.5 h-2.5 bg-hud-crimson rotate-45 group-hover:scale-125 transition duration-300 shadow-[0_0_10px_#ff0055]"></span>
+                <span>ANIMESH<span class="text-hud-crimson">_KULKARNI</span></span>
                 <span class="text-[10px] font-mono font-normal text-slate-400 px-1.5 py-0.5 rounded bg-hud-panel border border-hud-border">M.S. AERO</span>
             </a>
             
             <nav class="hidden md:flex items-center gap-8 text-xs font-mono tracking-widest uppercase text-slate-400">
-                <a href="#mission" class="hover:text-hud-cyan transition"><span class="text-hud-cyan font-bold">01//</span>MISSION</a>
-                <a href="#projects" class="hover:text-hud-cyan transition"><span class="text-hud-cyan font-bold">02//</span>TELEMETRY_LOGS</a>
-                <a href="#skills" class="hover:text-hud-cyan transition"><span class="text-hud-cyan font-bold">03//</span>SYS_SPECS</a>
-                <a href="#experience" class="hover:text-hud-cyan transition"><span class="text-hud-cyan font-bold">04//</span>SERVICE_LOG</a>
+                <a href="#mission" class="hover:text-hud-crimson transition"><span class="text-hud-crimson font-bold">01//</span>MISSION</a>
+                <a href="#projects" class="hover:text-hud-crimson transition"><span class="text-hud-crimson font-bold">02//</span>TELEMETRY_LOGS</a>
+                <a href="#skills" class="hover:text-hud-crimson transition"><span class="text-hud-crimson font-bold">03//</span>SYS_SPECS</a>
+                <a href="#experience" class="hover:text-hud-crimson transition"><span class="text-hud-crimson font-bold">04//</span>SERVICE_LOG</a>
             </nav>
 
-            <a href="mailto:animeshdk@vt.edu" class="px-3.5 py-1.5 rounded bg-hud-cyan/10 hover:bg-hud-cyan text-hud-cyan hover:text-black border border-hud-cyan font-mono text-xs font-bold transition duration-300 flex items-center gap-2">
+            <a href="mailto:animeshdk@vt.edu" class="px-3.5 py-1.5 rounded bg-hud-crimson/10 hover:bg-hud-crimson text-hud-crimson hover:text-white border border-hud-crimson font-mono text-xs font-bold transition duration-300 flex items-center gap-2 shadow-[0_0_15px_rgba(255,0,85,0.2)]">
                 <i class="fa-solid fa-satellite-dish"></i>
                 <span class="hidden sm:inline">ESTABLISH_UPLINK</span>
                 <span class="sm:hidden">CONTACT</span>
@@ -116,54 +120,54 @@
         </div>
     </header>
 
-    <!-- Hero HUD Section: Pilot Deck & Interactive Radar -->
+    <!-- Hero HUD Section -->
     <section id="mission" class="max-w-7xl mx-auto px-6 pt-8 pb-12 relative">
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
             
             <!-- Left Command Console -->
             <div class="lg:col-span-6 space-y-6">
                 
-                <div class="inline-flex items-center gap-2 px-3 py-1 rounded bg-hud-panel border border-hud-border text-hud-cyan font-mono text-[11px] font-bold tracking-wider">
-                    <span class="w-1.5 h-1.5 rounded-full bg-hud-cyan animate-ping"></span>
-                    ACTIVE AVIONICS & MECHANICAL SYSTEMS DIRECTORY
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded bg-hud-panel border border-hud-crimson/40 text-hud-crimson font-mono text-[11px] font-bold tracking-wider">
+                    <span class="w-1.5 h-1.5 rounded-full bg-hud-crimson animate-ping"></span>
+                    DRIVEN BY AEROSPACE RIGOR & UNYIELDING PASSION
                 </div>
 
                 <h1 class="text-3xl sm:text-5xl font-display font-black text-white tracking-tight uppercase leading-tight">
-                    AEROSPACE CAE <br>
-                    <span class="text-transparent bg-clip-text bg-gradient-to-r from-hud-cyan via-sky-400 to-hud-amber glow-text-cyan">& DYNAMIC SYSTEMS</span>
+                    HIGH-LOAD CAE <br>
+                    <span class="text-transparent bg-clip-text bg-gradient-to-r from-hud-crimson via-rose-500 to-hud-amber glow-text-crimson">& PRECISION DYNAMICS</span>
                 </h1>
 
-                <!-- Crisp Spec Cards Replacing Verbose Text -->
+                <!-- Crisp Spec Cards -->
                 <div class="grid grid-cols-2 gap-2.5 font-mono text-xs">
-                    <div class="p-3 bg-hud-panel/80 border border-hud-border rounded">
-                        <div class="text-[10px] text-slate-500 uppercase font-bold">// CORE DISCIPLINE</div>
-                        <div class="text-white font-bold mt-0.5">Structural Dynamics & FEA</div>
-                        <div class="text-[11px] text-hud-cyan">Explicit Wave Propagation</div>
+                    <div class="hud-reticle hud-reticle-crimson p-3 bg-hud-panel/80 border border-hud-border rounded">
+                        <div class="text-[10px] text-hud-crimson uppercase font-bold">// CORE PASSION</div>
+                        <div class="text-white font-bold mt-0.5">Wave Dynamics & FEA</div>
+                        <div class="text-[11px] text-slate-400">Explicit Propagation (>100 kHz)</div>
                     </div>
                     <div class="p-3 bg-hud-panel/80 border border-hud-border rounded">
-                        <div class="text-[10px] text-slate-500 uppercase font-bold">// PRECISION DFM</div>
+                        <div class="text-[10px] text-hud-amber uppercase font-bold">// HARDWARE DFM</div>
                         <div class="text-white font-bold mt-0.5">ASME Y14.5 GD&T</div>
-                        <div class="text-[11px] text-hud-amber">Total Runout < 0.02 mm</div>
+                        <div class="text-[11px] text-slate-400">Runout < 0.02 mm (130 Nm)</div>
                     </div>
                     <div class="p-3 bg-hud-panel/80 border border-hud-border rounded">
-                        <div class="text-[10px] text-slate-500 uppercase font-bold">// HPC AUTOMATION</div>
-                        <div class="text-white font-bold mt-0.5">Python & Linux Solvers</div>
-                        <div class="text-[11px] text-hud-green">Abaqus .inp / .odb Pipeline</div>
+                        <div class="text-[10px] text-hud-green uppercase font-bold">// AUTOMATION</div>
+                        <div class="text-white font-bold mt-0.5">Python HPC Solvers</div>
+                        <div class="text-[11px] text-slate-400">Headless .inp / .odb Pipeline</div>
                     </div>
                     <div class="p-3 bg-hud-panel/80 border border-hud-border rounded">
-                        <div class="text-[10px] text-slate-500 uppercase font-bold">// LIGHTWEIGHTING</div>
+                        <div class="text-[10px] text-hud-cyan uppercase font-bold">// COMPOSITES</div>
                         <div class="text-white font-bold mt-0.5">Topology Optimization</div>
-                        <div class="text-[11px] text-hud-purple">3K Carbon Fiber (-32.4%)</div>
+                        <div class="text-[11px] text-slate-400">3K Carbon Fiber (-32.4%)</div>
                     </div>
                 </div>
 
                 <!-- Action Triggers -->
                 <div class="flex flex-wrap gap-3 pt-2 font-mono text-xs font-bold">
-                    <a href="#projects" class="px-5 py-3 rounded bg-hud-cyan hover:bg-white text-hud-black transition flex items-center gap-2 glow-cyan uppercase">
-                        <i class="fa-solid fa-crosshairs"></i> REVIEW TELEMETRY LOGS
+                    <a href="#projects" class="px-5 py-3 rounded bg-hud-crimson hover:bg-rose-600 text-white transition flex items-center gap-2 glow-crimson uppercase tracking-wider">
+                        <i class="fa-solid fa-fire text-sm"></i> REVIEW TELEMETRY LOGS
                     </a>
-                    <a href="https://www.linkedin.com/in/animeshkulkarni" target="_blank" class="px-5 py-3 rounded bg-hud-panel hover:bg-hud-panelAlt border border-hud-border text-slate-300 hover:border-hud-cyan transition flex items-center gap-2 uppercase">
-                        <i class="fa-brands fa-linkedin text-hud-cyan"></i> DOSSIER
+                    <a href="https://www.linkedin.com/in/animeshkulkarni" target="_blank" class="px-5 py-3 rounded bg-hud-panel hover:bg-hud-panelAlt border border-hud-border text-slate-300 hover:border-hud-crimson transition flex items-center gap-2 uppercase tracking-wider">
+                        <i class="fa-brands fa-linkedin text-hud-crimson"></i> DOSSIER
                     </a>
                 </div>
 
@@ -171,30 +175,30 @@
 
             <!-- Right: Interactive Tactical HUD Radar -->
             <div class="lg:col-span-6 flex flex-col items-center">
-                <div class="relative w-full max-w-[420px] aspect-square bg-hud-panel/90 rounded-full border border-hud-border p-2 shadow-[0_0_40px_rgba(0,240,255,0.12)] flex items-center justify-center">
+                <div class="relative w-full max-w-[420px] aspect-square bg-hud-panel/90 rounded-full border border-hud-crimson/40 p-2 shadow-[0_0_45px_rgba(255,0,85,0.18)] flex items-center justify-center">
                     
                     <!-- HTML5 Radar Canvas -->
                     <canvas id="radarCanvas" width="400" height="400" class="w-full h-full cursor-crosshair rounded-full"></canvas>
 
                     <!-- Azimuth Ticks -->
-                    <div class="absolute top-2 font-mono text-[9px] text-hud-cyan/70 font-bold select-none">000° [N]</div>
-                    <div class="absolute bottom-2 font-mono text-[9px] text-hud-cyan/70 font-bold select-none">180° [S]</div>
-                    <div class="absolute left-2 font-mono text-[9px] text-hud-cyan/70 font-bold select-none">270° [W]</div>
-                    <div class="absolute right-2 font-mono text-[9px] text-hud-cyan/70 font-bold select-none">090° [E]</div>
+                    <div class="absolute top-2 font-mono text-[9px] text-hud-crimson/80 font-bold select-none">000° [N]</div>
+                    <div class="absolute bottom-2 font-mono text-[9px] text-hud-crimson/80 font-bold select-none">180° [S]</div>
+                    <div class="absolute left-2 font-mono text-[9px] text-hud-crimson/80 font-bold select-none">270° [W]</div>
+                    <div class="absolute right-2 font-mono text-[9px] text-hud-crimson/80 font-bold select-none">090° [E]</div>
 
                     <!-- Center Core Reticle -->
-                    <div class="absolute pointer-events-none w-16 h-16 rounded-full border border-hud-cyan/40 flex flex-col items-center justify-center bg-hud-black/60 backdrop-blur-sm">
-                        <i class="fa-solid fa-jet-fighter text-hud-cyan text-xs"></i>
-                        <span class="font-mono text-[8px] text-slate-300 font-bold">RADAR</span>
+                    <div class="absolute pointer-events-none w-16 h-16 rounded-full border border-hud-crimson/60 flex flex-col items-center justify-center bg-hud-black/70 backdrop-blur-sm shadow-[0_0_15px_rgba(255,0,85,0.4)]">
+                        <i class="fa-solid fa-jet-fighter text-hud-crimson text-xs animate-pulse"></i>
+                        <span class="font-mono text-[8px] text-rose-300 font-bold">RADAR</span>
                     </div>
                 </div>
 
                 <!-- Sub-Radar Interactive Telemetry Output Bar -->
                 <div class="w-full max-w-[420px] mt-4 p-3 bg-hud-panel border border-hud-border rounded font-mono text-xs flex items-center justify-between">
                     <div class="flex items-center gap-2">
-                        <span class="w-2 h-2 rounded-full bg-hud-cyan animate-pulse"></span>
+                        <span class="w-2 h-2 rounded-full bg-hud-crimson animate-pulse"></span>
                         <span class="text-slate-400">TARGET:</span>
-                        <span id="target-name" class="text-hud-cyan font-bold uppercase">SWEEPING ACTIVE</span>
+                        <span id="target-name" class="text-hud-crimson font-bold uppercase">SWEEPING ACTIVE</span>
                     </div>
                     <div class="text-slate-400">
                         <span id="target-spec" class="text-hud-amber font-bold">HOVER RADAR BLIPS</span>
@@ -206,12 +210,12 @@
 
         <!-- Telemetry Data Matrix -->
         <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mt-12 font-mono">
-            <div class="hud-reticle p-4 bg-hud-panel border border-hud-border">
+            <div class="hud-reticle hud-reticle-crimson p-4 bg-hud-panel border border-hud-border">
                 <div class="text-[10px] text-slate-400 uppercase flex items-center justify-between">
                     <span>ACADEMIC_INDEX</span>
-                    <i class="fa-solid fa-graduation-cap text-hud-cyan"></i>
+                    <i class="fa-solid fa-graduation-cap text-hud-crimson"></i>
                 </div>
-                <div class="text-2xl sm:text-3xl font-display font-black text-white mt-1">3.77<span class="text-xs text-hud-cyan font-mono">/4.00</span></div>
+                <div class="text-2xl sm:text-3xl font-display font-black text-white mt-1">3.77<span class="text-xs text-hud-crimson font-mono">/4.00</span></div>
                 <div class="text-[10px] text-slate-400">Virginia Tech • M.S. Aerospace</div>
             </div>
 
@@ -249,8 +253,8 @@
         
         <div class="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-4">
             <div>
-                <div class="text-xs font-mono font-bold tracking-widest text-hud-cyan uppercase flex items-center gap-2">
-                    <span class="w-2 h-2 bg-hud-cyan inline-block"></span>
+                <div class="text-xs font-mono font-bold tracking-widest text-hud-crimson uppercase flex items-center gap-2">
+                    <span class="w-2 h-2 bg-hud-crimson inline-block"></span>
                     // MISSION LOGS & CASE STUDIES
                 </div>
                 <h2 class="text-2xl sm:text-4xl font-display font-black text-white tracking-tight uppercase mt-1">Engineering Projects</h2>
@@ -258,7 +262,7 @@
             
             <!-- Filters -->
             <div class="inline-flex p-1 rounded bg-hud-panel border border-hud-border font-mono text-xs">
-                <button onclick="filterProjects('all')" id="btn-all" class="filter-btn px-3 py-1.5 rounded bg-hud-cyan text-black font-extrabold transition">ALL</button>
+                <button onclick="filterProjects('all')" id="btn-all" class="filter-btn px-3 py-1.5 rounded bg-hud-crimson text-white font-extrabold transition">ALL</button>
                 <button onclick="filterProjects('design')" id="btn-design" class="filter-btn px-3 py-1.5 rounded text-slate-400 hover:text-white transition">DESIGN / DFM</button>
                 <button onclick="filterProjects('cae')" id="btn-cae" class="filter-btn px-3 py-1.5 rounded text-slate-400 hover:text-white transition">CAE / DYNAMICS</button>
             </div>
@@ -300,11 +304,11 @@
             </div>
 
             <!-- PROJECT 2: Custom MATLAB Solver -->
-            <div class="project-card cae hud-reticle bg-hud-panel border border-hud-border p-6 rounded flex flex-col justify-between hover:border-hud-cyan transition">
+            <div class="project-card cae hud-reticle hud-reticle-crimson bg-hud-panel border border-hud-border p-6 rounded flex flex-col justify-between hover:border-hud-crimson transition">
                 <div>
-                    <div class="flex items-center justify-between text-[11px] font-mono pb-3 border-b border-hud-border/80 text-hud-cyan font-bold">
+                    <div class="flex items-center justify-between text-[11px] font-mono pb-3 border-b border-hud-border/80 text-hud-crimson font-bold">
                         <span><i class="fa-solid fa-wave-square mr-1"></i> SYS_ID: CAE-16DOF-CLPT</span>
-                        <span class="px-2 py-0.5 rounded bg-hud-cyan/10 border border-hud-cyan/30 text-hud-cyan">CAE // FIRST-PRINCIPLES</span>
+                        <span class="px-2 py-0.5 rounded bg-hud-crimson/10 border border-hud-crimson/30 text-hud-crimson">CAE // FIRST-PRINCIPLES</span>
                     </div>
 
                     <h3 class="text-lg font-display font-bold text-white mt-3 mb-2">16-DOF Plate Dynamic Solver & CLPT</h3>
@@ -313,9 +317,9 @@
                     </p>
 
                     <div class="space-y-1.5 text-xs font-mono text-slate-400 mb-4 bg-hud-black/60 p-3 border border-hud-border/60 rounded">
-                        <div><strong class="text-hud-cyan">> Formulation:</strong> [M], [K], and coupled piezoelectric matrices [Kuφ].</div>
-                        <div><strong class="text-hud-cyan">> Validation:</strong> Modal frequency error <2.4% vs. published literature.</div>
-                        <div><strong class="text-hud-cyan">> Actuation:</strong> Tuned PZT placement at high modal strain anti-nodes.</div>
+                        <div><strong class="text-hud-crimson">> Formulation:</strong> [M], [K], and coupled piezoelectric matrices [Kuφ].</div>
+                        <div><strong class="text-hud-crimson">> Validation:</strong> Modal frequency error <2.4% vs. published literature.</div>
+                        <div><strong class="text-hud-crimson">> Actuation:</strong> Tuned PZT placement at high modal strain anti-nodes.</div>
                     </div>
                 </div>
 
@@ -325,7 +329,7 @@
                         <span class="px-2 py-0.5 rounded bg-hud-black border border-hud-border">CLPT</span>
                         <span class="px-2 py-0.5 rounded bg-hud-black border border-hud-border">MODAL SOLVER</span>
                     </div>
-                    <button onclick="openModal('modal-solver')" class="w-full py-2 rounded bg-hud-cyan/10 hover:bg-hud-cyan text-hud-cyan hover:text-black border border-hud-cyan/40 font-mono text-xs font-bold transition flex items-center justify-center gap-2">
+                    <button onclick="openModal('modal-solver')" class="w-full py-2 rounded bg-hud-crimson/10 hover:bg-hud-crimson text-hud-crimson hover:text-white border border-hud-crimson/40 font-mono text-xs font-bold transition flex items-center justify-center gap-2">
                         <span>OPEN TELEMETRY REPORT</span> <i class="fa-solid fa-arrow-right"></i>
                     </button>
                 </div>
@@ -364,11 +368,11 @@
             </div>
 
             <!-- PROJECT 4: Chassis Topology Opt -->
-            <div class="project-card design hud-reticle hud-reticle-amber bg-hud-panel border border-hud-border p-6 rounded flex flex-col justify-between hover:border-hud-amber transition">
+            <div class="project-card design hud-reticle hud-reticle-crimson bg-hud-panel border border-hud-border p-6 rounded flex flex-col justify-between hover:border-hud-crimson transition">
                 <div>
-                    <div class="flex items-center justify-between text-[11px] font-mono pb-3 border-b border-hud-border/80 text-hud-amber font-bold">
+                    <div class="flex items-center justify-between text-[11px] font-mono pb-3 border-b border-hud-border/80 text-hud-crimson font-bold">
                         <span><i class="fa-solid fa-cube mr-1"></i> SYS_ID: OPT-CHASSIS-CFRP</span>
-                        <span class="px-2 py-0.5 rounded bg-hud-amber/10 border border-hud-amber/30 text-hud-amber">LIGHTWEIGHTING</span>
+                        <span class="px-2 py-0.5 rounded bg-hud-crimson/10 border border-hud-crimson/30 text-hud-crimson">LIGHTWEIGHTING</span>
                     </div>
 
                     <h3 class="text-lg font-display font-bold text-white mt-3 mb-2">Chassis Topology & Carbon Fiber Conversion</h3>
@@ -377,8 +381,8 @@
                     </p>
 
                     <div class="space-y-1.5 text-xs font-mono text-slate-400 mb-4 bg-hud-black/60 p-3 border border-hud-border/60 rounded">
-                        <div><strong class="text-hud-amber">> Mass Cut:</strong> Reduced weight 32.4% (7.4 kg → 5.0 kg).</div>
-                        <div><strong class="text-hud-amber">> Resonance:</strong> Separated fundamental modes (>140 Hz) from motor harmonics.</div>
+                        <div><strong class="text-hud-crimson">> Mass Cut:</strong> Reduced weight 32.4% (7.4 kg → 5.0 kg).</div>
+                        <div><strong class="text-hud-crimson">> Resonance:</strong> Separated fundamental modes (>140 Hz) from motor harmonics.</div>
                     </div>
                 </div>
 
@@ -388,7 +392,7 @@
                         <span class="px-2 py-0.5 rounded bg-hud-black border border-hud-border">3K CFRP</span>
                         <span class="px-2 py-0.5 rounded bg-hud-black border border-hud-border">MODAL TUNING</span>
                     </div>
-                    <button onclick="openModal('modal-chassis')" class="w-full py-2 rounded bg-hud-amber/10 hover:bg-hud-amber text-hud-amber hover:text-black border border-hud-amber/40 font-mono text-xs font-bold transition flex items-center justify-center gap-2">
+                    <button onclick="openModal('modal-chassis')" class="w-full py-2 rounded bg-hud-crimson/10 hover:bg-hud-crimson text-hud-crimson hover:text-white border border-hud-crimson/40 font-mono text-xs font-bold transition flex items-center justify-center gap-2">
                         <span>OPEN TELEMETRY REPORT</span> <i class="fa-solid fa-arrow-right"></i>
                     </button>
                 </div>
@@ -399,8 +403,8 @@
 
     <!-- Subsystem Competency Matrix -->
     <section id="skills" class="max-w-7xl mx-auto px-6 py-14 border-t border-hud-border">
-        <div class="text-xs font-mono font-bold tracking-widest text-hud-cyan uppercase flex items-center gap-2">
-            <span class="w-2 h-2 bg-hud-cyan inline-block"></span>
+        <div class="text-xs font-mono font-bold tracking-widest text-hud-crimson uppercase flex items-center gap-2">
+            <span class="w-2 h-2 bg-hud-crimson inline-block"></span>
             // SUBSYSTEM COMPETENCY MATRIX
         </div>
         <h2 class="text-2xl sm:text-4xl font-display font-black text-white tracking-tight uppercase mt-1 mb-8">Technical Arsenal</h2>
@@ -418,15 +422,15 @@
                 </ul>
             </div>
 
-            <div class="hud-reticle p-5 bg-hud-panel border border-hud-border">
-                <div class="text-hud-cyan font-bold text-sm tracking-wider uppercase mb-3 flex items-center gap-2">
-                    <i class="fa-solid fa-chart-line"></i> CAE & DYNAMICS
+            <div class="hud-reticle hud-reticle-crimson p-5 bg-hud-panel border border-hud-border">
+                <div class="text-hud-crimson font-bold text-sm tracking-wider uppercase mb-3 flex items-center gap-2">
+                    <i class="fa-solid fa-fire"></i> CAE & WAVE DYNAMICS
                 </div>
                 <ul class="space-y-2 text-slate-300">
-                    <li><span class="text-hud-cyan">></span> Abaqus (Explicit & Standard)</li>
-                    <li><span class="text-hud-cyan">></span> ANSYS Mechanical (Static, Modal, Dynamic)</li>
-                    <li><span class="text-hud-cyan">></span> Classical Laminated Plate Theory (CLPT)</li>
-                    <li><span class="text-hud-cyan">></span> Dynamic Resonance & Harmonic Margin</li>
+                    <li><span class="text-hud-crimson">></span> Abaqus (Explicit & Standard)</li>
+                    <li><span class="text-hud-crimson">></span> ANSYS Mechanical (Static, Modal, Dynamic)</li>
+                    <li><span class="text-hud-crimson">></span> Classical Laminated Plate Theory (CLPT)</li>
+                    <li><span class="text-hud-crimson">></span> Dynamic Resonance & Harmonic Margin</li>
                 </ul>
             </div>
 
@@ -446,20 +450,20 @@
 
     <!-- Service Chronology -->
     <section id="experience" class="max-w-7xl mx-auto px-6 py-14 border-t border-hud-border">
-        <div class="text-xs font-mono font-bold tracking-widest text-hud-cyan uppercase flex items-center gap-2">
-            <span class="w-2 h-2 bg-hud-cyan inline-block"></span>
+        <div class="text-xs font-mono font-bold tracking-widest text-hud-crimson uppercase flex items-center gap-2">
+            <span class="w-2 h-2 bg-hud-crimson inline-block"></span>
             // SERVICE CHRONOLOGY
         </div>
         <h2 class="text-2xl sm:text-4xl font-display font-black text-white tracking-tight uppercase mt-1 mb-8">Field Experience</h2>
         
         <div class="space-y-4 font-mono text-xs">
-            <div class="hud-reticle hud-reticle-amber p-5 bg-hud-panel border border-hud-border flex flex-col md:flex-row md:items-start justify-between gap-4">
+            <div class="hud-reticle hud-reticle-crimson p-5 bg-hud-panel border border-hud-border flex flex-col md:flex-row md:items-start justify-between gap-4">
                 <div>
-                    <div class="text-hud-amber font-bold uppercase">Virginia Tech • Engineering Education</div>
+                    <div class="text-hud-crimson font-bold uppercase">Virginia Tech • Engineering Education</div>
                     <div class="text-base font-display font-bold text-white mt-0.5">Graduate Teaching Assistant — CAD & ASME Y14.5 GD&T</div>
                     <p class="text-slate-300 mt-1.5">Instruct undergrads in SolidWorks 3D modeling, datum structure establishment, and 1D/3D tolerance stacks.</p>
                 </div>
-                <div class="text-hud-amber bg-hud-amber/10 px-3 py-1 rounded border border-hud-amber/30 whitespace-nowrap self-start">DEC 2024 – PRESENT</div>
+                <div class="text-hud-crimson bg-hud-crimson/10 px-3 py-1 rounded border border-hud-crimson/30 whitespace-nowrap self-start">DEC 2024 – PRESENT</div>
             </div>
 
             <div class="hud-reticle p-5 bg-hud-panel border border-hud-border flex flex-col md:flex-row md:items-start justify-between gap-4">
@@ -486,19 +490,18 @@
     <footer class="border-t border-hud-border bg-hud-black py-8">
         <div class="max-w-7xl mx-auto px-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs font-mono text-slate-500">
             <div class="flex items-center gap-2">
-                <span class="w-2 h-2 rounded-full bg-hud-green"></span>
+                <span class="w-2 h-2 rounded-full bg-hud-crimson animate-ping"></span>
                 <span>ANIMESH D. KULKARNI // BLACKSBURG, VA</span>
             </div>
             <div class="flex items-center gap-6">
-                <a href="mailto:animeshdk@vt.edu" class="hover:text-hud-cyan transition">animeshdk@vt.edu</a>
-                <a href="https://www.linkedin.com/in/animeshkulkarni" target="_blank" class="hover:text-hud-cyan transition">LinkedIn</a>
-                <a href="#mission" class="hover:text-hud-cyan transition text-hud-cyan">TOP_LEVEL ↑</a>
+                <a href="mailto:animeshdk@vt.edu" class="hover:text-hud-crimson transition">animeshdk@vt.edu</a>
+                <a href="https://www.linkedin.com/in/animeshkulkarni" target="_blank" class="hover:text-hud-crimson transition">LinkedIn</a>
+                <a href="#mission" class="hover:text-hud-crimson transition text-hud-crimson font-bold">TOP_LEVEL ↑</a>
             </div>
         </div>
     </footer>
 
     <!-- Modals -->
-    <!-- Modal 1 -->
     <div id="modal-coupling" class="fixed inset-0 z-50 bg-hud-black/90 backdrop-blur-md hidden items-center justify-center p-4">
         <div class="hud-reticle hud-reticle-amber bg-hud-panel border-2 border-hud-amber max-w-xl w-full max-h-[90vh] overflow-y-auto p-6 shadow-[0_0_40px_rgba(255,170,0,0.25)]">
             <div class="flex items-center justify-between pb-3 border-b border-hud-border text-hud-amber font-mono text-xs font-bold">
@@ -524,29 +527,27 @@
         </div>
     </div>
 
-    <!-- Modal 2 -->
     <div id="modal-solver" class="fixed inset-0 z-50 bg-hud-black/90 backdrop-blur-md hidden items-center justify-center p-4">
-        <div class="hud-reticle bg-hud-panel border-2 border-hud-cyan max-w-xl w-full max-h-[90vh] overflow-y-auto p-6 shadow-[0_0_40px_rgba(0,240,255,0.25)]">
-            <div class="flex items-center justify-between pb-3 border-b border-hud-border text-hud-cyan font-mono text-xs font-bold">
+        <div class="hud-reticle hud-reticle-crimson bg-hud-panel border-2 border-hud-crimson max-w-xl w-full max-h-[90vh] overflow-y-auto p-6 shadow-[0_0_40px_rgba(255,0,85,0.25)]">
+            <div class="flex items-center justify-between pb-3 border-b border-hud-border text-hud-crimson font-mono text-xs font-bold">
                 <span>// DOSSIER: CAE-16DOF-CLPT</span>
                 <button onclick="closeModal('modal-solver')" class="text-slate-400 hover:text-white text-lg">&times;</button>
             </div>
             <h3 class="text-xl font-display font-black text-white mt-3 mb-2">Custom 16-DOF BFS Plate Dynamic Solver</h3>
             <div class="space-y-3 text-xs font-mono text-slate-300">
                 <div class="p-3 bg-hud-black border border-hud-border rounded">
-                    <strong class="text-hud-cyan block mb-1">Formulation:</strong>
+                    <strong class="text-hud-crimson block mb-1">Formulation:</strong>
                     Used 16-DOF Bogner-Fox-Schmit (BFS) C1 elements. Derived mass [M], stiffness [K], and coupled piezoelectric matrices [Kuφ] via Hamilton's Principle.
                 </div>
                 <div class="p-3 bg-hud-black border border-hud-border rounded">
-                    <strong class="text-hud-cyan block mb-1">Validation:</strong>
+                    <strong class="text-hud-crimson block mb-1">Validation:</strong>
                     Extracted natural frequencies via generalized eigenvalue solution with <2.4% residual error vs published benchmark data.
                 </div>
             </div>
-            <button onclick="closeModal('modal-solver')" class="mt-4 w-full py-2.5 rounded bg-hud-cyan text-hud-black font-mono font-bold text-xs">CLOSE REPORT</button>
+            <button onclick="closeModal('modal-solver')" class="mt-4 w-full py-2.5 rounded bg-hud-crimson text-white font-mono font-bold text-xs">CLOSE REPORT</button>
         </div>
     </div>
 
-    <!-- Modal 3 -->
     <div id="modal-abaqus" class="fixed inset-0 z-50 bg-hud-black/90 backdrop-blur-md hidden items-center justify-center p-4">
         <div class="hud-reticle bg-hud-panel border-2 border-hud-green max-w-xl w-full max-h-[90vh] overflow-y-auto p-6 shadow-[0_0_40px_rgba(0,255,136,0.25)]">
             <div class="flex items-center justify-between pb-3 border-b border-hud-border text-hud-green font-mono text-xs font-bold">
@@ -568,31 +569,29 @@
         </div>
     </div>
 
-    <!-- Modal 4 -->
     <div id="modal-chassis" class="fixed inset-0 z-50 bg-hud-black/90 backdrop-blur-md hidden items-center justify-center p-4">
-        <div class="hud-reticle hud-reticle-amber bg-hud-panel border-2 border-hud-amber max-w-xl w-full max-h-[90vh] overflow-y-auto p-6 shadow-[0_0_40px_rgba(255,170,0,0.25)]">
-            <div class="flex items-center justify-between pb-3 border-b border-hud-border text-hud-amber font-mono text-xs font-bold">
+        <div class="hud-reticle hud-reticle-crimson bg-hud-panel border-2 border-hud-crimson max-w-xl w-full max-h-[90vh] overflow-y-auto p-6 shadow-[0_0_40px_rgba(255,0,85,0.25)]">
+            <div class="flex items-center justify-between pb-3 border-b border-hud-border text-hud-crimson font-mono text-xs font-bold">
                 <span>// DOSSIER: OPT-CHASSIS-CFRP</span>
                 <button onclick="closeModal('modal-chassis')" class="text-slate-400 hover:text-white text-lg">&times;</button>
             </div>
             <h3 class="text-xl font-display font-black text-white mt-3 mb-2">Chassis Topology Optimization</h3>
             <div class="space-y-3 text-xs font-mono text-slate-300">
                 <div class="p-3 bg-hud-black border border-hud-border rounded">
-                    <strong class="text-hud-amber block mb-1">SIMP Optimization:</strong>
+                    <strong class="text-hud-crimson block mb-1">SIMP Optimization:</strong>
                     Converted aluminum structural brackets to 3K carbon fiber composites, cutting mass 32.4% (7.4 kg → 5.0 kg) while maintaining structural yield.
                 </div>
                 <div class="p-3 bg-hud-black border border-hud-border rounded">
-                    <strong class="text-hud-amber block mb-1">Modal Separation:</strong>
+                    <strong class="text-hud-crimson block mb-1">Modal Separation:</strong>
                     Tuned fundamental natural frequencies (>140 Hz) beyond motor operational RPM harmonics.
                 </div>
             </div>
-            <button onclick="closeModal('modal-chassis')" class="mt-4 w-full py-2.5 rounded bg-hud-amber text-hud-black font-mono font-bold text-xs">CLOSE REPORT</button>
+            <button onclick="closeModal('modal-chassis')" class="mt-4 w-full py-2.5 rounded bg-hud-crimson text-white font-mono font-bold text-xs">CLOSE REPORT</button>
         </div>
     </div>
 
     <!-- Interactive JavaScript Engine -->
     <script>
-        // --- 1. Real-Time Telemetry Clock & Scroll Calculation ---
         function updateClock() {
             const now = new Date();
             document.getElementById('telemetry-time').textContent = now.toTimeString().split(' ')[0];
@@ -608,18 +607,17 @@
             document.getElementById('telemetry-alt').textContent = alt;
         });
 
-        // --- 2. Interactive Canvas Radar Engine ---
+        // --- Radar Engine with Crimson Passion Beams & Blips ---
         const canvas = document.getElementById('radarCanvas');
         const ctx = canvas.getContext('2d');
         let sweepAngle = 0;
         let mouseX = -100, mouseY = -100;
 
-        // Target Blips
         const targets = [
             { x: 260, y: 130, r: 5, color: '#ffaa00', name: 'SYS_130NM', spec: '130 Nm / H7-h6 GD&T' },
-            { x: 130, y: 250, r: 5, color: '#00f0ff', name: 'CAE_SOLVER', spec: '16-DOF / <2.4% Res.' },
+            { x: 130, y: 250, r: 5, color: '#ff0055', name: 'PASSION_SOLVER', spec: '16-DOF / <2.4% Res.' },
             { x: 280, y: 270, r: 5, color: '#00ff88', name: 'HPC_ABAQUS', spec: 'Explicit / >100 kHz' },
-            { x: 140, y: 140, r: 5, color: '#b026ff', name: 'OPT_CFRP', spec: '-32.4% Mass / SIMP' }
+            { x: 140, y: 140, r: 5, color: '#ff3344', name: 'CFRP_CORE', spec: '-32.4% Mass / SIMP' }
         ];
 
         canvas.addEventListener('mousemove', (e) => {
@@ -627,7 +625,6 @@
             mouseX = (e.clientX - rect.left) * (canvas.width / rect.width);
             mouseY = (e.clientY - rect.top) * (canvas.height / rect.height);
             
-            // Check target hover
             let hovered = false;
             targets.forEach(t => {
                 const dist = Math.hypot(mouseX - t.x, mouseY - t.y);
@@ -644,7 +641,7 @@
                 let angle = Math.atan2(mouseY - cy, mouseX - cx) * (180 / Math.PI) + 90;
                 if (angle < 0) angle += 360;
                 document.getElementById('target-name').textContent = `AZ: ${Math.floor(angle).toString().padStart(3, '0')}°`;
-                document.getElementById('target-name').style.color = '#00f0ff';
+                document.getElementById('target-name').style.color = '#ff0055';
                 document.getElementById('target-spec').textContent = `RNG: ${(Math.hypot(mouseX - cx, mouseY - cy) / 20).toFixed(1)} NM`;
             }
         });
@@ -653,7 +650,7 @@
             mouseX = -100;
             mouseY = -100;
             document.getElementById('target-name').textContent = 'SWEEPING ACTIVE';
-            document.getElementById('target-name').style.color = '#00f0ff';
+            document.getElementById('target-name').style.color = '#ff0055';
             document.getElementById('target-spec').textContent = 'HOVER RADAR BLIPS';
         });
 
@@ -664,7 +661,7 @@
             const radius = 180;
 
             // Grid Rings
-            ctx.strokeStyle = 'rgba(0, 240, 255, 0.15)';
+            ctx.strokeStyle = 'rgba(255, 0, 85, 0.2)';
             ctx.lineWidth = 1;
             [40, 85, 130, radius].forEach(r => {
                 ctx.beginPath();
@@ -673,19 +670,19 @@
             });
 
             // Grid Axes
-            ctx.strokeStyle = 'rgba(0, 240, 255, 0.1)';
+            ctx.strokeStyle = 'rgba(255, 0, 85, 0.15)';
             ctx.beginPath();
             ctx.moveTo(cx, cy - radius); ctx.lineTo(cx, cy + radius);
             ctx.moveTo(cx - radius, cy); ctx.lineTo(cx + radius, cy);
             ctx.stroke();
 
-            // Radar Sweep Beam
+            // Radar Sweep Beam with Passion Crimson-Orange Gradient
             ctx.save();
             ctx.translate(cx, cy);
             ctx.rotate(sweepAngle);
             const grad = ctx.createRadialGradient(0, 0, 10, 0, 0, radius);
-            grad.addColorStop(0, 'rgba(0, 240, 255, 0.4)');
-            grad.addColorStop(0.5, 'rgba(0, 240, 255, 0.08)');
+            grad.addColorStop(0, 'rgba(255, 0, 85, 0.45)');
+            grad.addColorStop(0.5, 'rgba(255, 51, 68, 0.12)');
             grad.addColorStop(1, 'transparent');
             
             ctx.fillStyle = grad;
@@ -703,16 +700,15 @@
                 ctx.arc(t.x, t.y, t.r, 0, Math.PI * 2);
                 ctx.fill();
 
-                // Target rings
                 ctx.strokeStyle = t.color;
                 ctx.beginPath();
-                ctx.arc(t.x, t.y, 10 + Math.sin(Date.now() / 200) * 2, 0, Math.PI * 2);
+                ctx.arc(t.x, t.y, 10 + Math.sin(Date.now() / 200) * 2.5, 0, Math.PI * 2);
                 ctx.stroke();
             });
 
             // Mouse Interactive Crosshair
             if (mouseX > 0 && mouseY > 0) {
-                ctx.strokeStyle = 'rgba(255, 170, 0, 0.7)';
+                ctx.strokeStyle = 'rgba(255, 0, 85, 0.8)';
                 ctx.lineWidth = 1;
                 ctx.beginPath();
                 ctx.arc(mouseX, mouseY, 8, 0, Math.PI * 2);
@@ -726,18 +722,18 @@
         }
         drawRadar();
 
-        // --- 3. Filter & Modal Handlers ---
+        // --- Filters & Modals ---
         function filterProjects(category) {
             const cards = document.querySelectorAll('.project-card');
             const buttons = document.querySelectorAll('.filter-btn');
 
             buttons.forEach(btn => {
-                btn.classList.remove('bg-hud-cyan', 'text-black', 'font-extrabold');
+                btn.classList.remove('bg-hud-crimson', 'text-white', 'font-extrabold');
                 btn.classList.add('text-slate-400');
             });
 
             const activeBtn = document.getElementById(`btn-${category}`);
-            activeBtn.classList.add('bg-hud-cyan', 'text-black', 'font-extrabold');
+            activeBtn.classList.add('bg-hud-crimson', 'text-white', 'font-extrabold');
             activeBtn.classList.remove('text-slate-400');
 
             cards.forEach(card => {
