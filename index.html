@@ -17,10 +17,10 @@
                             panelAlt: '#111b30',
                             border: '#1a2742',
                             borderBright: '#263b63',
-                            sky: '#38bdf8',         // Ice Blue Telemetry
-                            emerald: '#34d399',     // Mint Nominal Status
-                            amber: '#fbbf24',       // Gold Hardware Focus
-                            indigo: '#818cf8',      // Matrix Dynamics
+                            sky: '#38bdf8',         // Primary Flight Telemetry (Ice Blue)
+                            emerald: '#34d399',     // Nominal Status / Validation (Soft Mint)
+                            amber: '#fbbf24',       // Hardware / DFM Focus (Burnished Gold)
+                            indigo: '#818cf8',      // Solver Matrix Dynamics
                             slate: '#94a3b8'        // Subdued Text
                         }
                     },
@@ -82,7 +82,7 @@
                 <span class="w-1.5 h-1.5 rounded-full bg-hud-emerald inline-block animate-ping"></span>
                 SYSTEMS: NOMINAL
             </span>
-            <span class="hidden sm:inline text-slate-400">VT-AERO-PROPULSION // GLASS AVIONICS ACTIVE</span>
+            <span class="hidden sm:inline text-slate-400">VT-AERO-PROPULSION // FLIGHT VECTOR ACTIVE</span>
             <span class="hidden md:inline text-hud-sky">UTC: <span id="telemetry-time">00:00:00</span></span>
         </div>
         <div class="flex items-center gap-4 text-hud-sky font-bold">
@@ -123,7 +123,7 @@
         </div>
     </header>
 
-    <!-- Hero Section: Flight Deck Console & Interactive Radar -->
+    <!-- Hero Section: Flight Deck Console & Interactive Moving Plane HUD -->
     <section id="mission" class="max-w-7xl mx-auto px-6 pt-8 pb-12 relative">
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
             
@@ -132,7 +132,7 @@
                 
                 <div class="inline-flex items-center gap-2 px-3 py-1 rounded bg-hud-panel border border-hud-border text-hud-sky font-mono text-[11px] font-bold tracking-wider">
                     <span class="w-1.5 h-1.5 rounded-full bg-hud-sky animate-ping"></span>
-                    FLIGHT DIRECTORY // CLICK TARGETS TO ENGAGE CASE STUDIES
+                    ACTIVE RADAR // MOVE CURSOR TO BANK THE AIRCRAFT
                 </div>
 
                 <h1 class="text-3xl sm:text-5xl font-display font-black text-white tracking-tight uppercase leading-tight">
@@ -188,11 +188,10 @@
 
             </div>
 
-            <!-- Right Interactive Tactical Radar with Animated Patrolling Jet -->
+            <!-- Right: Interactive Tactical HUD Radar with Moving Jet Flight Vector -->
             <div class="lg:col-span-6 flex flex-col items-center">
                 <div class="relative w-full max-w-[420px] aspect-square bg-hud-panel/90 rounded-full border border-hud-borderBright p-2 shadow-[0_0_40px_rgba(56,189,248,0.08)] flex items-center justify-center">
                     
-                    <!-- Tactical HTML5 Canvas with Moving Plane & Sweep -->
                     <canvas id="radarCanvas" width="400" height="400" class="w-full h-full cursor-crosshair rounded-full"></canvas>
 
                     <!-- Azimuth Ticks -->
@@ -200,13 +199,20 @@
                     <div class="absolute bottom-2 font-mono text-[9px] text-hud-sky/70 font-bold select-none pointer-events-none">180° [S]</div>
                     <div class="absolute left-2 font-mono text-[9px] text-hud-sky/70 font-bold select-none pointer-events-none">270° [W]</div>
                     <div class="absolute right-2 font-mono text-[9px] text-hud-sky/70 font-bold select-none pointer-events-none">090° [E]</div>
+
+                    <!-- Small Flight Indicator Overlay -->
+                    <div class="absolute bottom-6 font-mono text-[8px] text-slate-400 bg-hud-black/70 px-2 py-0.5 rounded border border-hud-border pointer-events-none flex items-center gap-2">
+                        <span>HDG: <span id="plane-hdg" class="text-hud-sky font-bold">000°</span></span>
+                        <span>BANK: <span id="plane-bank" class="text-hud-emerald font-bold">0°</span></span>
+                    </div>
                 </div>
 
+                <!-- HUD Telemetry Output Bar -->
                 <div class="w-full max-w-[420px] mt-4 p-3 bg-hud-panel border border-hud-border rounded font-mono text-xs flex items-center justify-between">
                     <div class="flex items-center gap-2">
                         <span class="w-2 h-2 rounded-full bg-hud-sky animate-pulse"></span>
                         <span class="text-slate-400">ENGAGE:</span>
-                        <span id="target-name" class="text-hud-sky font-bold uppercase">SWEEPING ACTIVE</span>
+                        <span id="target-name" class="text-hud-sky font-bold uppercase">PATROL CRUISE</span>
                     </div>
                     <div class="text-slate-400 text-right">
                         <span id="target-spec" class="text-hud-emerald font-bold">CLICK BLIP TO OPEN</span>
@@ -268,7 +274,6 @@
                 <h2 class="text-2xl sm:text-4xl font-display font-black text-white tracking-tight uppercase mt-1">Engineering Projects</h2>
             </div>
             
-            <!-- Filters -->
             <div class="inline-flex p-1 rounded bg-hud-panel border border-hud-border font-mono text-xs">
                 <button onclick="filterProjects('all')" id="btn-all" class="filter-btn px-3.5 py-1.5 rounded bg-hud-sky text-black font-extrabold transition">ALL</button>
                 <button onclick="filterProjects('design')" id="btn-design" class="filter-btn px-3.5 py-1.5 rounded text-slate-400 hover:text-white transition">DESIGN / DFM</button>
@@ -598,6 +603,7 @@
         </div>
     </div>
 
+    <!-- Interactive JavaScript Engine with Dynamic Moving Aircraft -->
     <script>
         function updateClock() {
             const now = new Date();
@@ -614,12 +620,17 @@
             document.getElementById('telemetry-alt').textContent = alt;
         });
 
-        // --- Radar Canvas Engine with Center Moving Aircraft ---
+        // --- Radar Canvas Engine with Real-Time Moving & Banking Aircraft ---
         const canvas = document.getElementById('radarCanvas');
         const ctx = canvas.getContext('2d');
         let sweepAngle = 0;
         let mouseX = -100, mouseY = -100;
-        let contrailHistory = [];
+
+        // Aircraft Physical State
+        let planeAngle = 0;
+        let planeSpeed = 0.04;
+        let planeBank = 0;
+        let trail = [];
 
         const targets = [
             { x: 260, y: 130, r: 6.5, color: '#fbbf24', name: 'SYS_130NM', spec: '130 Nm / H7-h6 GD&T', modalId: 'modal-coupling' },
@@ -677,59 +688,92 @@
         canvas.addEventListener('mouseleave', () => {
             mouseX = -100;
             mouseY = -100;
-            document.getElementById('target-name').textContent = 'SWEEPING ACTIVE';
+            document.getElementById('target-name').textContent = 'PATROL CRUISE';
             document.getElementById('target-name').style.color = '#38bdf8';
             document.getElementById('target-spec').textContent = 'CLICK BLIP TO OPEN';
         });
 
-        // Function to draw sleek vector fighter jet
-        function drawMovingAircraft(x, y, heading) {
+        // Function to Draw Dynamic Moving & Banking Fighter Jet
+        function drawMovingAircraft(cx, cy, heading, bank) {
             ctx.save();
-            ctx.translate(x, y);
+            ctx.translate(cx, cy);
             ctx.rotate(heading);
 
-            // Afterburner Glow
-            const engineGlow = ctx.createRadialGradient(0, 12, 1, 0, 14, 8);
-            engineGlow.addColorStop(0, 'rgba(56, 189, 248, 0.9)');
-            engineGlow.addColorStop(0.6, 'rgba(52, 211, 153, 0.4)');
-            engineGlow.addColorStop(1, 'transparent');
-            ctx.fillStyle = engineGlow;
+            // Wingtip Vortices / Contrail emission
+            if (Math.random() > 0.3) {
+                trail.push({
+                    x: cx - Math.sin(heading) * 16 + (Math.random() - 0.5) * 2,
+                    y: cy + Math.cos(heading) * 16 + (Math.random() - 0.5) * 2,
+                    alpha: 0.6,
+                    radius: 2
+                });
+            }
+
+            // Afterburner Jet Plume
+            const flameLen = 8 + Math.sin(Date.now() / 50) * 4;
+            const gradFlame = ctx.createLinearGradient(0, 10, 0, 10 + flameLen);
+            gradFlame.addColorStop(0, 'rgba(56, 189, 248, 0.9)');
+            gradFlame.addColorStop(0.5, 'rgba(52, 211, 153, 0.6)');
+            gradFlame.addColorStop(1, 'transparent');
+            
+            ctx.fillStyle = gradFlame;
             ctx.beginPath();
-            ctx.arc(0, 13, 7, 0, Math.PI * 2);
+            ctx.moveTo(-3, 10);
+            ctx.lineTo(3, 10);
+            ctx.lineTo(0, 10 + flameLen);
+            ctx.closePath();
             ctx.fill();
 
-            // Aircraft Silhouette
-            ctx.fillStyle = '#38bdf8';
-            ctx.strokeStyle = '#ffffff';
-            ctx.lineWidth = 1;
+            // Fuselage & Wing Geometry (Applies banking perspective scale)
+            const bankScaleX = Math.cos(bank);
+            ctx.scale(bankScaleX, 1);
+
+            // Main Aircraft Delta Wings & Body
+            ctx.fillStyle = '#070b14';
+            ctx.strokeStyle = '#38bdf8';
+            ctx.lineWidth = 1.6;
 
             ctx.beginPath();
             // Nose Cone
-            ctx.moveTo(0, -18);
-            // Right Wing
-            ctx.lineTo(3.5, -4);
+            ctx.moveTo(0, -22);
+            // Right Leading Edge
+            ctx.lineTo(3, -10);
+            ctx.lineTo(16, 2);
+            // Right Wingtip Missile Rail
             ctx.lineTo(16, 6);
-            ctx.lineTo(14, 9);
-            ctx.lineTo(4, 7);
-            // Right Tail Fin
-            ctx.lineTo(6, 14);
-            ctx.lineTo(0, 12);
-            // Left Tail Fin
-            ctx.lineTo(-6, 14);
-            ctx.lineTo(-4, 7);
-            // Left Wing
-            ctx.lineTo(-14, 9);
+            ctx.lineTo(5, 7);
+            // Right Elevator
+            ctx.lineTo(8, 14);
+            ctx.lineTo(2, 12);
+            // Exhaust Nozzle
+            ctx.lineTo(0, 10);
+            // Left Elevator
+            ctx.lineTo(-2, 12);
+            ctx.lineTo(-8, 14);
+            // Left Wingtip Missile Rail
+            ctx.lineTo(-5, 7);
             ctx.lineTo(-16, 6);
-            ctx.lineTo(-3.5, -4);
+            ctx.lineTo(-16, 2);
+            // Left Leading Edge
+            ctx.lineTo(-3, -10);
             ctx.closePath();
+            
             ctx.fill();
             ctx.stroke();
 
-            // Cockpit Canopy Dot
-            ctx.fillStyle = '#ffffff';
+            // Cockpit Glass Canopy
+            ctx.fillStyle = '#38bdf8';
             ctx.beginPath();
-            ctx.ellipse(0, -6, 1.5, 3.5, 0, 0, Math.PI * 2);
+            ctx.ellipse(0, -7, 1.8, 5, 0, 0, Math.PI * 2);
             ctx.fill();
+
+            // Twin Vertical Stabilizer Accents
+            ctx.strokeStyle = '#34d399';
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.moveTo(-3, 6); ctx.lineTo(-4, 12);
+            ctx.moveTo(3, 6); ctx.lineTo(4, 12);
+            ctx.stroke();
 
             ctx.restore();
         }
@@ -773,6 +817,18 @@
             ctx.fill();
             ctx.restore();
 
+            // Render Dynamic Smoke Trail
+            for (let i = trail.length - 1; i >= 0; i--) {
+                const p = trail[i];
+                ctx.fillStyle = `rgba(56, 189, 248, ${p.alpha * 0.4})`;
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+                ctx.fill();
+                p.alpha -= 0.015;
+                p.radius += 0.08;
+                if (p.alpha <= 0) trail.splice(i, 1);
+            }
+
             // Draw Targets
             targets.forEach(t => {
                 ctx.fillStyle = t.color;
@@ -791,42 +847,40 @@
                 ctx.fillText(t.name, t.x + 11, t.y + 3);
             });
 
-            // --- Moving Aircraft Physics & Flight Path around Center ---
-            const flightTime = Date.now() * 0.0009;
-            const orbitX = 42; // Horizontal orbit span near center
-            const orbitY = 28; // Vertical orbit span
-            
-            // Smooth Lissajous flight path around the central core
-            const jetX = cx + Math.sin(flightTime) * orbitX;
-            const jetY = cy + Math.cos(flightTime * 2) * (orbitY * 0.5);
-
-            // Compute instantaneous tangent heading angle
-            const dx = Math.cos(flightTime) * orbitX;
-            const dy = -Math.sin(flightTime * 2) * 2 * (orbitY * 0.5);
-            const heading = Math.atan2(dy, dx) + Math.PI / 2;
-
-            // Update & draw vapor contrail
-            contrailHistory.push({ x: jetX, y: jetY, alpha: 0.45 });
-            if (contrailHistory.length > 28) contrailHistory.shift();
-
-            for (let i = 0; i < contrailHistory.length; i++) {
-                const pt = contrailHistory[i];
-                pt.alpha *= 0.94;
-                ctx.fillStyle = `rgba(56, 189, 248, ${pt.alpha})`;
-                ctx.beginPath();
-                ctx.arc(pt.x, pt.y, (i / contrailHistory.length) * 2.5, 0, Math.PI * 2);
-                ctx.fill();
+            // Calculate Plane Heading & Bank Dynamics
+            let targetAngle = 0;
+            if (mouseX > 0 && mouseY > 0) {
+                // Nose turns toward user mouse crosshair
+                targetAngle = Math.atan2(mouseY - cy, mouseX - cx) + Math.PI / 2;
+            } else {
+                // Smooth patrol orbit
+                targetAngle = sweepAngle + Math.PI / 2;
             }
 
-            // Draw Central Moving Jet
-            drawMovingAircraft(jetX, jetY, heading);
+            // Smooth angular interpolation
+            let diff = (targetAngle - planeAngle);
+            while (diff < -Math.PI) diff += Math.PI * 2;
+            while (diff > Math.PI) diff -= Math.PI * 2;
+            planeAngle += diff * 0.05;
 
-            // Mini Telemetry Flight Tag next to Jet
-            ctx.fillStyle = 'rgba(56, 189, 248, 0.85)';
-            ctx.font = '7.5px JetBrains Mono';
-            ctx.fillText('VT-01 [M 0.88]', jetX + 14, jetY - 6);
+            // Bank angle proportional to turn rate
+            planeBank = diff * 1.5;
+            if (planeBank > 0.8) planeBank = 0.8;
+            if (planeBank < -0.8) planeBank = -0.8;
 
-            // Interactive Reticle on Mouse Hover
+            // Update on-screen telemetry
+            let degHdg = Math.floor((planeAngle * 180 / Math.PI) % 360);
+            if (degHdg < 0) degHdg += 360;
+            document.getElementById('plane-hdg').textContent = `${degHdg.toString().padStart(3, '0')}°`;
+            document.getElementById('plane-bank').textContent = `${Math.floor(planeBank * 35)}°`;
+
+            // Draw Active Center Moving Aircraft
+            // Subtle climb/dive floating motion
+            const planeOffsetX = Math.sin(Date.now() / 800) * 3;
+            const planeOffsetY = Math.cos(Date.now() / 600) * 3;
+            drawMovingAircraft(cx + planeOffsetX, cy + planeOffsetY, planeAngle, planeBank);
+
+            // Crosshairs
             if (mouseX > 0 && mouseY > 0) {
                 ctx.strokeStyle = 'rgba(56, 189, 248, 0.7)';
                 ctx.lineWidth = 1;
