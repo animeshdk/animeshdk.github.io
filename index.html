@@ -78,7 +78,7 @@
 </head>
 <body class="bg-hud-black text-slate-200 font-sans antialiased selection:bg-hud-crimson selection:text-white hud-grid relative min-h-screen flex flex-col justify-between overflow-x-hidden">
     
-    <!-- CRT Scanline Overlay -->
+    <!-- CRT Overlay -->
     <div class="fixed inset-0 pointer-events-none scanlines z-50 opacity-30"></div>
 
     <!-- Top Telemetry Flight Ticker -->
@@ -88,7 +88,7 @@
                 <span class="w-2 h-2 rounded-full bg-hud-crimson inline-block animate-ping"></span>
                 CORE_ENERGY: MAXIMUM
             </span>
-            <span class="hidden sm:inline text-slate-400">VT-AERO // STATIONARY RETICLE ACTIVE</span>
+            <span class="hidden sm:inline text-slate-400">VT-AERO // HIGH-RATE HUD ACTIVE</span>
             <span class="hidden md:inline text-hud-cyan">UTC: <span id="telemetry-time">00:00:00</span></span>
         </div>
         <div class="flex items-center gap-4 text-hud-cyan font-bold">
@@ -132,7 +132,7 @@
         </div>
     </header>
 
-    <!-- SECTION 1: HERO & RADAR FLIGHT DECK -->
+    <!-- SECTION 1: HERO & ACTIVE HUD RADAR -->
     <section id="mission" class="max-w-7xl mx-auto px-6 pt-10 pb-16 relative">
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
             
@@ -200,42 +200,42 @@
 
             </div>
 
-            <!-- Right: Interactive Tactical HUD Radar (Stationary Filled Plane, Clean No-Rain) -->
+            <!-- Right: Dynamic Radar HUD (Stationary Solid Jet + Active Radar Motion) -->
             <div class="lg:col-span-6 flex flex-col items-center">
-                <div class="relative w-full max-w-[420px] aspect-square bg-hud-panel/90 rounded-full border border-hud-crimson/40 p-2 shadow-[0_0_45px_rgba(255,0,85,0.18)] flex items-center justify-center">
+                <div class="relative w-full max-w-[440px] aspect-square bg-hud-panel/95 rounded-full border-2 border-hud-crimson/50 p-2 shadow-[0_0_50px_rgba(255,0,85,0.25)] flex items-center justify-center">
                     
                     <!-- HTML5 Radar Canvas -->
-                    <canvas id="radarCanvas" width="400" height="400" class="w-full h-full cursor-crosshair rounded-full"></canvas>
+                    <canvas id="radarCanvas" width="420" height="420" class="w-full h-full cursor-crosshair rounded-full"></canvas>
 
                     <!-- Azimuth Ticks -->
-                    <div class="absolute top-2 font-mono text-[9px] text-hud-crimson/80 font-bold select-none pointer-events-none">000° [N]</div>
-                    <div class="absolute bottom-2 font-mono text-[9px] text-hud-crimson/80 font-bold select-none pointer-events-none">180° [S]</div>
-                    <div class="absolute left-2 font-mono text-[9px] text-hud-crimson/80 font-bold select-none pointer-events-none">270° [W]</div>
-                    <div class="absolute right-2 font-mono text-[9px] text-hud-crimson/80 font-bold select-none pointer-events-none">090° [E]</div>
+                    <div class="absolute top-2 font-mono text-[9px] text-hud-crimson font-bold select-none pointer-events-none">000° [N]</div>
+                    <div class="absolute bottom-2 font-mono text-[9px] text-hud-crimson font-bold select-none pointer-events-none">180° [S]</div>
+                    <div class="absolute left-2 font-mono text-[9px] text-hud-crimson font-bold select-none pointer-events-none">270° [W]</div>
+                    <div class="absolute right-2 font-mono text-[9px] text-hud-crimson font-bold select-none pointer-events-none">090° [E]</div>
 
-                    <!-- Fixed Status Indicator -->
-                    <div class="absolute bottom-5 font-mono text-[8px] text-slate-400 bg-hud-black/80 px-2 py-0.5 rounded border border-hud-border pointer-events-none flex items-center gap-2">
-                        <span>AIRCRAFT: <span class="text-hud-crimson font-bold">LOCKED [000° N]</span></span>
-                        <span>RADAR: <span class="text-hud-cyan font-bold">ACTIVE SCAN</span></span>
+                    <!-- Reticle Status Badge -->
+                    <div class="absolute bottom-5 font-mono text-[8px] text-slate-400 bg-hud-black/90 px-2.5 py-0.5 rounded border border-hud-border pointer-events-none flex items-center gap-2">
+                        <span>STATIONARY CORE: <span class="text-hud-crimson font-bold">LOCKED [000° N]</span></span>
+                        <span>RADAR: <span class="text-hud-cyan font-bold animate-pulse">ACTIVE 60FPS</span></span>
                     </div>
                 </div>
 
-                <!-- Sub-Radar Interactive Telemetry Output Bar -->
-                <div class="w-full max-w-[420px] mt-4 p-3 bg-hud-panel border border-hud-border rounded font-mono text-xs flex items-center justify-between">
+                <!-- Sub-Radar Telemetry Output Bar -->
+                <div class="w-full max-w-[440px] mt-4 p-3 bg-hud-panel border border-hud-border rounded font-mono text-xs flex items-center justify-between">
                     <div class="flex items-center gap-2">
                         <span class="w-2 h-2 rounded-full bg-hud-crimson animate-pulse"></span>
                         <span class="text-slate-400">ENGAGE:</span>
-                        <span id="target-name" class="text-hud-crimson font-bold uppercase">SWEEPING ACTIVE</span>
+                        <span id="target-name" class="text-hud-crimson font-bold uppercase">ACTIVE SWEEP</span>
                     </div>
                     <div class="text-slate-400 text-right">
-                        <span id="target-spec" class="text-hud-amber font-bold">CLICK BLIP TO OPEN</span>
+                        <span id="target-spec" class="text-hud-amber font-bold">CLICK MOVING TARGET</span>
                     </div>
                 </div>
             </div>
 
         </div>
 
-        <!-- Telemetry Data Metrics -->
+        <!-- Telemetry Metrics Bar -->
         <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mt-12 font-mono">
             <div class="hud-reticle hud-reticle-crimson p-4 bg-hud-panel border border-hud-border">
                 <div class="text-[10px] text-slate-400 uppercase flex items-center justify-between">
@@ -358,7 +358,7 @@
                         Engineered mechanical coupling in SolidWorks for high-RPM dynamic loads. Formulated ISO transitional fits (H7/h6) and performed SLA/FDM 3D fit checks.
                     </p>
 
-                    <div class="space-y-1.5 text-xs font-mono text-slate-400 mb-4 bg-hud-black/60 p-3 border border-hud-border/60 rounded">
+                    <div class="space-y-1.5 text-xs font-mono text-slate-400 mb-4 bg-hud-black/60 p-3 border border-hud-border rounded">
                         <div><strong class="text-hud-amber">> GD&T:</strong> Total runout <0.02 mm & positional datum controls.</div>
                         <div><strong class="text-hud-amber">> DFM:</strong> Modified internal corner radii for standard 3/8" tooling (-9% cost).</div>
                         <div><strong class="text-hud-amber">> FEA:</strong> Simulated 130 Nm torque in ANSYS (Von Mises FoS > 1.5).</div>
@@ -390,7 +390,7 @@
                         Coded a coupled electromechanical FEA solver in MATLAB using Classical Laminated Plate Theory and 16-DOF Bogner-Fox-Schmit (BFS) elements.
                     </p>
 
-                    <div class="space-y-1.5 text-xs font-mono text-slate-400 mb-4 bg-hud-black/60 p-3 border border-hud-border/60 rounded">
+                    <div class="space-y-1.5 text-xs font-mono text-slate-400 mb-4 bg-hud-black/60 p-3 border border-hud-border rounded">
                         <div><strong class="text-hud-crimson">> Formulation:</strong> [M], [K], and coupled piezoelectric matrices [Kuφ].</div>
                         <div><strong class="text-hud-crimson">> Validation:</strong> Modal frequency error <2.4% vs. published literature.</div>
                         <div><strong class="text-hud-crimson">> Actuation:</strong> Tuned PZT placement at high modal strain anti-nodes.</div>
@@ -422,7 +422,7 @@
                         Automated high-frequency (>100 kHz) ultrasonic guided wave simulations in Abaqus/Explicit with strict stability constraints on HPC clusters.
                     </p>
 
-                    <div class="space-y-1.5 text-xs font-mono text-slate-400 mb-4 bg-hud-black/60 p-3 border border-hud-border/60 rounded">
+                    <div class="space-y-1.5 text-xs font-mono text-slate-400 mb-4 bg-hud-black/60 p-3 border border-hud-border rounded">
                         <div><strong class="text-hud-green">> Stability:</strong> Automated CFL timestep control (Δt ≤ L_min / c_d).</div>
                         <div><strong class="text-hud-green">> Mesh:</strong> Enforced >10 elements/λ spatial discretization.</div>
                         <div><strong class="text-hud-green">> Pipeline:</strong> Headless .inp creation, batch run, and binary .odb extraction.</div>
@@ -454,7 +454,7 @@
                         Applied SIMP density topology optimization in ANSYS, transitioning 6061-T6 aluminum brackets to 3K carbon fiber composite structure.
                     </p>
 
-                    <div class="space-y-1.5 text-xs font-mono text-slate-400 mb-4 bg-hud-black/60 p-3 border border-hud-border/60 rounded">
+                    <div class="space-y-1.5 text-xs font-mono text-slate-400 mb-4 bg-hud-black/60 p-3 border border-hud-border rounded">
                         <div><strong class="text-hud-crimson">> Mass Cut:</strong> Reduced weight 32.4% (7.4 kg → 5.0 kg).</div>
                         <div><strong class="text-hud-crimson">> Resonance:</strong> Separated fundamental modes (>140 Hz) from motor harmonics.</div>
                     </div>
@@ -725,7 +725,7 @@
         </div>
     </div>
 
-    <!-- Interactive JavaScript Engine: STATIONARY FILLED PLANE & CLEAN RADAR -->
+    <!-- Interactive JavaScript Engine -->
     <script>
         function updateClock() {
             const now = new Date();
@@ -742,19 +742,20 @@
             document.getElementById('telemetry-alt').textContent = alt;
         });
 
-        // --- Radar Canvas Engine ---
+        // --- High-Speed Radar Canvas Engine ---
         const canvas = document.getElementById('radarCanvas');
         const ctx = canvas.getContext('2d');
         let sweepAngle = 0;
+        let ringAngle = 0;
         let mouseX = -100, mouseY = -100;
 
-        // Radar Target Blips
+        // Dynamic Moving Targets in Orbital Sweep
         const targets = [
             { 
-                baseRadius: 115, 
+                baseRadius: 135, 
                 angle: 0.8, 
-                speed: 0.005, 
-                r: 6.5, 
+                speed: 0.012, 
+                r: 7, 
                 color: '#ffaa00', 
                 name: 'SYS_130NM', 
                 spec: '130 Nm / H7-h6 GD&T', 
@@ -762,10 +763,10 @@
                 x: 0, y: 0 
             },
             { 
-                baseRadius: 75, 
+                baseRadius: 90, 
                 angle: 2.7, 
-                speed: -0.007, 
-                r: 6.5, 
+                speed: -0.015, 
+                r: 7, 
                 color: '#ff0055', 
                 name: 'PASSION_SOLVER', 
                 spec: '16-DOF / <2.4% Res.', 
@@ -773,10 +774,10 @@
                 x: 0, y: 0 
             },
             { 
-                baseRadius: 140, 
+                baseRadius: 160, 
                 angle: 4.2, 
-                speed: 0.004, 
-                r: 6.5, 
+                speed: 0.009, 
+                r: 7, 
                 color: '#00ff88', 
                 name: 'HPC_ABAQUS', 
                 spec: 'Explicit / >100 kHz', 
@@ -784,10 +785,10 @@
                 x: 0, y: 0 
             },
             { 
-                baseRadius: 95, 
+                baseRadius: 110, 
                 angle: 5.6, 
-                speed: -0.005, 
-                r: 6.5, 
+                speed: -0.011, 
+                r: 7, 
                 color: '#ff3344', 
                 name: 'CFRP_CORE', 
                 spec: '-32.4% Mass / SIMP', 
@@ -812,7 +813,7 @@
             let hovered = false;
             targets.forEach(t => {
                 const dist = Math.hypot(mouseX - t.x, mouseY - t.y);
-                if (dist < 22) {
+                if (dist < 24) {
                     document.getElementById('target-name').textContent = t.name;
                     document.getElementById('target-name').style.color = t.color;
                     document.getElementById('target-spec').textContent = '[CLICK TO ENGAGE]';
@@ -836,7 +837,7 @@
             const pos = getMousePos(e);
             targets.forEach(t => {
                 const dist = Math.hypot(pos.x - t.x, pos.y - t.y);
-                if (dist < 22) {
+                if (dist < 24) {
                     openModal(t.modalId);
                 }
             });
@@ -845,163 +846,187 @@
         canvas.addEventListener('mouseleave', () => {
             mouseX = -100;
             mouseY = -100;
-            document.getElementById('target-name').textContent = 'SWEEPING ACTIVE';
+            document.getElementById('target-name').textContent = 'ACTIVE SWEEP';
             document.getElementById('target-name').style.color = '#ff0055';
-            document.getElementById('target-spec').textContent = 'CLICK BLIP TO OPEN';
+            document.getElementById('target-spec').textContent = 'CLICK MOVING TARGET';
         });
 
-        // SOLID FILLED, ENLARGED STATIONARY JET LOCKED AT RETICLE CENTER
-        function drawStationaryCenterPlane(cx, cy) {
+        // LARGE SOLID FILLED STATIONARY PLANE
+        function drawLargeStationaryPlane(cx, cy) {
             ctx.save();
             ctx.translate(cx, cy);
 
-            // Stationary Reticle Focus Ring
+            // Stationary Focus Reticle
             ctx.strokeStyle = 'rgba(255, 0, 85, 0.45)';
-            ctx.lineWidth = 1.2;
-            ctx.strokeRect(-28, -28, 56, 56);
+            ctx.lineWidth = 1.5;
+            ctx.strokeRect(-36, -36, 72, 72);
 
-            // Enlarged Solid Filled Fighter Jet Body
+            // Stationary Large Jet Body
             ctx.fillStyle = '#ff0055';
             ctx.strokeStyle = '#ffffff';
-            ctx.lineWidth = 1.6;
+            ctx.lineWidth = 2;
 
             ctx.beginPath();
-            // Nose Cone (enlarged scale)
-            ctx.moveTo(0, -25);
-            // Right Wing root to tip
-            ctx.lineTo(4, -11);
-            ctx.lineTo(21, 3);
-            ctx.lineTo(21, 7);
-            ctx.lineTo(5.5, 8.5);
-            // Right Tail Stabilizer
-            ctx.lineTo(10, 16);
-            ctx.lineTo(2.5, 13.5);
+            // Nose Cone
+            ctx.moveTo(0, -36);
+            // Right Canard
+            ctx.lineTo(8, -16);
+            ctx.lineTo(18, -12);
+            ctx.lineTo(10, -4);
+            // Right Main Wing
+            ctx.lineTo(34, 12);
+            ctx.lineTo(34, 18);
+            ctx.lineTo(8, 20);
+            // Right Tail Fin
+            ctx.lineTo(14, 30);
+            ctx.lineTo(3, 26);
             // Engine Nozzle
-            ctx.lineTo(0, 12);
-            // Left Tail Stabilizer
-            ctx.lineTo(-2.5, 13.5);
-            ctx.lineTo(-10, 16);
-            // Left Wing trailing edge to tip
-            ctx.lineTo(-5.5, 8.5);
-            ctx.lineTo(-21, 7);
-            ctx.lineTo(-21, 3);
-            ctx.lineTo(-4, -11);
+            ctx.lineTo(0, 24);
+            // Left Tail Fin
+            ctx.lineTo(-3, 26);
+            ctx.lineTo(-14, 30);
+            // Left Main Wing
+            ctx.lineTo(-8, 20);
+            ctx.lineTo(-34, 18);
+            ctx.lineTo(-34, 12);
+            // Left Canard
+            ctx.lineTo(-10, -4);
+            ctx.lineTo(-18, -12);
+            ctx.lineTo(-8, -16);
             ctx.closePath();
             
-            // Solid filled plane body
+            // Render Solid Fill
             ctx.fill();
             ctx.stroke();
 
-            // Glass Canopy Overlay
+            // Cockpit Canopy Glass
             ctx.fillStyle = '#00f0ff';
             ctx.beginPath();
-            ctx.ellipse(0, -8, 2.2, 5.5, 0, 0, Math.PI * 2);
+            ctx.ellipse(0, -12, 3.5, 9, 0, 0, Math.PI * 2);
             ctx.fill();
 
-            // Twin Engine Stabilizer Stripes
+            // Twin Stabilizer Accents
             ctx.strokeStyle = '#ffaa00';
-            ctx.lineWidth = 1.2;
+            ctx.lineWidth = 1.5;
             ctx.beginPath();
-            ctx.moveTo(-3.5, 7); ctx.lineTo(-5, 12);
-            ctx.moveTo(3.5, 7); ctx.lineTo(5, 12);
+            ctx.moveTo(-5, 10); ctx.lineTo(-7, 18);
+            ctx.moveTo(5, 10); ctx.lineTo(7, 18);
             ctx.stroke();
 
             ctx.restore();
         }
 
-        // Radar Render Loop: Clean Background, Moving Targets, Solid Center Plane
+        // Radar Render Loop: Moving Dial, Rotating Sweep, Moving Targets, Solid Center Jet
         function drawRadar() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             const cx = canvas.width / 2;
             const cy = canvas.height / 2;
-            const radius = 180;
+            const radius = 195;
 
-            // Concentric Range Rings
+            // 1. Concentric Range Rings
             ctx.strokeStyle = 'rgba(255, 0, 85, 0.2)';
             ctx.lineWidth = 1;
-            [40, 85, 130, radius].forEach(r => {
+            [45, 95, 145, radius].forEach(r => {
                 ctx.beginPath();
                 ctx.arc(cx, cy, r, 0, Math.PI * 2);
                 ctx.stroke();
             });
 
-            // Grid Axes
+            // 2. Rotating Outer Compass Ticks
+            ctx.save();
+            ctx.translate(cx, cy);
+            ctx.rotate(ringAngle);
+            ctx.strokeStyle = 'rgba(0, 240, 255, 0.35)';
+            ctx.lineWidth = 1.2;
+            for (let i = 0; i < 36; i++) {
+                const ang = (i * 10) * (Math.PI / 180);
+                const r1 = radius - (i % 3 === 0 ? 8 : 4);
+                ctx.beginPath();
+                ctx.moveTo(Math.cos(ang) * r1, Math.sin(ang) * r1);
+                ctx.lineTo(Math.cos(ang) * radius, Math.sin(ang) * radius);
+                ctx.stroke();
+            }
+            ctx.restore();
+
+            // 3. Grid Axes
             ctx.strokeStyle = 'rgba(255, 0, 85, 0.15)';
             ctx.beginPath();
             ctx.moveTo(cx, cy - radius); ctx.lineTo(cx, cy + radius);
-            ctx.moveTo(cx - radius, cy); ctx.lineTo(cx + radius, cy);
+            ctx.moveTo(cx - radius, cy); ctx.lineTo(cx + radius);
             ctx.stroke();
 
-            // Rotating Radar Sweep Beam
+            // 4. Rotating Radar Sweep Beam
             ctx.save();
             ctx.translate(cx, cy);
             ctx.rotate(sweepAngle);
             const grad = ctx.createRadialGradient(0, 0, 10, 0, 0, radius);
-            grad.addColorStop(0, 'rgba(255, 0, 85, 0.45)');
-            grad.addColorStop(0.5, 'rgba(255, 51, 68, 0.12)');
+            grad.addColorStop(0, 'rgba(255, 0, 85, 0.55)');
+            grad.addColorStop(0.45, 'rgba(255, 51, 68, 0.15)');
             grad.addColorStop(1, 'transparent');
             
             ctx.fillStyle = grad;
             ctx.beginPath();
             ctx.moveTo(0, 0);
-            ctx.arc(0, 0, radius, 0, Math.PI / 3);
+            ctx.arc(0, 0, radius, 0, Math.PI / 2.8);
             ctx.closePath();
             ctx.fill();
             ctx.restore();
 
-            // Update & Render Moving Targets
+            // 5. Update and Render Moving Target Blips
             targets.forEach(t => {
                 t.angle += t.speed;
                 t.x = cx + Math.cos(t.angle) * t.baseRadius;
                 t.y = cy + Math.sin(t.angle) * t.baseRadius;
 
-                // Target Core
+                // Blip Center
                 ctx.fillStyle = t.color;
                 ctx.beginPath();
                 ctx.arc(t.x, t.y, t.r, 0, Math.PI * 2);
                 ctx.fill();
 
-                // Target Pulsing Reticle Ring
+                // Pulsing Echo Ring
                 ctx.strokeStyle = t.color;
-                ctx.lineWidth = 1.2;
+                ctx.lineWidth = 1.4;
                 ctx.beginPath();
-                ctx.arc(t.x, t.y, 10 + Math.sin(Date.now() / 200 + t.baseRadius) * 2.5, 0, Math.PI * 2);
+                ctx.arc(t.x, t.y, 11 + Math.sin(Date.now() / 180 + t.baseRadius) * 3, 0, Math.PI * 2);
                 ctx.stroke();
 
-                // Motion Vector Line
-                ctx.strokeStyle = `rgba(255, 0, 85, 0.35)`;
-                ctx.lineWidth = 1;
+                // Motion Trail Line
+                ctx.strokeStyle = `rgba(255, 0, 85, 0.4)`;
+                ctx.lineWidth = 1.2;
                 ctx.beginPath();
                 ctx.moveTo(t.x, t.y);
-                ctx.lineTo(t.x - Math.sin(t.angle) * 12 * Math.sign(t.speed), t.y + Math.cos(t.angle) * 12 * Math.sign(t.speed));
+                ctx.lineTo(t.x - Math.sin(t.angle) * 14 * Math.sign(t.speed), t.y + Math.cos(t.angle) * 14 * Math.sign(t.speed));
                 ctx.stroke();
 
                 // Label
-                ctx.fillStyle = 'rgba(255, 255, 255, 0.85)';
-                ctx.font = '8px JetBrains Mono';
-                ctx.fillText(t.name, t.x + 11, t.y + 3);
+                ctx.fillStyle = 'rgba(255, 255, 255, 0.9)';
+                ctx.font = '9px JetBrains Mono';
+                ctx.fillText(t.name, t.x + 12, t.y + 3);
             });
 
-            // Render Solid Filled Stationary Plane
-            drawStationaryCenterPlane(cx, cy);
+            // 6. Draw Large Solid Stationary Jet
+            drawLargeStationaryPlane(cx, cy);
 
-            // Interactive Mouse Crosshair
+            // 7. Interactive Crosshair
             if (mouseX > 0 && mouseY > 0) {
-                ctx.strokeStyle = 'rgba(255, 0, 85, 0.8)';
+                ctx.strokeStyle = 'rgba(255, 0, 85, 0.85)';
                 ctx.lineWidth = 1;
                 ctx.beginPath();
-                ctx.arc(mouseX, mouseY, 8, 0, Math.PI * 2);
-                ctx.moveTo(mouseX - 12, mouseY); ctx.lineTo(mouseX + 12, mouseY);
-                ctx.moveTo(mouseX, mouseY - 12); ctx.lineTo(mouseX, mouseY + 12);
+                ctx.arc(mouseX, mouseY, 9, 0, Math.PI * 2);
+                ctx.moveTo(mouseX - 13, mouseY); ctx.lineTo(mouseX + 13, mouseY);
+                ctx.moveTo(mouseX, mouseY - 13); ctx.lineTo(mouseX, mouseY + 13);
                 ctx.stroke();
             }
 
-            sweepAngle += 0.025;
+            // Animation Stepping
+            sweepAngle += 0.035;
+            ringAngle -= 0.004;
             requestAnimationFrame(drawRadar);
         }
         drawRadar();
 
-        // --- Filters & Modals ---
+        // --- Filter & Modal Handlers ---
         function filterProjects(category) {
             const cards = document.querySelectorAll('.project-card');
             const buttons = document.querySelectorAll('.filter-btn');
