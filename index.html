@@ -847,7 +847,7 @@
             document.getElementById('target-spec').textContent = 'CLICK MOVING TARGET';
         });
 
-        // LARGE SOLID FILLED CYAN STATIONARY PLANE
+        // BIG SOLID FILLED CYAN STATIONARY JET
         function drawLargeStationaryPlane(cx, cy) {
             ctx.save();
             ctx.translate(cx, cy);
@@ -944,11 +944,11 @@
             }
             ctx.restore();
 
-            // 3. Grid Axes
+            // 3. Grid Axes (fixed syntax: 2 arguments per lineTo)
             ctx.strokeStyle = 'rgba(0, 240, 255, 0.15)';
             ctx.beginPath();
             ctx.moveTo(cx, cy - radius); ctx.lineTo(cx, cy + radius);
-            ctx.moveTo(cx - radius, cy); ctx.lineTo(cx + radius);
+            ctx.moveTo(cx - radius, cy); ctx.lineTo(cx + radius, cy);
             ctx.stroke();
 
             // 4. Rotating Radar Sweep Beam (Electric Cyan / Sky Blue Gradient)
