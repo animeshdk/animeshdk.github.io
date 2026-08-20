@@ -19,7 +19,7 @@
                             borderBright: '#25558a',
                             cyan: '#00f0ff',        // Primary Electric Cyan
                             sky: '#38bdf8',         // Ice Sky Blue
-                            blue: '#0284c7',        // Tactical Blue
+                            blue: '#0284c7',        // Deep Tactical Blue
                             amber: '#fbbf24',       // Hardware DFM Accent
                             green: '#00ff88'        // Verification Green
                         }
@@ -47,7 +47,7 @@
                 linear-gradient(to bottom, rgba(56, 189, 248, 0.03) 1px, transparent 1px);
         }
         .scanlines {
-            background: linear-gradient(rgba(3, 7, 18, 0) 50%, rgba(0, 0, 0, 0.35) 50%);
+            background: linear-gradient(rgba(3, 7, 18, 0) 50%, rgba(0, 0, 0, 0.3) 50%);
             background-size: 100% 3px;
         }
         .hud-reticle {
@@ -68,7 +68,7 @@
         .hud-reticle-amber::before, .hud-reticle-amber::after { border-color: #fbbf24 !important; }
         .hud-reticle-green::before, .hud-reticle-green::after { border-color: #00ff88 !important; }
         
-        .glow-cyan { box-shadow: 0 0 25px -2px rgba(0, 240, 255, 0.4); }
+        .glow-cyan { box-shadow: 0 0 25px -2px rgba(0, 240, 255, 0.45); }
         .glow-text-cyan { text-shadow: 0 0 16px rgba(0, 240, 255, 0.85); }
     </style>
 </head>
@@ -196,12 +196,51 @@
 
             </div>
 
-            <!-- Right: Dynamic Radar HUD (Large Solid Cyan Jet + Active Sweep) -->
+            <!-- Right: Dynamic Radar HUD (Big Solid Cyan Plane + Active Sweep) -->
             <div class="lg:col-span-6 flex flex-col items-center">
                 <div class="relative w-full max-w-[440px] aspect-square bg-hud-panel/95 rounded-full border-2 border-hud-cyan/50 p-2 shadow-[0_0_50px_rgba(0,240,255,0.25)] flex items-center justify-center">
                     
                     <!-- HTML5 Radar Canvas -->
                     <canvas id="radarCanvas" width="420" height="420" class="w-full h-full cursor-crosshair rounded-full"></canvas>
+
+                    <!-- Big Solid Cyan Fighter Jet (Centered directly over radar) -->
+                    <div class="absolute inset-0 flex items-center justify-center pointer-events-none z-20">
+                        <div class="relative flex items-center justify-center">
+                            <!-- Reticle Target Box -->
+                            <div class="absolute w-20 h-20 border border-hud-cyan/40"></div>
+                            <div class="absolute w-24 h-24 border border-dashed border-hud-cyan/25 rounded-full"></div>
+                            
+                            <!-- Large Solid Filled Cyan Fighter Jet SVG -->
+                            <svg class="w-16 h-16 text-hud-cyan drop-shadow-[0_0_12px_#00f0ff]" viewBox="0 0 100 100" fill="currentColor">
+                                <!-- Solid Delta Wing Jet Body -->
+                                <path d="M 50 5 
+                                         L 56 30 
+                                         L 68 35 
+                                         L 58 45 
+                                         L 92 68 
+                                         L 92 75 
+                                         L 60 74 
+                                         L 68 90 
+                                         L 54 86 
+                                         L 50 82 
+                                         L 46 86 
+                                         L 32 90 
+                                         L 40 74 
+                                         L 8 75 
+                                         L 8 68 
+                                         L 42 45 
+                                         L 32 35 
+                                         L 44 30 Z" 
+                                      stroke="#ffffff" 
+                                      stroke-width="1.5" />
+                                <!-- Cockpit Canopy Window -->
+                                <ellipse cx="50" cy="32" rx="3.5" ry="9" fill="#070f1e" />
+                                <!-- Stabilizer Accents -->
+                                <line x1="45" y1="62" x2="43" y2="76" stroke="#fbbf24" stroke-width="1.5" />
+                                <line x1="55" y1="62" x2="57" y2="76" stroke="#fbbf24" stroke-width="1.5" />
+                            </svg>
+                        </div>
+                    </div>
 
                     <!-- Azimuth Ticks -->
                     <div class="absolute top-2 font-mono text-[9px] text-hud-cyan font-bold select-none pointer-events-none">000° [N]</div>
@@ -738,7 +777,7 @@
             document.getElementById('telemetry-alt').textContent = alt;
         });
 
-        // --- High-Speed Cyan Radar Canvas Engine ---
+        // --- Active Cyan Radar Engine ---
         const canvas = document.getElementById('radarCanvas');
         const ctx = canvas.getContext('2d');
         let sweepAngle = 0;
@@ -748,7 +787,7 @@
         // Dynamic Moving Targets in Orbital Sweep
         const targets = [
             { 
-                baseRadius: 135, 
+                baseRadius: 140, 
                 angle: 0.8, 
                 speed: 0.012, 
                 r: 7, 
@@ -759,7 +798,7 @@
                 x: 0, y: 0 
             },
             { 
-                baseRadius: 90, 
+                baseRadius: 85, 
                 angle: 2.7, 
                 speed: -0.015, 
                 r: 7, 
@@ -770,7 +809,7 @@
                 x: 0, y: 0 
             },
             { 
-                baseRadius: 160, 
+                baseRadius: 165, 
                 angle: 4.2, 
                 speed: 0.009, 
                 r: 7, 
@@ -847,72 +886,7 @@
             document.getElementById('target-spec').textContent = 'CLICK MOVING TARGET';
         });
 
-        // BIG SOLID FILLED CYAN STATIONARY JET
-        function drawLargeStationaryPlane(cx, cy) {
-            ctx.save();
-            ctx.translate(cx, cy);
-
-            // Stationary Focus Reticle
-            ctx.strokeStyle = 'rgba(0, 240, 255, 0.45)';
-            ctx.lineWidth = 1.5;
-            ctx.strokeRect(-36, -36, 72, 72);
-
-            // Stationary Large Jet Body
-            ctx.fillStyle = '#00f0ff';
-            ctx.strokeStyle = '#ffffff';
-            ctx.lineWidth = 2;
-
-            ctx.beginPath();
-            // Nose Cone
-            ctx.moveTo(0, -36);
-            // Right Canard
-            ctx.lineTo(8, -16);
-            ctx.lineTo(18, -12);
-            ctx.lineTo(10, -4);
-            // Right Main Wing
-            ctx.lineTo(34, 12);
-            ctx.lineTo(34, 18);
-            ctx.lineTo(8, 20);
-            // Right Tail Fin
-            ctx.lineTo(14, 30);
-            ctx.lineTo(3, 26);
-            // Engine Nozzle
-            ctx.lineTo(0, 24);
-            // Left Tail Fin
-            ctx.lineTo(-3, 26);
-            ctx.lineTo(-14, 30);
-            // Left Main Wing
-            ctx.lineTo(-8, 20);
-            ctx.lineTo(-34, 18);
-            ctx.lineTo(-34, 12);
-            // Left Canard
-            ctx.lineTo(-10, -4);
-            ctx.lineTo(-18, -12);
-            ctx.lineTo(-8, -16);
-            ctx.closePath();
-            
-            // Render Solid Fill
-            ctx.fill();
-            ctx.stroke();
-
-            // Cockpit Canopy Glass
-            ctx.fillStyle = '#070d1a';
-            ctx.beginPath();
-            ctx.ellipse(0, -12, 3.5, 9, 0, 0, Math.PI * 2);
-            ctx.fill();
-
-            // Twin Stabilizer Accents
-            ctx.strokeStyle = '#ffaa00';
-            ctx.lineWidth = 1.5;
-            ctx.beginPath();
-            ctx.moveTo(-5, 10); ctx.lineTo(-7, 18);
-            ctx.moveTo(5, 10); ctx.lineTo(7, 18);
-            ctx.stroke();
-
-            ctx.restore();
-        }
-
-        // Radar Render Loop: Moving Dial, Rotating Sweep, Moving Targets, Solid Center Jet
+        // 60FPS Continuous Radar Loop
         function drawRadar() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             const cx = canvas.width / 2;
@@ -944,7 +918,7 @@
             }
             ctx.restore();
 
-            // 3. Grid Axes (fixed syntax: 2 arguments per lineTo)
+            // 3. Grid Axes
             ctx.strokeStyle = 'rgba(0, 240, 255, 0.15)';
             ctx.beginPath();
             ctx.moveTo(cx, cy - radius); ctx.lineTo(cx, cy + radius);
@@ -1001,10 +975,7 @@
                 ctx.fillText(t.name, t.x + 12, t.y + 3);
             });
 
-            // 6. Draw Large Solid Stationary Jet
-            drawLargeStationaryPlane(cx, cy);
-
-            // 7. Interactive Crosshair
+            // 6. Interactive Crosshair
             if (mouseX > 0 && mouseY > 0) {
                 ctx.strokeStyle = 'rgba(0, 240, 255, 0.85)';
                 ctx.lineWidth = 1;
