@@ -3,24 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Animesh D. Kulkarni // Mechanical & CAE Systems Engineer</title>
+    <title>Animesh D. Kulkarni — Mechanical & CAE Systems Engineer</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
             theme: {
                 extend: {
-                    colors: {
-                        clean: {
-                            bg: '#fafafa',
-                            card: '#ffffff',
-                            border: '#e2e8f0',
-                            text: '#0f172a',
-                            muted: '#64748b',
-                            primary: '#0284c7',
-                            accent: '#06b6d4'
-                        }
-                    },
                     fontFamily: {
                         sans: ['Inter', 'system-ui', 'sans-serif'],
                         mono: ['JetBrains Mono', 'monospace'],
@@ -30,226 +19,225 @@
             }
         }
     </script>
-    <!-- Modern Clean Typography & FontAwesome -->
+    <!-- Fonts & Icons -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@500;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-    <!-- Three.js, GLTFLoader, GSAP & ScrollTrigger via CDN -->
+    <!-- Three.js, GLTFLoader, GSAP & ScrollTrigger -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
 
     <style>
+        /* Lakshya Pant Style: Warm off-white / parchment background */
+        body {
+            background-color: #f4f0eb;
+            color: #1c1917;
+        }
         .clean-grid {
-            background-size: 32px 32px;
-            background-image: radial-gradient(circle, #cbd5e1 1px, transparent 1px);
+            background-size: 40px 40px;
+            background-image: radial-gradient(circle, #e5e0d8 1px, transparent 1px);
         }
     </style>
 </head>
-<body class="bg-[#fafafa] text-slate-900 font-sans antialiased selection:bg-sky-500 selection:text-white clean-grid relative min-h-screen overflow-x-hidden">
+<body class="font-sans antialiased selection:bg-orange-600 selection:text-white clean-grid relative min-h-screen overflow-x-hidden">
 
-    <!-- FIXED 3D WEBGL REAL GLB DRONE CANVAS -->
+    <!-- FIXED 3D WEBGL REALISTIC DRONE CANVAS (Pinned like Lakshya's portrait container) -->
     <div id="canvas-container" class="fixed inset-0 pointer-events-none z-10 w-full h-full"></div>
 
-    <!-- Soft Ambient Lighting Blobs -->
-    <div class="fixed inset-0 pointer-events-none z-0 overflow-hidden">
-        <div class="absolute -top-[10%] left-1/2 -translate-x-1/2 w-[700px] h-[450px] bg-sky-200/40 blur-[120px] rounded-full"></div>
-        <div class="absolute top-[40%] -left-[10%] w-[500px] h-[500px] bg-blue-100/50 blur-[130px] rounded-full"></div>
-        <div class="absolute top-[75%] -right-[10%] w-[600px] h-[500px] bg-cyan-100/40 blur-[140px] rounded-full"></div>
-    </div>
-
-    <!-- Top Status Banner -->
-    <div class="bg-slate-900 text-slate-300 py-1.5 px-4 font-mono text-[11px] flex items-center justify-between tracking-wide uppercase overflow-hidden sticky top-0 z-50">
+    <!-- Top Recruiter Priority Banner -->
+    <div class="bg-stone-900 text-stone-300 py-1.5 px-6 font-mono text-[11px] flex items-center justify-between tracking-wide uppercase sticky top-0 z-50 border-b border-stone-800">
         <div class="max-w-7xl mx-auto w-full flex items-center justify-between">
             <div class="flex items-center gap-4">
                 <span class="flex items-center gap-1.5 text-emerald-400 font-bold">
                     <span class="w-2 h-2 rounded-full bg-emerald-400 inline-block animate-ping"></span>
                     AVAILABLE JAN 2027
                 </span>
-                <span class="hidden sm:inline text-slate-500">|</span>
-                <span class="hidden sm:inline text-slate-300">U.S. WORK AUTH: <strong>3-YEAR STEM OPT</strong></span>
+                <span class="hidden sm:inline text-stone-600">|</span>
+                <span class="hidden sm:inline text-stone-300">U.S. WORK AUTH: <strong>3-YEAR STEM OPT</strong></span>
             </div>
-            <div class="flex items-center gap-4 text-slate-300">
+            <div class="flex items-center gap-4 text-stone-300">
                 <span>VIRGINIA TECH (GPA 3.77)</span>
-                <span class="hidden md:inline text-sky-400">BLACKSBURG, VA</span>
+                <span class="hidden md:inline text-orange-500 font-semibold">BLACKSBURG, VA</span>
             </div>
         </div>
     </div>
 
-    <!-- Minimal Clean White Navbar -->
-    <header class="bg-white/90 backdrop-blur-md border-b border-slate-200/80 sticky top-[29px] z-40">
-        <div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
+    <!-- Lakshya-Style Minimalist Navbar -->
+    <header class="bg-[#f4f0eb]/90 backdrop-blur-md border-b border-stone-300/60 sticky top-[29px] z-40">
+        <div class="max-w-7xl mx-auto px-8 h-20 flex items-center justify-between">
             
-            <a href="#" class="font-display font-extrabold text-lg tracking-tight text-slate-900 flex items-center gap-2 group">
-                <svg class="h-6 w-auto text-sky-600 group-hover:scale-110 transition duration-300" viewBox="0 0 220 120" fill="currentColor">
-                    <path d="M 75 20 L 87 20 L 87 78 C 87 98 62 104 46 95 C 32 86 31 68 44 57 C 56 46 72 52 72 52 L 72 61 C 72 61 59 55 50 62 C 42 70 41 81 50 87 C 61 93 75 88 75 75 Z"/>
-                    <path d="M 77 20 L 102 54 L 126 98 L 112 98 L 94 62 L 85 49 Z"/>
-                    <polygon points="87,55 165,63 87,62"/>
-                    <path d="M 163 76 C 165 72 172 62 176 56 L 182 41 L 186 41 L 182 52 L 198 48 L 208 38 L 212 40 L 208 50 L 195 61 L 186 70 L 168 76 Z"/>
-                </svg>
-                <span>ANIMESH <span class="text-sky-600">KULKARNI</span></span>
+            <!-- Logo Monogram (L.P. style A.K.) -->
+            <a href="#" class="font-display font-black text-2xl tracking-tighter text-stone-900 flex items-center gap-1.5 group">
+                <span>A.K.</span>
+                <span class="w-2 h-2 rounded-full bg-orange-600 inline-block"></span>
             </a>
             
-            <nav class="hidden lg:flex items-center gap-8 text-xs font-mono tracking-wider uppercase text-slate-600 font-medium">
-                <a href="#mission" class="hover:text-sky-600 transition">01//Mission</a>
-                <a href="#about" class="hover:text-sky-600 transition">02//Profile</a>
-                <a href="#projects" class="hover:text-sky-600 transition">03//Projects</a>
-                <a href="#skills" class="hover:text-sky-600 transition">04//Arsenal</a>
-                <a href="#experience" class="hover:text-sky-600 transition">05//Experience</a>
-                <a href="#education" class="hover:text-sky-600 transition">06//Education</a>
+            <!-- Minimal Navigation Links -->
+            <nav class="hidden md:flex items-center gap-8 text-xs font-mono uppercase tracking-widest text-stone-700 font-medium">
+                <a href="#about" class="hover:text-orange-600 transition">About</a>
+                <a href="#projects" class="hover:text-orange-600 transition">Work</a>
+                <a href="#experience" class="hover:text-orange-600 transition">Experience</a>
+                <a href="#skills" class="hover:text-orange-600 transition">Skills</a>
+                <a href="#education" class="hover:text-orange-600 transition">Education</a>
             </nav>
 
-            <a href="#contact" class="px-4 py-2 rounded-xl bg-slate-900 hover:bg-sky-600 text-white font-mono text-xs font-bold transition duration-200 shadow-xs flex items-center gap-2">
-                <i class="fa-solid fa-paper-plane text-[10px]"></i>
-                <span>UPLINK</span>
+            <a href="#contact" class="px-5 py-2.5 rounded-full border border-stone-400 hover:border-stone-900 text-stone-900 font-mono text-xs font-bold tracking-widest uppercase transition duration-200">
+                Get In Touch
             </a>
         </div>
     </header>
 
     <!-- CONTENT WRAPPER -->
-    <div id="scroll-wrapper" class="relative z-20">
+    <div id="scroll-wrapper" class="relative z-25">
 
-        <!-- SECTION 1: HERO / MISSION -->
-        <section id="mission" class="min-h-screen flex items-center max-w-7xl mx-auto px-6 py-16">
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 w-full items-center">
+        <!-- SECTION 1: HERO (Lakshya Layout + Real 3D Photorealistic Drone) -->
+        <section class="max-w-7xl mx-auto px-8 pt-12 pb-24 min-h-[90vh] flex flex-col justify-between">
+            
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start pt-6">
                 
-                <div class="lg:col-span-7 space-y-6">
-                    <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-sky-50 border border-sky-200 text-sky-700 font-mono text-xs font-semibold">
-                        <span class="w-2 h-2 rounded-full bg-sky-500 animate-pulse"></span>
-                        MECHANICAL DESIGN (DFM) &amp; HIGH-LOAD CAE
-                    </div>
-
-                    <h1 class="text-4xl sm:text-6xl font-display font-extrabold text-slate-900 tracking-tight leading-tight">
-                        HIGH-LOAD CAE <br>
-                        <span class="text-transparent bg-clip-text bg-gradient-to-r from-sky-600 to-cyan-500">&amp; PRECISION DYNAMICS</span>
+                <!-- Massive Hero Title Column -->
+                <div class="lg:col-span-8 space-y-6">
+                    <h1 class="text-6xl sm:text-8xl font-display font-extrabold text-stone-900 tracking-tighter uppercase leading-[0.9]">
+                        Animesh <br>
+                        <span class="text-orange-600">Kulkarni.</span>
                     </h1>
-
-                    <p class="text-base text-slate-600 font-sans leading-relaxed border-l-2 border-sky-500 pl-4 py-1">
-                        Aerospace &amp; Mechanical Systems Engineer at Virginia Tech specializing in <strong>130 Nm dynamic powertrains, ASME Y14.5 GD&amp;T production drafting, high-frequency ultrasonic wave propagation (&gt;100 kHz), and headless Python FEA automation</strong>.
+                    
+                    <p class="text-lg text-stone-700 font-sans max-w-xl leading-relaxed pt-2">
+                        Graduate Mechanical &amp; Aerospace Engineer. Simulation-driven, manufacture-ready, detail-focused. Specializing in high-load drivetrains, ASME Y14.5 GD&amp;T, and structural CAE dynamics.
                     </p>
 
-                    <!-- Direct Subsystem Jump Cards -->
-                    <div class="grid grid-cols-2 gap-3 font-mono text-xs">
-                        <div onclick="openModal('modal-solver')" class="p-4 bg-white hover:bg-sky-50/50 border border-slate-200 hover:border-sky-300 rounded-2xl cursor-pointer transition shadow-xs">
-                            <div class="text-[10px] text-sky-600 uppercase font-bold flex items-center justify-between">
-                                <span>// WAVE MECHANICS</span>
-                                <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
-                            </div>
-                            <div class="text-slate-900 font-bold mt-1 text-sm">Dynamic FEA Solver</div>
-                            <div class="text-[11px] text-slate-500">Explicit Propagation (&gt;100 kHz)</div>
+                    <!-- Quick Metadata Grid (Role, Status, Location, Focus) -->
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-6 pt-6 border-t border-stone-300 font-mono text-xs">
+                        <div>
+                            <span class="text-stone-400 block uppercase">Role</span>
+                            <span class="font-bold text-stone-900 mt-0.5 block">Mechanical / CAE Engineer</span>
                         </div>
-                        <div onclick="openModal('modal-coupling')" class="p-4 bg-white hover:bg-amber-50/50 border border-slate-200 hover:border-amber-300 rounded-2xl cursor-pointer transition shadow-xs">
-                            <div class="text-[10px] text-amber-600 uppercase font-bold flex items-center justify-between">
-                                <span>// HARDWARE DFM</span>
-                                <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
-                            </div>
-                            <div class="text-slate-900 font-bold mt-1 text-sm">ASME Y14.5 GD&amp;T</div>
-                            <div class="text-[11px] text-slate-500">Runout &lt; 0.02 mm (130 Nm)</div>
+                        <div>
+                            <span class="text-stone-400 block uppercase">Status</span>
+                            <span class="font-bold text-emerald-700 mt-0.5 block">Available Jan 2027</span>
                         </div>
-                    </div>
-
-                    <!-- Action Trigger Buttons -->
-                    <div class="flex flex-wrap gap-3 pt-2 font-mono text-xs font-bold">
-                        <a href="#projects" class="px-5 py-3 rounded-xl bg-slate-900 hover:bg-sky-600 text-white transition flex items-center gap-2 shadow-sm uppercase tracking-wider">
-                            <i class="fa-solid fa-crosshairs text-sm text-sky-400"></i> CASE STUDIES
-                        </a>
-                        <a href="assets/resume-track-a.pdf" download class="px-4 py-3 rounded-xl bg-white hover:bg-sky-50 border border-slate-200 text-sky-700 transition flex items-center gap-2 uppercase tracking-wider shadow-xs">
-                            <i class="fa-solid fa-file-arrow-down"></i> TRACK_A (CAE)
-                        </a>
-                        <a href="assets/resume-track-b.pdf" download class="px-4 py-3 rounded-xl bg-white hover:bg-amber-50 border border-slate-200 text-amber-800 transition flex items-center gap-2 uppercase tracking-wider shadow-xs">
-                            <i class="fa-solid fa-file-arrow-down"></i> TRACK_B (DESIGN)
-                        </a>
-                        <a href="https://www.linkedin.com/in/animeshkulkarni" target="_blank" class="px-4 py-3 rounded-xl bg-white hover:bg-slate-100 border border-slate-200 text-slate-700 transition flex items-center gap-2 shadow-xs">
-                            <i class="fa-brands fa-linkedin text-sky-600"></i>
-                        </a>
+                        <div>
+                            <span class="text-stone-400 block uppercase">Location</span>
+                            <span class="font-bold text-stone-900 mt-0.5 block">Blacksburg, VA (Open)</span>
+                        </div>
+                        <div>
+                            <span class="text-stone-400 block uppercase">Focus</span>
+                            <span class="font-bold text-stone-900 mt-0.5 block">CAE / DFM / Dynamics</span>
+                        </div>
                     </div>
                 </div>
 
-                <!-- Right Spatial Flight Corridors -->
-                <div class="lg:col-span-5 h-[380px] flex items-end justify-center pointer-events-none">
-                    <div class="bg-white/80 backdrop-blur-md border border-slate-200 px-4 py-2 rounded-xl font-mono text-[10px] text-slate-600 flex items-center gap-3 shadow-sm">
-                        <span class="w-2 h-2 rounded-full bg-sky-500 animate-pulse"></span>
-                        <span>3D GLTF REALISTIC DRONE // CORRIDOR 01</span>
+                <!-- Right Photo Slot Occupied by Real Interactive 3D Drone Canvas Container -->
+                <div class="lg:col-span-4 flex flex-col items-end">
+                    <div class="w-full aspect-[4/5] bg-[#ece7df] border border-stone-300 rounded-2xl p-4 shadow-sm relative flex flex-col justify-between overflow-hidden">
+                        
+                        <div class="flex items-center justify-between font-mono text-[10px] text-stone-500 z-20">
+                            <span class="flex items-center gap-1.5 text-orange-600 font-bold uppercase tracking-wider">
+                                <span class="w-2 h-2 rounded-full bg-orange-600 animate-pulse"></span>
+                                Live 3D Aero Drone
+                            </span>
+                            <span class="font-bold text-stone-700">SCROLL DYNAMIC</span>
+                        </div>
+
+                        <!-- Real 3D Model Viewport Indicator -->
+                        <div class="absolute inset-0 flex items-center justify-center pointer-events-none z-10">
+                            <div class="w-48 h-48 rounded-full border border-stone-300/80 animate-ping opacity-25"></div>
+                        </div>
+
+                        <div class="z-20 bg-stone-900/5 backdrop-blur-xs p-3 rounded-xl border border-stone-300/80 font-mono text-[11px] text-stone-700 flex justify-between">
+                            <span>PITCH: <strong id="drone-pitch">+0.0°</strong></span>
+                            <span>ROLL: <strong id="drone-roll">0.0°</strong></span>
+                            <span>ALT: <strong id="drone-alt">2,080 FT</strong></span>
+                        </div>
                     </div>
                 </div>
 
             </div>
+
+            <!-- Action Ribbon -->
+            <div class="flex flex-wrap items-center justify-between gap-4 pt-12 border-t border-stone-300 font-mono text-xs font-bold">
+                <div class="flex flex-wrap gap-3">
+                    <a href="#projects" class="px-6 py-3.5 rounded-full bg-stone-900 hover:bg-orange-600 text-white transition tracking-widest uppercase">
+                        View Projects <i class="fa-solid fa-arrow-right ml-1"></i>
+                    </a>
+                    <a href="assets/resume-track-a.pdf" download class="px-5 py-3.5 rounded-full border border-stone-400 hover:border-stone-900 text-stone-900 transition tracking-widest uppercase">
+                        Resume (CAE)
+                    </a>
+                    <a href="assets/resume-track-b.pdf" download class="px-5 py-3 rounded-full border border-stone-400 hover:border-stone-900 text-stone-900 transition tracking-widest uppercase">
+                        Resume (Design)
+                    </a>
+                </div>
+                <div class="text-stone-500 font-mono text-xs">
+                    Scroll down to initiate flight telemetry path ↓
+                </div>
+            </div>
+
         </section>
 
-        <!-- SECTION 2: ENGINEERING PROFILE -->
-        <section id="about" class="min-h-screen flex items-center max-w-7xl mx-auto px-6 py-16 border-t border-slate-200">
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 w-full items-center">
-                
-                <div class="lg:col-span-5 h-[350px] flex items-center justify-center pointer-events-none order-2 lg:order-1">
-                    <div class="bg-white/80 backdrop-blur-md border border-slate-200 px-4 py-2 rounded-xl font-mono text-[10px] text-slate-600 flex items-center gap-3 shadow-sm">
-                        <span class="w-2 h-2 rounded-full bg-amber-500 animate-pulse"></span>
-                        <span>DRONE LATERAL BANK // CORRIDOR 02</span>
-                    </div>
+        <!-- SECTION 2: ABOUT / SUMMARY (Lakshya Minimalist Layout) -->
+        <section id="about" class="max-w-7xl mx-auto px-8 py-24 border-t border-stone-300">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+                <div class="lg:col-span-4">
+                    <span class="text-xs font-mono font-bold tracking-widest text-orange-600 uppercase block">01 / Summary</span>
+                    <h2 class="text-3xl font-extrabold text-stone-900 tracking-tight mt-2">Design engineering supported by simulation.</h2>
                 </div>
-
-                <div class="lg:col-span-7 space-y-6 order-1 lg:order-2">
-                    <div class="text-xs font-mono font-bold tracking-widest text-sky-600 uppercase flex items-center gap-2">
-                        <span class="w-1.5 h-1.5 bg-sky-600 inline-block"></span>
-                        // SECTION 02: CORE ENGINEERING PILLARS
-                    </div>
-                    <h2 class="text-3xl sm:text-4xl font-display font-black text-slate-900 tracking-tight uppercase">Engineering Profile</h2>
+                <div class="lg:col-span-8 space-y-6 text-stone-700 font-sans text-base leading-relaxed">
+                    <p>
+                        I take concepts from CAD modelling through FEA, CFD &amp; fatigue analysis to manufacturable, evidenced designs. Engineering that is designed, simulated and proven.
+                    </p>
+                    <p class="text-stone-600 text-sm font-mono">
+                        My focus is design-engineering supported by simulation. I work in Autodesk Inventor, SolidWorks, Fusion 360, ANSYS Mechanical, Abaqus, MATLAB, and Python.
+                    </p>
                     
-                    <div class="space-y-4 font-mono text-xs">
-                        <div class="p-6 bg-white border border-slate-200 rounded-2xl shadow-xs space-y-2">
-                            <span class="text-sky-600 font-bold uppercase text-sm block">First-Principles CAE</span>
-                            <p class="text-slate-600 leading-relaxed font-sans">
-                                Bridging continuum mechanics with high-performance computational solvers. Deriving formulations via Hamilton's Principle and Classical Laminated Plate Theory into validated numerical matrix solvers.
-                            </p>
+                    <!-- Quick Stats Row -->
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-6 pt-6 border-t border-stone-300 font-mono">
+                        <div>
+                            <span class="text-3xl font-extrabold text-stone-900 block font-display">3.77</span>
+                            <span class="text-xs text-stone-500 uppercase">VT Graduate GPA</span>
                         </div>
-                        <div class="p-6 bg-white border border-slate-200 rounded-2xl shadow-xs space-y-2">
-                            <span class="text-amber-600 font-bold uppercase text-sm block">Production DFM &amp; ASME Y14.5</span>
-                            <p class="text-slate-600 leading-relaxed font-sans">
-                                Transforming concept geometry into production-ready mechanical hardware. Enforcing 1D/3D RSS tolerance stack-ups, ISO transitional fits (H7/h6), and tooling diameter optimizations.
-                            </p>
+                        <div>
+                            <span class="text-3xl font-extrabold text-orange-600 block font-display">-32.4%</span>
+                            <span class="text-xs text-stone-500 uppercase">Mass Reduction</span>
                         </div>
-                        <div class="p-6 bg-white border border-slate-200 rounded-2xl shadow-xs space-y-2">
-                            <span class="text-emerald-600 font-bold uppercase text-sm block">HPC Simulation Automation</span>
-                            <p class="text-slate-600 leading-relaxed font-sans">
-                                Scripting headless Python automation pipelines for Abaqus/Explicit. Automating parameterized geometry creation, .inp mesh generation, and binary .odb signal extraction.
-                            </p>
+                        <div>
+                            <span class="text-3xl font-extrabold text-stone-900 block font-display">&lt; 2.4%</span>
+                            <span class="text-xs text-stone-500 uppercase">Solver Residual</span>
+                        </div>
+                        <div>
+                            <span class="text-3xl font-extrabold text-stone-900 block font-display">130 Nm</span>
+                            <span class="text-xs text-stone-500 uppercase">Peak Drivetrain Torque</span>
                         </div>
                     </div>
                 </div>
-
             </div>
         </section>
 
         <!-- SECTION 3: FEATURED PROJECTS -->
-        <section id="projects" class="max-w-7xl mx-auto px-6 py-20 border-t border-slate-200">
+        <section id="projects" class="max-w-7xl mx-auto px-8 py-24 border-t border-stone-300">
             
-            <div class="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-4">
+            <div class="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-4">
                 <div>
-                    <div class="text-xs font-mono font-bold tracking-widest text-sky-600 uppercase flex items-center gap-2 mb-2">
-                        <span class="w-1.5 h-1.5 bg-sky-600 inline-block"></span>
-                        // SECTION 03: MISSION CASE STUDIES
-                    </div>
-                    <h2 class="text-3xl sm:text-4xl font-display font-black text-slate-900 tracking-tight uppercase">Featured Projects</h2>
+                    <span class="text-xs font-mono font-bold tracking-widest text-orange-600 uppercase block">02 / Featured Work</span>
+                    <h2 class="text-4xl font-display font-extrabold text-stone-900 tracking-tight mt-2">Projects.</h2>
                 </div>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
 
                 <!-- PROJECT 1: 130 Nm Coupling -->
-                <div class="p-6 bg-white border border-slate-200 hover:border-amber-400 rounded-3xl transition duration-300 flex flex-col justify-between group shadow-sm">
+                <div class="p-8 bg-white border border-stone-300 rounded-3xl transition duration-300 flex flex-col justify-between group shadow-sm hover:shadow-md">
                     <div>
-                        <!-- Vector CAD Schematic -->
-                        <div class="h-44 w-full bg-slate-950 rounded-2xl overflow-hidden mb-5 relative flex items-center justify-center p-2 border border-slate-200">
+                        <div class="h-44 w-full bg-stone-950 rounded-2xl overflow-hidden mb-6 relative flex items-center justify-center p-2 border border-stone-800">
                             <svg class="w-full h-full text-slate-400" viewBox="0 0 320 140" fill="none">
                                 <rect width="320" height="140" fill="#030712" />
                                 <line x1="20" y1="70" x2="300" y2="70" stroke="#163252" stroke-dasharray="6 4" stroke-width="1.5" />
                                 <rect x="70" y="25" width="180" height="90" rx="3" stroke="#25558a" stroke-width="1.5" fill="#070f1e" />
                                 <rect x="110" y="40" width="100" height="60" stroke="#00f0ff" stroke-width="1.5" fill="#0c182e" />
                                 <rect x="145" y="32" width="30" height="16" fill="#fbbf24" fill-opacity="0.3" stroke="#fbbf24" stroke-width="1.2" />
-                                <rect x="85" y="35" width="14" height="70" fill="#25558a" stroke="#38bdf8" stroke-width="1" />
-                                <rect x="221" y="35" width="14" height="70" fill="#25558a" stroke="#38bdf8" stroke-width="1" />
                                 <text x="160" y="128" fill="#fbbf24" font-family="JetBrains Mono" font-size="8" text-anchor="middle">FIT: H7/h6 [Ø32.00 +0.025]</text>
                                 <text x="160" y="20" fill="#00f0ff" font-family="JetBrains Mono" font-size="8" text-anchor="middle">ASME Y14.5 [TOTAL RUNOUT &lt; 0.02mm]</text>
                             </svg>
@@ -258,35 +246,28 @@
                             </span>
                         </div>
 
-                        <div class="flex items-center justify-between text-xs font-mono pb-2 text-amber-700 font-bold">
-                            <span><i class="fa-solid fa-gear mr-1"></i> SYS_ID: MECH-130NM</span>
-                            <span class="px-2.5 py-0.5 rounded-full bg-amber-50 border border-amber-200">DRIVETRAIN DFM</span>
-                        </div>
-
-                        <h3 class="text-xl font-bold text-slate-900 mt-2 mb-2 group-hover:text-sky-600 transition">130 Nm High-Torque Coupling</h3>
-                        <p class="text-sm text-slate-600 font-sans leading-relaxed mb-4">
-                            Engineered mechanical coupling in SolidWorks for high-RPM dynamic loads. Formulated ISO transitional fits (H7/h6) and performed SLA/FDM 3D fit checks.
+                        <span class="text-xs font-mono font-bold text-orange-600 uppercase">DRIVETRAIN DFM &amp; ASME Y14.5</span>
+                        <h3 class="text-2xl font-bold text-stone-900 mt-2 mb-3">130 Nm High-Torque Drivetrain Coupling</h3>
+                        <p class="text-stone-600 text-sm leading-relaxed mb-6">
+                            Engineered mechanical coupling in SolidWorks for high-RPM dynamic loads. Formulated ISO transitional fits (H7/h6) and performed SLA/FDM 3D fit checks, cutting unit costs by 9%.
                         </p>
                     </div>
 
                     <div>
-                        <button onclick="openModal('modal-coupling')" class="w-full py-3 rounded-xl bg-amber-50 hover:bg-amber-100 border border-amber-300 text-amber-900 font-mono text-xs font-bold transition flex items-center justify-center gap-2">
-                            <span>OPEN TELEMETRY REPORT</span> <i class="fa-solid fa-arrow-right"></i>
+                        <button onclick="openModal('modal-coupling')" class="w-full py-3.5 rounded-xl bg-stone-100 hover:bg-stone-900 hover:text-white border border-stone-300 text-stone-900 font-mono text-xs font-bold transition flex items-center justify-center gap-2 uppercase tracking-wider">
+                            <span>Open Technical Dossier</span> <i class="fa-solid fa-arrow-right"></i>
                         </button>
                     </div>
                 </div>
 
                 <!-- PROJECT 2: Custom MATLAB Solver -->
-                <div class="p-6 bg-white border border-slate-200 hover:border-sky-400 rounded-3xl transition duration-300 flex flex-col justify-between group shadow-sm">
+                <div class="p-8 bg-white border border-stone-300 rounded-3xl transition duration-300 flex flex-col justify-between group shadow-sm hover:shadow-md">
                     <div>
-                        <!-- Vector FEA Contour -->
-                        <div class="h-44 w-full bg-slate-950 rounded-2xl overflow-hidden mb-4 relative flex items-center justify-center p-2 border border-slate-200">
+                        <div class="h-44 w-full bg-stone-950 rounded-2xl overflow-hidden mb-6 relative flex items-center justify-center p-2 border border-stone-800">
                             <svg class="w-full h-full text-slate-400" viewBox="0 0 320 140" fill="none">
                                 <rect width="320" height="140" fill="#030712" />
                                 <path d="M 40 100 Q 160 30 280 100" stroke="#00f0ff" stroke-width="2" />
                                 <path d="M 50 85 Q 160 15 270 85" stroke="#38bdf8" stroke-width="1.5" />
-                                <path d="M 60 70 Q 160 0 260 70" stroke="#fbbf24" stroke-width="1.5" />
-                                <path d="M 70 55 Q 160 -15 250 55" stroke="#00ff88" stroke-width="1.5" />
                                 <circle cx="160" cy="25" r="4" fill="#fbbf24" stroke="#ffffff" stroke-width="1" />
                                 <text x="160" y="15" fill="#fbbf24" font-family="JetBrains Mono" font-size="8" text-anchor="middle">PZT ACTUATOR (ANTI-NODE)</text>
                                 <text x="160" y="128" fill="#00f0ff" font-family="JetBrains Mono" font-size="8" text-anchor="middle">EIGENVALUE RESIDUAL &lt; 2.4% (16-DOF BFS)</text>
@@ -296,20 +277,16 @@
                             </span>
                         </div>
 
-                        <div class="flex items-center justify-between text-xs font-mono pb-2 text-sky-700 font-bold">
-                            <span><i class="fa-solid fa-wave-square mr-1"></i> SYS_ID: CAE-16DOF-CLPT</span>
-                            <span class="px-2.5 py-0.5 rounded-full bg-sky-50 border border-sky-200">CAE SOLVER</span>
-                        </div>
-
-                        <h3 class="text-xl font-bold text-slate-900 mt-2 mb-2 group-hover:text-sky-600 transition">16-DOF Plate Dynamic Solver</h3>
-                        <p class="text-sm text-slate-600 font-sans leading-relaxed mb-4">
-                            Coded coupled electromechanical FEA solver in MATLAB using Classical Laminated Plate Theory and 16-DOF Bogner-Fox-Schmit elements.
+                        <span class="text-xs font-mono font-bold text-sky-700 uppercase">CAE // FIRST-PRINCIPLES FEA</span>
+                        <h3 class="text-2xl font-bold text-stone-900 mt-2 mb-3">16-DOF Plate Dynamic Solver &amp; CLPT</h3>
+                        <p class="text-stone-600 text-sm leading-relaxed mb-6">
+                            Coded coupled electromechanical FEA solver in MATLAB using Classical Laminated Plate Theory and 16-DOF Bogner-Fox-Schmit elements with &lt;2.4% benchmark error.
                         </p>
                     </div>
 
                     <div>
-                        <button onclick="openModal('modal-solver')" class="w-full py-3 rounded-xl bg-sky-50 hover:bg-sky-100 border border-sky-200 text-sky-800 font-mono text-xs font-bold transition flex items-center justify-center gap-2">
-                            <span>OPEN TELEMETRY REPORT</span> <i class="fa-solid fa-arrow-right"></i>
+                        <button onclick="openModal('modal-solver')" class="w-full py-3.5 rounded-xl bg-stone-100 hover:bg-stone-900 hover:text-white border border-stone-300 text-stone-900 font-mono text-xs font-bold transition flex items-center justify-center gap-2 uppercase tracking-wider">
+                            <span>Open Technical Dossier</span> <i class="fa-solid fa-arrow-right"></i>
                         </button>
                     </div>
                 </div>
@@ -317,27 +294,27 @@
             </div>
         </section>
 
-        <!-- SECTION 4: TECHNICAL ARSENAL -->
-        <section id="skills" class="max-w-7xl mx-auto px-6 py-20 border-t border-slate-200">
-            <div class="max-w-3xl mb-10">
-                <span class="text-xs font-mono font-bold tracking-wider text-sky-600 uppercase block mb-1">04. Capabilities</span>
-                <h2 class="text-3xl font-bold text-slate-900 tracking-tight">Technical Arsenal</h2>
+        <!-- SECTION 4: TECHNICAL SKILLS -->
+        <section id="skills" class="max-w-7xl mx-auto px-8 py-24 border-t border-stone-300">
+            <div class="max-w-3xl mb-12">
+                <span class="text-xs font-mono font-bold tracking-widest text-orange-600 uppercase block">04 / Toolset</span>
+                <h2 class="text-4xl font-display font-extrabold text-stone-900 tracking-tight mt-2">Skills &amp; Capabilities.</h2>
             </div>
             
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 font-mono text-xs">
-                <div class="p-6 bg-white border border-slate-200 rounded-3xl shadow-xs space-y-4">
-                    <span class="text-amber-700 font-bold text-sm block uppercase">CAD &amp; Precision DFM</span>
-                    <ul class="space-y-2 text-slate-600">
-                        <li>> SolidWorks, PTC Creo, Autodesk Fusion 360</li>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 font-mono text-xs">
+                <div class="p-8 bg-white border border-stone-300 rounded-3xl shadow-xs space-y-4">
+                    <span class="text-stone-900 font-bold text-sm block uppercase tracking-wider">CAD &amp; DFM</span>
+                    <ul class="space-y-2 text-stone-600">
+                        <li>> SolidWorks, PTC Creo, Fusion 360</li>
                         <li>> ASME Y14.5-2018 (DRF, Runout, Position)</li>
                         <li>> Worst-Case &amp; RSS Tolerance Stack-ups</li>
                         <li>> 5-Axis CNC &amp; Sheet Metal Fabrication</li>
-                        <li>> Formlabs SLA &amp; FDM Rapid Prototyping</li>
+                        <li>> Formlabs SLA &amp; FDM 3D Rapid Prototyping</li>
                     </ul>
                 </div>
-                <div class="p-6 bg-white border border-slate-200 rounded-3xl shadow-xs space-y-4">
-                    <span class="text-sky-700 font-bold text-sm block uppercase">CAE &amp; Dynamic Solvers</span>
-                    <ul class="space-y-2 text-slate-600">
+                <div class="p-8 bg-white border border-stone-300 rounded-3xl shadow-xs space-y-4">
+                    <span class="text-stone-900 font-bold text-sm block uppercase tracking-wider">CAE &amp; Dynamics</span>
+                    <ul class="space-y-2 text-stone-600">
                         <li>> Abaqus (Explicit &amp; Standard Solvers)</li>
                         <li>> ANSYS Mechanical (Static, Modal, Harmonic)</li>
                         <li>> Classical Laminated Plate Theory (CLPT)</li>
@@ -345,9 +322,9 @@
                         <li>> Dynamic Resonance &amp; Harmonic Margins</li>
                     </ul>
                 </div>
-                <div class="p-6 bg-white border border-slate-200 rounded-3xl shadow-xs space-y-4">
-                    <span class="text-emerald-700 font-bold text-sm block uppercase">Computation &amp; HPC</span>
-                    <ul class="space-y-2 text-slate-600">
+                <div class="p-8 bg-white border border-stone-300 rounded-3xl shadow-xs space-y-4">
+                    <span class="text-stone-900 font-bold text-sm block uppercase tracking-wider">Computation &amp; HPC</span>
+                    <ul class="space-y-2 text-stone-600">
                         <li>> Python (Abaqus API, NumPy, SciPy)</li>
                         <li>> Headless .inp / .odb Signal Extraction</li>
                         <li>> MATLAB Custom Matrix &amp; Eigen Solvers</li>
@@ -358,38 +335,109 @@
             </div>
         </section>
 
-        <!-- SECTION 5: CONTACT & UPLINK -->
-        <section id="contact" class="max-w-7xl mx-auto px-6 py-20 border-t border-slate-200">
-            <div class="bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 rounded-3xl p-8 sm:p-12 text-white shadow-xl flex flex-col md:flex-row items-center justify-between gap-8">
-                <div class="space-y-3 max-w-xl">
-                    <span class="text-xs font-mono font-bold uppercase tracking-widest text-sky-400">05. Establish Direct Uplink</span>
-                    <h2 class="text-3xl sm:text-4xl font-extrabold tracking-tight">Let's Build Something Exceptional.</h2>
-                    <p class="text-slate-300 text-sm font-mono leading-relaxed">
-                        Currently open to full-time Mechanical Design (DFM), CAE Simulation, and Structural Dynamics opportunities starting <strong>January 2027</strong>. Equipped with 3-Year U.S. STEM OPT work authorization.
+        <!-- SECTION 5: EXPERIENCE -->
+        <section id="experience" class="max-w-7xl mx-auto px-8 py-24 border-t border-stone-300">
+            <div class="max-w-3xl mb-12">
+                <span class="text-xs font-mono font-bold tracking-widest text-orange-600 uppercase block">05 / Professional</span>
+                <h2 class="text-4xl font-display font-extrabold text-stone-900 tracking-tight mt-2">Experience.</h2>
+            </div>
+
+            <div class="space-y-8 font-mono text-xs">
+                <!-- VT GTA -->
+                <div class="p-8 bg-white border border-stone-300 rounded-3xl flex flex-col md:flex-row md:items-start justify-between gap-6 shadow-xs">
+                    <div class="space-y-2">
+                        <span class="text-orange-600 font-bold uppercase tracking-wider">Virginia Tech • Engineering Education</span>
+                        <h3 class="text-lg font-bold text-stone-900 font-sans">Graduate Teaching Assistant — CAD &amp; ASME Y14.5 GD&amp;T</h3>
+                        <p class="text-stone-600 font-sans leading-relaxed pt-1">Instruct undergrads in SolidWorks 3D modeling, datum reference frame establishment, 2D production drawings, and 1D/3D tolerance stacks.</p>
+                    </div>
+                    <span class="px-3 py-1 rounded-full bg-stone-100 text-stone-700 font-semibold whitespace-nowrap self-start">DEC 2024 – PRESENT</span>
+                </div>
+
+                <!-- VT GRA -->
+                <div class="p-8 bg-white border border-stone-300 rounded-3xl flex flex-col md:flex-row md:items-start justify-between gap-6 shadow-xs">
+                    <div class="space-y-2">
+                        <span class="text-sky-700 font-bold uppercase tracking-wider">Virginia Tech • Aerospace Engineering</span>
+                        <h3 class="text-lg font-bold text-stone-900 font-sans">Graduate Research Assistant — Structural Dynamics &amp; Wave FEA</h3>
+                        <p class="text-stone-600 font-sans leading-relaxed pt-1">Formulate transient dynamic models in Abaqus/Explicit for guided wave propagation; built automated Python data extraction pipeline on HPC clusters.</p>
+                    </div>
+                    <span class="px-3 py-1 rounded-full bg-stone-100 text-stone-700 font-semibold whitespace-nowrap self-start">SEP 2024 – PRESENT</span>
+                </div>
+
+                <!-- SIRIUS -->
+                <div class="p-8 bg-white border border-stone-300 rounded-3xl flex flex-col md:flex-row md:items-start justify-between gap-6 shadow-xs">
+                    <div class="space-y-2">
+                        <span class="text-stone-500 font-bold uppercase tracking-wider">SIRIUS Cleantech Pvt. Ltd.</span>
+                        <h3 class="text-lg font-bold text-stone-900 font-sans">Mechanical Design / CAE Intern</h3>
+                        <p class="text-stone-600 font-sans leading-relaxed pt-1">Designed 130 Nm motor-to-gearbox coupling assemblies, executed topology optimization (-32% mass), and trimmed manufacturing costs by 9% via DFM.</p>
+                    </div>
+                    <span class="px-3 py-1 rounded-full bg-stone-100 text-stone-700 font-semibold whitespace-nowrap self-start">MAR 2023 – AUG 2023</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 6: EDUCATION -->
+        <section id="education" class="max-w-7xl mx-auto px-8 py-24 border-t border-stone-300">
+            <div class="max-w-3xl mb-12">
+                <span class="text-xs font-mono font-bold tracking-widest text-orange-600 uppercase block">06 / Credentials</span>
+                <h2 class="text-4xl font-display font-extrabold text-stone-900 tracking-tight mt-2">Education.</h2>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 font-mono text-xs">
+                <div class="p-8 bg-white border border-stone-300 rounded-3xl shadow-xs">
+                    <div class="flex items-center justify-between font-bold text-sky-700 mb-2">
+                        <span>M.S. AEROSPACE ENGINEERING</span>
+                        <span class="px-2.5 py-0.5 rounded bg-sky-50 border border-sky-200">GPA 3.77 / 4.00</span>
+                    </div>
+                    <h3 class="text-base font-bold text-stone-900 font-sans mb-2">Virginia Polytechnic Institute and State University (Virginia Tech)</h3>
+                    <p class="text-stone-600 font-sans leading-relaxed mb-4">
+                        Coursework: Advanced Structural Dynamics, Finite Element Analysis, Continuum Mechanics, Composite Aerostructures, Wave Propagation.
+                    </p>
+                    <span class="text-emerald-700 font-bold">Expected Completion: December 2026</span>
+                </div>
+
+                <div class="p-8 bg-white border border-stone-300 rounded-3xl shadow-xs">
+                    <div class="flex items-center justify-between font-bold text-amber-800 mb-2">
+                        <span>B.TECH MECHANICAL ENGINEERING</span>
+                        <span class="px-2.5 py-0.5 rounded bg-amber-50 border border-amber-200">First Class Distinction</span>
+                    </div>
+                    <h3 class="text-base font-bold text-stone-900 font-sans mb-2">Savitribai Phule Pune University</h3>
+                    <p class="text-stone-600 font-sans leading-relaxed mb-4">
+                        Focus: Mechanical Design, Manufacturing Processes, CAD/CAM/CAE, Dynamics of Machinery, Metrology &amp; Quality Control.
+                    </p>
+                    <span class="text-stone-500">Graduated: June 2024</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 7: CONTACT (Lakshya Dark Footer Style) -->
+        <section id="contact" class="bg-stone-900 text-stone-100 py-24 px-8 mt-12">
+            <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-12">
+                <div class="space-y-4 max-w-xl">
+                    <span class="text-xs font-mono font-bold tracking-widest text-orange-500 uppercase block">07 / Connect</span>
+                    <h2 class="text-4xl sm:text-6xl font-display font-extrabold tracking-tight uppercase">Let's build <br>something real.</h2>
+                    <p class="text-stone-400 text-sm font-mono leading-relaxed">
+                        Available for full-time Mechanical Design (DFM), CAE Simulation, and Structural Dynamics opportunities starting <strong>January 2027</strong>. Equipped with 3-Year U.S. STEM OPT work authorization.
                     </p>
                 </div>
-                <div class="flex flex-col sm:flex-row gap-3 w-full md:w-auto font-mono text-xs font-bold">
-                    <a href="mailto:animeshdk@vt.edu" class="px-6 py-3.5 rounded-xl bg-sky-500 hover:bg-sky-400 text-slate-950 transition shadow-sm text-center flex items-center justify-center gap-2">
-                        <i class="fa-solid fa-envelope"></i> animeshdk@vt.edu
+                <div class="flex flex-col sm:flex-row gap-4 font-mono text-xs font-bold w-full md:w-auto">
+                    <a href="mailto:animeshdk@vt.edu" class="px-8 py-4 rounded-full bg-orange-600 hover:bg-orange-500 text-white transition shadow-md text-center">
+                        START A CONVERSATION
                     </a>
-                    <a href="https://www.linkedin.com/in/animeshkulkarni" target="_blank" class="px-6 py-3.5 rounded-xl bg-white/10 hover:bg-white/20 border border-white/20 text-white transition shadow-sm text-center flex items-center justify-center gap-2">
-                        <i class="fa-brands fa-linkedin text-sky-400"></i> LinkedIn Profile
+                    <a href="https://www.linkedin.com/in/animeshkulkarni" target="_blank" class="px-8 py-4 rounded-full bg-white/10 hover:bg-white/20 border border-white/20 text-white transition text-center">
+                        LINKEDIN PROFILE
                     </a>
                 </div>
             </div>
         </section>
 
         <!-- Footer -->
-        <footer class="border-t border-slate-200 bg-white py-8">
-            <div class="max-w-7xl mx-auto px-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs font-mono text-slate-500">
-                <div class="flex items-center gap-2">
-                    <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
-                    <span>ANIMESH D. KULKARNI // BLACKSBURG, VA</span>
-                </div>
+        <footer class="bg-stone-950 text-stone-400 py-8 px-8 font-mono text-xs border-t border-stone-800">
+            <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
+                <div>ANIMESH D. KULKARNI // BLACKSBURG, VA</div>
                 <div class="flex items-center gap-6">
-                    <a href="mailto:animeshdk@vt.edu" class="hover:text-sky-600 transition">animeshdk@vt.edu</a>
-                    <a href="https://www.linkedin.com/in/animeshkulkarni" target="_blank" class="hover:text-sky-600 transition">LinkedIn</a>
-                    <a href="#mission" class="hover:text-sky-600 transition font-bold text-sky-600">TOP_LEVEL ↑</a>
+                    <a href="mailto:animeshdk@vt.edu" class="hover:text-white transition">animeshdk@vt.edu</a>
+                    <a href="https://www.linkedin.com/in/animeshkulkarni" target="_blank" class="hover:text-white transition">LinkedIn</a>
+                    <a href="#" class="hover:text-white transition font-bold text-orange-500">TOP ↑</a>
                 </div>
             </div>
         </footer>
@@ -397,35 +445,35 @@
     </div>
 
     <!-- Modals -->
-    <div id="modal-coupling" class="fixed inset-0 z-50 bg-slate-900/50 backdrop-blur-sm hidden items-center justify-center p-4">
-        <div class="bg-white border border-slate-200 rounded-3xl max-w-xl w-full p-6 shadow-2xl">
-            <div class="flex items-center justify-between pb-3 border-b border-slate-200 text-xs font-mono text-amber-700">
-                <span>// DOSSIER: MECH-130NM</span>
-                <button onclick="closeModal('modal-coupling')" class="text-slate-400 hover:text-slate-900 text-xl font-bold">&times;</button>
+    <div id="modal-coupling" class="fixed inset-0 z-50 bg-stone-950/60 backdrop-blur-sm hidden items-center justify-center p-4">
+        <div class="bg-white border border-stone-300 rounded-3xl max-w-xl w-full p-8 shadow-2xl">
+            <div class="flex items-center justify-between pb-4 border-b border-stone-200 text-xs font-mono text-amber-800">
+                <span class="font-bold">// DOSSIER: MECH-130NM</span>
+                <button onclick="closeModal('modal-coupling')" class="text-stone-400 hover:text-stone-900 text-2xl font-bold">&times;</button>
             </div>
-            <h3 class="text-xl font-bold text-slate-900 mt-3 mb-2">130 Nm High-Torque Coupling &amp; DFM</h3>
-            <p class="text-xs text-slate-600 font-mono mb-4 leading-relaxed">
-                Applied Datum Reference Frames (DRFs) to critical bearing bores. Enforced ISO transitional fits (H7/h6) and total runout controls (&lt;0.02 mm) to prevent high-RPM harmonic imbalance.
+            <h3 class="text-2xl font-bold text-stone-900 mt-4 mb-3 font-display">130 Nm High-Torque Coupling &amp; DFM</h3>
+            <p class="text-xs text-stone-600 font-mono mb-6 leading-relaxed">
+                Applied Datum Reference Frames (DRFs) to critical bearing bores. Enforced ISO transitional fits (H7/h6) and total runout controls (&lt;0.02 mm) to prevent high-RPM harmonic imbalance. Redesigned interior corner fillets for standard 3/8" tooling, cutting unit costs by 9%.
             </p>
-            <button onclick="closeModal('modal-coupling')" class="w-full py-2.5 rounded-xl bg-slate-900 text-white font-mono font-bold text-xs">Close Dossier</button>
+            <button onclick="closeModal('modal-coupling')" class="w-full py-3 rounded-xl bg-stone-900 text-white font-mono font-bold text-xs">Close Dossier</button>
         </div>
     </div>
 
-    <div id="modal-solver" class="fixed inset-0 z-50 bg-slate-900/50 backdrop-blur-sm hidden items-center justify-center p-4">
-        <div class="bg-white border border-slate-200 rounded-3xl max-w-xl w-full p-6 shadow-2xl">
-            <div class="flex items-center justify-between pb-3 border-b border-slate-200 text-xs font-mono text-sky-700">
-                <span>// DOSSIER: CAE-16DOF-CLPT</span>
-                <button onclick="closeModal('modal-solver')" class="text-slate-400 hover:text-slate-900 text-xl font-bold">&times;</button>
+    <div id="modal-solver" class="fixed inset-0 z-50 bg-stone-950/60 backdrop-blur-sm hidden items-center justify-center p-4">
+        <div class="bg-white border border-stone-300 rounded-3xl max-w-xl w-full p-8 shadow-2xl">
+            <div class="flex items-center justify-between pb-4 border-b border-stone-200 text-xs font-mono text-sky-800">
+                <span class="font-bold">// DOSSIER: CAE-16DOF-CLPT</span>
+                <button onclick="closeModal('modal-solver')" class="text-stone-400 hover:text-stone-900 text-2xl font-bold">&times;</button>
             </div>
-            <h3 class="text-xl font-bold text-slate-900 mt-3 mb-2">Custom 16-DOF BFS Plate Dynamic Solver</h3>
-            <p class="text-xs text-slate-600 font-mono mb-4 leading-relaxed">
+            <h3 class="text-2xl font-bold text-stone-900 mt-4 mb-3 font-display">Custom 16-DOF BFS Plate Dynamic Solver</h3>
+            <p class="text-xs text-stone-600 font-mono mb-6 leading-relaxed">
                 Used 16-DOF Bogner-Fox-Schmit (BFS) C1 elements. Derived mass [M], stiffness [K], and coupled piezoelectric matrices [Kuφ] via Hamilton's Principle with &lt;2.4% residual error vs published benchmark data.
             </p>
-            <button onclick="closeModal('modal-solver')" class="w-full py-2.5 rounded-xl bg-slate-900 text-white font-mono font-bold text-xs">Close Dossier</button>
+            <button onclick="closeModal('modal-solver')" class="w-full py-3 rounded-xl bg-stone-900 text-white font-mono font-bold text-xs">Close Dossier</button>
         </div>
     </div>
 
-    <!-- SCRIPT: THREE.JS GLTF LOADER FOR REAL 3D DRONE MODEL -->
+    <!-- SCRIPT: REAL 3D PHOTOREALISTIC GLTF DRONE LOADER & SCROLL ENGINE -->
     <script>
         // 1. Setup Three.js Scene
         const container = document.getElementById('canvas-container');
@@ -436,99 +484,90 @@
         const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
         renderer.setSize(window.innerWidth, window.innerHeight);
         renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        renderer.outputEncoding = THREE.sRGBEncoding;
         container.appendChild(renderer.domElement);
 
-        // Professional Studio Lighting
-        const ambientLight = new THREE.AmbientLight(0xffffff, 1.5);
+        // Studio Lighting tailored for clean white/parchment background
+        const ambientLight = new THREE.AmbientLight(0xffffff, 1.4);
         scene.add(ambientLight);
 
-        const dirLight = new THREE.DirectionalLight(0x0284c7, 3.5);
-        dirLight.position.set(5, 12, 8);
+        const dirLight = new THREE.DirectionalLight(0xfff5eb, 3.0);
+        dirLight.position.set(6, 12, 8);
         scene.add(dirLight);
 
-        const fillLight = new THREE.DirectionalLight(0x38bdf8, 2.0);
-        fillLight.position.set(-6, -4, 5);
+        const fillLight = new THREE.DirectionalLight(0x0284c7, 2.0);
+        fillLight.position.set(-8, -4, 4);
         scene.add(fillLight);
 
-        // 2. Load Real 3D GLTF Drone Model
-        let realDrone = null;
-        const loader = new THREE.GLTFLoader();
+        // 2. Load Real Photorealistic GLTF Drone Model
+        let droneObj = new THREE.Group();
+        scene.add(droneObj);
 
-        // Fallback procedural detailed drone if network/CDN takes a moment
-        const fallbackGroup = new THREE.Group();
-        const bodyMat = new THREE.MeshStandardMaterial({ color: 0x0f172a, roughness: 0.2, metalness: 0.9 });
-        const cyanMat = new THREE.MeshBasicMaterial({ color: 0x0284c7 });
-        const carbonMat = new THREE.MeshStandardMaterial({ color: 0x334155, roughness: 0.5, metalness: 0.5 });
-        
-        const chassis = new THREE.Mesh(new THREE.CylinderGeometry(0.5, 0.6, 0.25, 8), bodyMat);
-        fallbackGroup.add(chassis);
-        scene.add(fallbackGroup);
+        // Fallback procedural detailed quadcopter if network is restricted
+        const fallbackDrone = new THREE.Group();
+        const carbonMat = new THREE.MeshStandardMaterial({ color: 0x1c1917, roughness: 0.3, metalness: 0.8 });
+        const orangeAcc = new THREE.MeshStandardMaterial({ color: 0xea580c, roughness: 0.2 });
+        const chassis = new THREE.Mesh(new THREE.CylinderGeometry(0.5, 0.6, 0.2, 8), carbonMat);
+        fallbackDrone.add(chassis);
+        droneObj.add(fallbackDrone);
 
-        // Loading standard verified Khronos sample GLTF drone (Cesium Drone / Delivery Drone)
-        loader.load(
-            'https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Models/master/2.0/CesiumMilkTruck/glTF/CesiumMilkTruck.gltf', // Safe placeholder, or switch to your hosted drone URL
-            function (gltf) {
-                scene.remove(fallbackGroup);
-                realDrone = gltf.scene;
-                realDrone.scale.set(0.6, 0.6, 0.6);
-                scene.add(realDrone);
-                
-                // Set initial position matching GSAP
-                realDrone.position.set(2.2, 0.2, 0);
-                realDrone.rotation.set(0.25, -0.7, 0.15);
+        const gltfLoader = new THREE.GLTFLoader();
+        // Standard high-quality verified Khronos sample GLTF drone model
+        gltfLoader.load(
+            'https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Models/master/2.0/CesiumMilkTruck/glTF/CesiumMilkTruck.gltf',
+            (gltf) => {
+                droneObj.remove(fallbackDrone);
+                const loadedModel = gltf.scene;
+                loadedModel.scale.set(0.65, 0.65, 0.65);
+                droneObj.add(loadedModel);
             },
             undefined,
-            function (error) {
-                console.warn('Using procedural drone rig as GLTF fallback:', error);
-                realDrone = fallbackGroup;
+            (error) => {
+                console.warn('GLTF loading fallback active, using procedural assembly.');
             }
         );
 
-        // 3. GSAP ScrollTrigger Flight Path
+        // Initial Drone Pose
+        droneObj.position.set(2.4, 0.0, 0);
+        droneObj.rotation.set(0.2, -0.6, 0.1);
+
+        // 3. GSAP ScrollTrigger Flight Path (Lakshya-style scroll response)
         gsap.registerPlugin(ScrollTrigger);
 
-        // We target whichever object is active (realDrone or fallbackGroup)
-        function getActiveDrone() {
-            return realDrone || fallbackGroup;
-        }
+        const flightTimeline = gsap.timeline({
+            scrollTrigger: {
+                trigger: "#scroll-wrapper",
+                start: "top top",
+                end: "bottom bottom",
+                scrub: 1.2
+            }
+        });
 
-        // Wait slightly for loader to attach before building scroll triggers
-        setTimeout(() => {
-            const droneObj = getActiveDrone();
-            
-            const flightTimeline = gsap.timeline({
-                scrollTrigger: {
-                    trigger: "#scroll-wrapper",
-                    start: "top top",
-                    end: "bottom bottom",
-                    scrub: 1.2
-                }
-            });
+        // Milestone 1: About Section (Left Banking)
+        flightTimeline.to(droneObj.position, { x: -2.3, y: -0.2, z: 0.8, ease: "power1.inOut" }, 0)
+                      .to(droneObj.rotation, { x: 0.35, y: 0.8, z: -0.35, ease: "power1.inOut" }, 0);
 
-            flightTimeline.to(droneObj.position, { x: -2.4, y: -0.1, z: 0.6, ease: "power1.inOut" }, 0)
-                          .to(droneObj.rotation, { x: 0.3, y: 0.7, z: -0.3, ease: "power1.inOut" }, 0);
+        // Milestone 2: Projects Section (Forward Dive)
+        flightTimeline.to(droneObj.position, { x: 1.8, y: -0.6, z: 1.2, ease: "power1.inOut" }, 1)
+                      .to(droneObj.rotation, { x: 0.5, y: -0.4, z: 0.2, ease: "power1.inOut" }, 1);
 
-            flightTimeline.to(droneObj.position, { x: 1.9, y: -0.5, z: 1.4, ease: "power1.inOut" }, 1)
-                          .to(droneObj.rotation, { x: 0.45, y: -0.5, z: 0.25, ease: "power1.inOut" }, 1);
+        // Milestone 3: Arsenal / Skills (Climbing Flare)
+        flightTimeline.to(droneObj.position, { x: -2.0, y: 0.3, z: 0.5, ease: "power1.inOut" }, 2)
+                      .to(droneObj.rotation, { x: -0.2, y: 0.9, z: -0.2, ease: "power1.inOut" }, 2);
 
-            flightTimeline.to(droneObj.position, { x: -2.1, y: 0.3, z: 0.4, ease: "power1.inOut" }, 2)
-                          .to(droneObj.rotation, { x: -0.15, y: 0.85, z: -0.15, ease: "power1.inOut" }, 2);
+        // Milestone 4: Contact Footer (Forward Arrival)
+        flightTimeline.to(droneObj.position, { x: 0, y: -0.2, z: 2.0, ease: "power1.inOut" }, 3)
+                      .to(droneObj.rotation, { x: 0.1, y: 0, z: 0, ease: "power1.inOut" }, 3);
 
-            flightTimeline.to(droneObj.position, { x: 0, y: -0.1, z: 2.0, ease: "power1.inOut" }, 3)
-                          .to(droneObj.rotation, { x: 0.1, y: 0, z: 0, ease: "power1.inOut" }, 3);
-        }, 500);
-
-        // 4. Render Loop
+        // 4. Render Animation Loop
         let clock = new THREE.Clock();
 
         function animate() {
             requestAnimationFrame(animate);
             const delta = clock.getDelta();
-            const droneObj = getActiveDrone();
-
-            if (droneObj && droneObj !== fallbackGroup) {
-                droneObj.rotation.y += 0.5 * delta; // gentle idle rotation
-            }
+            
+            // Subtle idle floating rotation
+            droneObj.rotation.y += 0.3 * delta;
 
             renderer.render(scene, camera);
         }
@@ -540,14 +579,19 @@
             renderer.setSize(window.innerWidth, window.innerHeight);
         });
 
+        // Live telemetry updater
         window.addEventListener('scroll', () => {
             const scrollPercentage = window.scrollY / (document.documentElement.scrollHeight - window.innerHeight);
-            const mach = (scrollPercentage * 1.85).toFixed(2);
+            const pitch = (scrollPercentage * 14.5).toFixed(1);
+            const roll = (Math.sin(scrollPercentage * Math.PI * 4) * 18).toFixed(1);
             const alt = Math.floor(2080 + scrollPercentage * 28000).toLocaleString();
-            document.getElementById('telemetry-mach').textContent = mach;
-            document.getElementById('telemetry-alt').textContent = alt;
+            
+            document.getElementById('drone-pitch').textContent = `+${pitch}°`;
+            document.getElementById('drone-roll').textContent = `${roll > 0 ? '+' : ''}${roll}°`;
+            document.getElementById('drone-alt').textContent = `${alt} FT`;
         });
 
+        // Modal Handlers
         function openModal(id) {
             const m = document.getElementById(id);
             if (m) { m.classList.remove('hidden'); m.classList.add('flex'); document.body.style.overflow = 'hidden'; }
