@@ -30,7 +30,7 @@
             }
         }
     </script>
-    <!-- Modern Clean Typography (Lakshya Pant Style: Plus Jakarta Sans & Inter) -->
+    <!-- Modern Clean Typography & FontAwesome -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@500;700;800&display=swap" rel="stylesheet">
@@ -42,22 +42,18 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
 
     <style>
-        /* Ultra-clean minimal light dot-grid */
         .clean-grid {
             background-size: 32px 32px;
             background-image: radial-gradient(circle, #cbd5e1 1px, transparent 1px);
-        }
-        .glow-card {
-            box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.05);
         }
     </style>
 </head>
 <body class="bg-[#fafafa] text-slate-900 font-sans antialiased selection:bg-sky-500 selection:text-white clean-grid relative min-h-screen overflow-x-hidden">
 
-    <!-- FIXED 3D WEBGL DRONE CANVAS (Pinned like Stars Ratio / Lakshya) -->
+    <!-- FIXED 3D WEBGL MULTI-PART GEOMETRY DRONE CANVAS -->
     <div id="canvas-container" class="fixed inset-0 pointer-events-none z-10 w-full h-full"></div>
 
-    <!-- Soft Ambient Lighting Blobs (Clean Light Mode) -->
+    <!-- Soft Ambient Lighting Blobs -->
     <div class="fixed inset-0 pointer-events-none z-0 overflow-hidden">
         <div class="absolute -top-[10%] left-1/2 -translate-x-1/2 w-[700px] h-[450px] bg-sky-200/40 blur-[120px] rounded-full"></div>
         <div class="absolute top-[40%] -left-[10%] w-[500px] h-[500px] bg-blue-100/50 blur-[130px] rounded-full"></div>
@@ -171,11 +167,11 @@
                     </div>
                 </div>
 
-                <!-- Right Spatial Flight Corridors (Drone hovers here in Section 1) -->
+                <!-- Right Spatial Flight Corridors -->
                 <div class="lg:col-span-5 h-[380px] flex items-end justify-center pointer-events-none">
                     <div class="bg-white/80 backdrop-blur-md border border-slate-200 px-4 py-2 rounded-xl font-mono text-[10px] text-slate-600 flex items-center gap-3 shadow-sm">
                         <span class="w-2 h-2 rounded-full bg-sky-500 animate-pulse"></span>
-                        <span>3D AERO DRONE // HOVERING IN CORRIDOR 01</span>
+                        <span>3D REALISTIC DRONE // CORRIDOR 01</span>
                     </div>
                 </div>
 
@@ -331,7 +327,7 @@
                 <div class="p-6 bg-white border border-slate-200 rounded-3xl shadow-xs space-y-4">
                     <span class="text-amber-700 font-bold text-sm block uppercase">CAD &amp; Precision DFM</span>
                     <ul class="space-y-2 text-slate-600">
-                        <li>> SolidWorks, PTC Creo, Fusion 360</li>
+                        <li>> SolidWorks, PTC Creo, Autodesk Fusion 360</li>
                         <li>> ASME Y14.5-2018 (DRF, Runout, Position)</li>
                         <li>> Worst-Case &amp; RSS Tolerance Stack-ups</li>
                         <li>> 5-Axis CNC &amp; Sheet Metal Fabrication</li>
@@ -428,83 +424,111 @@
         </div>
     </div>
 
-    <!-- SCRIPT: THREE.JS 3D SCROLL-DRIVEN DRONE -->
+    <!-- SCRIPT: THREE.JS 3D REALISTIC MULTI-PART GEOMETRY DRONE -->
     <script>
         // 1. Setup Three.js Scene for Clean Light Mode
         const container = document.getElementById('canvas-container');
         const scene = new THREE.Scene();
         const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
-        camera.position.set(0, 0, 8);
+        camera.position.set(0, 0, 9);
 
         const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
         renderer.setSize(window.innerWidth, window.innerHeight);
         renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
         container.appendChild(renderer.domElement);
 
-        // Clean Lighting
-        const ambientLight = new THREE.AmbientLight(0xffffff, 1.0);
+        // Studio Lighting tailored for clean white background visibility
+        const ambientLight = new THREE.AmbientLight(0xffffff, 1.2);
         scene.add(ambientLight);
 
-        const dirLight = new THREE.DirectionalLight(0x0ea5e9, 2.5);
-        dirLight.position.set(5, 10, 7);
+        const dirLight = new THREE.DirectionalLight(0x0284c7, 3.0);
+        dirLight.position.set(6, 12, 8);
         scene.add(dirLight);
 
-        const bluePoint = new THREE.PointLight(0x0284c7, 3, 20);
-        scene.add(bluePoint);
+        const fillLight = new THREE.DirectionalLight(0x38bdf8, 1.5);
+        fillLight.position.set(-6, -4, 4);
+        scene.add(fillLight);
 
-        // 2. Build 3D Aero Drone Assembly (Styled for Clean Light Backgrounds)
+        // 2. Build Realistic Multi-Part Geometric Drone (Carbon Frame, Motors, Propellers, Camera Gimbal)
         const droneGroup = new THREE.Group();
 
-        const bodyMat = new THREE.MeshStandardMaterial({ color: 0x0f172a, roughness: 0.2, metalness: 0.9 });
-        const cyanMat = new THREE.MeshBasicMaterial({ color: 0x0284c7 });
-        const rotorMat = new THREE.MeshStandardMaterial({ color: 0x38bdf8, transparent: true, opacity: 0.4, roughness: 0.1 });
-        const carbonMat = new THREE.MeshStandardMaterial({ color: 0x334155, roughness: 0.5, metalness: 0.5 });
+        // Materials
+        const matteCarbonMat = new THREE.MeshStandardMaterial({ color: 0x1e293b, roughness: 0.4, metalness: 0.7 });
+        const polishedMetalMat = new THREE.MeshStandardMaterial({ color: 0x0f172a, roughness: 0.2, metalness: 0.95 });
+        const accentCyanMat = new THREE.MeshStandardMaterial({ color: 0x0284c7, roughness: 0.3, emissive: 0x0284c7, emissiveIntensity: 0.4 });
+        const bladeMat = new THREE.MeshStandardMaterial({ color: 0x334155, roughness: 0.2, transparent: true, opacity: 0.75 });
+        const lensMat = new THREE.MeshPhysicalMaterial({ color: 0x00f0ff, roughness: 0.1, transmission: 0.8, thickness: 0.5 });
 
-        // Fuselage
-        const bodyGeo = new THREE.ConeGeometry(0.7, 1.6, 5);
-        const bodyMesh = new THREE.Mesh(bodyGeo, bodyMat);
-        bodyMesh.rotation.x = Math.PI / 2;
-        droneGroup.add(bodyMesh);
+        // Central Main Chassis Hub (Octagonal layered body)
+        const chassisGeo = new THREE.CylinderGeometry(0.5, 0.6, 0.25, 8);
+        const chassisMesh = new THREE.Mesh(chassisGeo, matteCarbonMat);
+        droneGroup.add(chassisMesh);
 
-        // Canopy Glass
-        const canopyGeo = new THREE.SphereGeometry(0.28, 16, 16);
-        const canopyMesh = new THREE.Mesh(canopyGeo, cyanMat);
-        canopyMesh.position.set(0, 0.2, 0.2);
-        canopyMesh.scale.set(1, 0.6, 1.8);
-        droneGroup.add(canopyMesh);
+        // Top Avionics Deck Plate
+        const topDeckGeo = new THREE.CylinderGeometry(0.45, 0.45, 0.08, 8);
+        const topDeckMesh = new THREE.Mesh(topDeckGeo, accentCyanMat);
+        topDeckMesh.position.y = 0.15;
+        droneGroup.add(topDeckMesh);
 
-        // Outrigger Booms & Rotors
-        const rotorDiscs = [];
+        // Bottom Optical Camera Gimbal Assembly
+        const gimbalBaseGeo = new THREE.SphereGeometry(0.22, 16, 16);
+        const gimbalBaseMesh = new THREE.Mesh(gimbalBaseGeo, polishedMetalMat);
+        gimbalBaseMesh.position.set(0, -0.2, 0.15);
+        droneGroup.add(gimbalBaseMesh);
+
+        const lensGeo = new THREE.SphereGeometry(0.12, 16, 16);
+        const lensMesh = new THREE.Mesh(lensGeo, lensMat);
+        lensMesh.position.set(0, -0.22, 0.3);
+        droneGroup.add(lensMesh);
+
+        // 4 Quadcopter Carbon Arms & Motor Pods with Spinning Blades
+        const rotorBlades = [];
         const armAngles = [Math.PI / 4, 3 * Math.PI / 4, 5 * Math.PI / 4, 7 * Math.PI / 4];
-        const armDist = 1.3;
+        const armLength = 1.6;
 
         armAngles.forEach((ang) => {
-            const armX = Math.cos(ang) * armDist;
-            const armZ = Math.sin(ang) * armDist;
+            const armX = Math.cos(ang) * armLength;
+            const armZ = Math.sin(ang) * armLength;
 
-            const boomGeo = new THREE.CylinderGeometry(0.04, 0.04, armDist, 8);
-            const boomMesh = new THREE.Mesh(boomGeo, carbonMat);
-            boomMesh.position.set(armX / 2, 0, armZ / 2);
-            boomMesh.rotation.z = Math.PI / 2;
-            boomMesh.rotation.y = -ang;
-            droneGroup.add(boomMesh);
+            // Angled Carbon Fiber Support Arm
+            const armGeo = new THREE.BoxGeometry(0.12, 0.06, armLength);
+            const armMesh = new THREE.Mesh(armGeo, matteCarbonMat);
+            armMesh.position.set(armX / 2, 0, armZ / 2);
+            armMesh.rotation.y = -ang + Math.PI / 2;
+            droneGroup.add(armMesh);
 
-            const podGeo = new THREE.CylinderGeometry(0.12, 0.12, 0.2, 12);
-            const podMesh = new THREE.Mesh(podGeo, bodyMat);
-            podMesh.position.set(armX, 0.05, armZ);
-            droneGroup.add(podMesh);
+            // Brushless Motor Housing
+            const motorGeo = new THREE.CylinderGeometry(0.18, 0.18, 0.3, 16);
+            const motorMesh = new THREE.Mesh(motorGeo, polishedMetalMat);
+            motorMesh.position.set(armX, 0.05, armZ);
+            droneGroup.add(motorMesh);
 
-            const rDiscGeo = new THREE.CylinderGeometry(0.65, 0.65, 0.015, 24);
-            const rDiscMesh = new THREE.Mesh(rDiscGeo, rotorMat);
-            rDiscMesh.position.set(armX, 0.16, armZ);
-            droneGroup.add(rDiscMesh);
-            rotorDiscs.push(rDiscMesh);
+            // Motor Cap Accent Ring
+            const capGeo = new THREE.CylinderGeometry(0.19, 0.19, 0.04, 16);
+            const capMesh = new THREE.Mesh(capGeo, accentCyanMat);
+            capMesh.position.set(armX, 0.2, armZ);
+            droneGroup.add(capMesh);
+
+            // Dual Rotor Blades
+            const bladeGroup = new THREE.Group();
+            bladeGroup.position.set(armX, 0.24, armZ);
+
+            const bladeGeo = new THREE.BoxGeometry(0.85, 0.015, 0.08);
+            const blade1 = new THREE.Mesh(bladeGeo, bladeMat);
+            const blade2 = new THREE.Mesh(bladeGeo, bladeMat);
+            blade2.rotation.y = Math.PI / 2;
+
+            bladeGroup.add(blade1);
+            bladeGroup.add(blade2);
+            droneGroup.add(bladeGroup);
+            rotorBlades.push(bladeGroup);
         });
 
         scene.add(droneGroup);
 
-        droneGroup.position.set(2.4, 0.2, 0);
-        droneGroup.rotation.set(0.2, -0.6, 0.1);
+        // Initial Rest Position
+        droneGroup.position.set(2.2, 0.2, 0);
+        droneGroup.rotation.set(0.25, -0.7, 0.15);
 
         // 3. GSAP ScrollTrigger Flight Path
         gsap.registerPlugin(ScrollTrigger);
@@ -518,32 +542,34 @@
             }
         });
 
-        flightTimeline.to(droneGroup.position, { x: -2.3, y: -0.2, z: 0.8, ease: "power1.inOut" }, 0)
-                      .to(droneGroup.rotation, { x: 0.35, y: 0.8, z: -0.35, ease: "power1.inOut" }, 0);
+        // Milestone 1: About Section (Left Banking)
+        flightTimeline.to(droneGroup.position, { x: -2.4, y: -0.1, z: 0.6, ease: "power1.inOut" }, 0)
+                      .to(droneGroup.rotation, { x: 0.3, y: 0.7, z: -0.3, ease: "power1.inOut" }, 0);
 
-        flightTimeline.to(droneGroup.position, { x: 1.8, y: -0.6, z: 1.2, ease: "power1.inOut" }, 1)
-                      .to(droneGroup.rotation, { x: 0.5, y: -0.4, z: 0.2, ease: "power1.inOut" }, 1);
+        // Milestone 2: Projects Section (Forward Dive & Center Inspection)
+        flightTimeline.to(droneGroup.position, { x: 1.9, y: -0.5, z: 1.4, ease: "power1.inOut" }, 1)
+                      .to(droneGroup.rotation, { x: 0.45, y: -0.5, z: 0.25, ease: "power1.inOut" }, 1);
 
-        flightTimeline.to(droneGroup.position, { x: -2.0, y: 0.4, z: 0.5, ease: "power1.inOut" }, 2)
-                      .to(droneGroup.rotation, { x: -0.2, y: 0.9, z: -0.2, ease: "power1.inOut" }, 2);
+        // Milestone 3: Arsenal / Skills (Climbing Flare)
+        flightTimeline.to(droneGroup.position, { x: -2.1, y: 0.3, z: 0.4, ease: "power1.inOut" }, 2)
+                      .to(droneGroup.rotation, { x: -0.15, y: 0.85, z: -0.15, ease: "power1.inOut" }, 2);
 
-        flightTimeline.to(droneGroup.position, { x: 0, y: -0.2, z: 2.2, ease: "power1.inOut" }, 3)
+        // Milestone 4: Contact Section (Final Approach)
+        flightTimeline.to(droneGroup.position, { x: 0, y: -0.1, z: 2.0, ease: "power1.inOut" }, 3)
                       .to(droneGroup.rotation, { x: 0.1, y: 0, z: 0, ease: "power1.inOut" }, 3);
 
-        // 4. Render Loop
+        // 4. Render Animation Loop (High RPM Propeller Spin)
         let clock = new THREE.Clock();
 
         function animate() {
             requestAnimationFrame(animate);
             const delta = clock.getDelta();
-            const time = clock.getElapsedTime();
 
-            rotorDiscs.forEach((disc) => {
-                disc.rotation.y += 24 * delta;
+            // Spin propeller blade groups rapidly for realistic motion blur
+            rotorBlades.forEach((blade, index) => {
+                const direction = index % 2 === 0 ? 1 : -1;
+                blade.rotation.y += 35 * delta * direction;
             });
-
-            bluePoint.position.copy(droneGroup.position);
-            bluePoint.position.y += Math.sin(time * 3) * 0.05;
 
             renderer.render(scene, camera);
         }
