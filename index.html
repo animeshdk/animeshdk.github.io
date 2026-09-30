@@ -170,11 +170,6 @@
                     <a href="#projects" class="px-6 py-3.5 rounded-full bg-stone-900 text-white font-mono text-[10px] uppercase tracking-widest hover:bg-orange-600 transition">Explore the work ↓</a>
                     <a href="assets/resume-track-a.pdf" download class="px-6 py-3.5 rounded-full border border-stone-400 bg-white/30 font-mono text-[10px] uppercase tracking-widest hover:bg-white transition">Download CAE resume</a>
                 </div>
-
-                <div class="absolute right-8 bottom-12 hidden lg:block font-mono text-[9px] text-stone-500 uppercase tracking-[.16em] text-right">
-                    3D flight rig active<br>
-                    <span class="text-orange-600">scroll to fly</span>
-                </div>
             </div>
         </section>
 
@@ -420,157 +415,211 @@
         </div>
     </div>
 
-    <!-- ------------------------- -->
-    // Three.js 3D Realistic Drone
-    <!-- ------------------------- -->
-    <script>
-        const container = document.getElementById('canvas-container');
-        const scene = new THREE.Scene();
-        const camera = new THREE.PerspectiveCamera(42, innerWidth / innerHeight, .1, 1000);
-        camera.position.set(0, .15, 9);
+   <script>
+    const container = document.getElementById('canvas-container');
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(42, innerWidth / innerHeight, 0.1, 1000);
+    camera.position.set(0, 0.15, 9);
 
-        const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-        renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
-        renderer.setSize(innerWidth, innerHeight);
-        renderer.outputEncoding = THREE.sRGBEncoding;
-        container.appendChild(renderer.domElement);
+    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+    renderer.setSize(innerWidth, innerHeight);
+    renderer.outputEncoding = THREE.sRGBEncoding;
+    renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    renderer.toneMappingExposure = 1.1;
+    container.appendChild(renderer.domElement);
 
-        scene.add(new THREE.AmbientLight(0xffffff, 1.35));
-        const key = new THREE.DirectionalLight(0xfff5eb, 3.5);
-        key.position.set(7, 12, 8);
-        scene.add(key);
+    scene.add(new THREE.AmbientLight(0xffffff, 1.2));
+    const key = new THREE.DirectionalLight(0xfff5eb, 3.5);
+    key.position.set(7, 12, 8);
+    scene.add(key);
 
-        const fill = new THREE.DirectionalLight(0x3aa8c4, 1.8);
-        fill.position.set(-8, -4, 6);
-        scene.add(fill);
+    const fill = new THREE.DirectionalLight(0x3aa8c4, 2.0);
+    fill.position.set(-8, -4, 6);
+    scene.add(fill);
 
-        const rim = new THREE.DirectionalLight(0xea580c, 1.5);
-        rim.position.set(5, 0, -8);
-        scene.add(rim);
+    const rim = new THREE.DirectionalLight(0xea580c, 2.5);
+    rim.position.set(5, 0, -8);
+    scene.add(rim);
 
-        const drone = new THREE.Group();
-        const chassis = new THREE.MeshStandardMaterial({ color: 0x181716, roughness: .28, metalness: .82 });
-        const carbon = new THREE.MeshStandardMaterial({ color: 0x242322, roughness: .62, metalness: .35 });
-        const motorMat = new THREE.MeshStandardMaterial({ color: 0x10161b, roughness: .18, metalness: .92 });
-        const accent = new THREE.MeshStandardMaterial({ color: 0xea580c, roughness: .3, metalness: .25, emissive: 0xea580c, emissiveIntensity: .22 });
-        const bladeMat = new THREE.MeshStandardMaterial({ color: 0x56616a, roughness: .3, transparent: true, opacity: .72 });
-        const lensMat = new THREE.MeshPhysicalMaterial({ color: 0x0b83a5, roughness: .08, metalness: .15, transmission: .55, thickness: .5 });
+    // Master rig for GSAP ScrollTrigger
+    const flightRig = new THREE.Group();
+    scene.add(flightRig);
 
-        const hub = new THREE.Mesh(new THREE.BoxGeometry(.85, .25, 1.2), chassis);
-        drone.add(hub);
+    // Inner group for continuous idle hovering
+    const drone = new THREE.Group();
+    flightRig.add(drone);
 
-        const hatch = new THREE.Mesh(new THREE.BoxGeometry(.62, .08, .9), accent);
-        hatch.position.y = .17;
-        drone.add(hatch);
+    /* --- REALISTIC PROCEDURAL MATERIALS --- */
+    const shellMat = new THREE.MeshPhysicalMaterial({ color: 0xdfdcd8, metalness: 0.3, roughness: 0.15, clearcoat: 0.8 });
+    const plasticMat = new THREE.MeshStandardMaterial({ color: 0x141414, roughness: 0.8 });
+    const carbonMat = new THREE.MeshStandardMaterial({ color: 0x222222, roughness: 0.9, metalness: 0.5 });
+    const motorMat = new THREE.MeshStandardMaterial({ color: 0x9a9fa3, metalness: 0.9, roughness: 0.3 });
+    const propMat = new THREE.MeshPhysicalMaterial({ color: 0x111111, transmission: 0.7, opacity: 0.9, transparent: true, roughness: 0.1 });
+    const glassMat = new THREE.MeshPhysicalMaterial({ color: 0x050505, metalness: 0.9, roughness: 0, clearcoat: 1 });
+    const ledRed = new THREE.MeshBasicMaterial({ color: 0xff0d00 });
+    const ledGreen = new THREE.MeshBasicMaterial({ color: 0x00ff22 });
 
-        const gimbal = new THREE.Mesh(new THREE.SphereGeometry(.2, 20, 20), motorMat);
-        gimbal.position.set(0, -.2, .36);
-        drone.add(gimbal);
+    /* --- CONSTRUCT DRONE GEOMETRY --- */
+    // Main Fuselage
+    const fuselage = new THREE.Mesh(new THREE.BoxGeometry(0.7, 0.25, 1.5), shellMat);
+    const nose = new THREE.Mesh(new THREE.CylinderGeometry(0.35, 0.35, 0.25, 32), shellMat);
+    nose.rotation.z = Math.PI / 2;
+    nose.position.z = 0.75;
+    const tail = new THREE.Mesh(new THREE.CylinderGeometry(0.35, 0.35, 0.25, 32), shellMat);
+    tail.rotation.z = Math.PI / 2;
+    tail.position.z = -0.75;
+    drone.add(fuselage, nose, tail);
 
-        const lens = new THREE.Mesh(new THREE.SphereGeometry(.12, 20, 20), lensMat);
-        lens.position.set(0, -.22, .5);
-        drone.add(lens);
+    // Top Battery Pack
+    const battery = new THREE.Mesh(new THREE.BoxGeometry(0.4, 0.12, 0.8), plasticMat);
+    battery.position.set(0, 0.18, -0.1);
+    drone.add(battery);
 
-        const rotors = [];
-        const arms = [{x: 1.1, z: 1.1}, {x: -1.1, z: 1.1}, {x: 1.1, z: -1.1}, {x: -1.1, z: -1.1}];
+    // Camera Gimbal Assembly
+    const gimbalRig = new THREE.Group();
+    gimbalRig.position.set(0, -0.18, 0.85);
+    const gimbalArm = new THREE.Mesh(new THREE.BoxGeometry(0.08, 0.15, 0.08), plasticMat);
+    const cameraBody = new THREE.Mesh(new THREE.CylinderGeometry(0.12, 0.12, 0.18, 16), plasticMat);
+    cameraBody.rotation.z = Math.PI / 2;
+    cameraBody.position.y = -0.1;
+    const lens = new THREE.Mesh(new THREE.CylinderGeometry(0.09, 0.09, 0.2, 32), glassMat);
+    lens.rotation.x = Math.PI / 2;
+    lens.position.set(0, -0.1, 0.05);
+    gimbalRig.add(gimbalArm, cameraBody, lens);
+    drone.add(gimbalRig);
+
+    // Arms, Motors, and Rotors
+    const rotors = [];
+    const armConfigs = [
+        { x: 0.85, z: 0.85, color: ledGreen }, // Front Right
+        { x: -0.85, z: 0.85, color: ledGreen }, // Front Left
+        { x: 0.85, z: -0.85, color: ledRed }, // Back Right
+        { x: -0.85, z: -0.85, color: ledRed }  // Back Left
+    ];
+
+    armConfigs.forEach(pos => {
+        const armAssembly = new THREE.Group();
         
-        arms.forEach((p) => {
-            const boom = new THREE.Mesh(new THREE.CylinderGeometry(.045, .045, 1.6, 16), carbon);
-            boom.position.set(p.x / 2, 0, p.z / 2);
-            boom.rotation.z = Math.PI / 2;
-            boom.rotation.y = Math.atan2(p.x, p.z);
-            drone.add(boom);
+        // Angled Carbon Fiber Arm
+        const armLength = Math.hypot(pos.x, pos.z);
+        const arm = new THREE.Mesh(new THREE.BoxGeometry(0.1, 0.06, armLength), carbonMat);
+        arm.position.set(pos.x / 2, 0, pos.z / 2);
+        arm.lookAt(pos.x, 0, pos.z);
+        armAssembly.add(arm);
 
-            const motor = new THREE.Mesh(new THREE.CylinderGeometry(.2, .2, .3, 20), motorMat);
-            motor.position.set(p.x, .05, p.z);
-            drone.add(motor);
+        // Motor Base
+        const motor = new THREE.Mesh(new THREE.CylinderGeometry(0.18, 0.18, 0.2, 24), motorMat);
+        motor.position.set(pos.x, 0.08, pos.z);
+        armAssembly.add(motor);
 
-            const rg = new THREE.Group();
-            rg.position.set(p.x, .23, p.z);
-            const bg = new THREE.BoxGeometry(1.0, .015, .075);
-            const b1 = new THREE.Mesh(bg, bladeMat), b2 = new THREE.Mesh(bg, bladeMat);
-            b2.rotation.y = Math.PI / 2;
-            rg.add(b1, b2);
-            drone.add(rg);
-            rotors.push(rg);
-        });
+        // Rotor Hub
+        const hub = new THREE.Mesh(new THREE.CylinderGeometry(0.05, 0.05, 0.3, 16), motorMat);
+        hub.position.set(pos.x, 0.15, pos.z);
+        armAssembly.add(hub);
 
-        [{x: 1.1, z: 1.1, c: 0xea580c}, {x: -1.1, z: -1.1, c: 0x36d399}].forEach(p => {
-            const m = new THREE.MeshBasicMaterial({color: p.c});
-            const l = new THREE.Mesh(new THREE.SphereGeometry(.035, 10, 10), m);
-            l.position.set(p.x, .27, p.z);
-            drone.add(l);
-        });
+        // Propeller Blades
+        const propRig = new THREE.Group();
+        propRig.position.set(pos.x, 0.28, pos.z);
+        const bladeGeo = new THREE.BoxGeometry(1.3, 0.015, 0.1);
+        const blade1 = new THREE.Mesh(bladeGeo, propMat);
+        const blade2 = new THREE.Mesh(bladeGeo, propMat);
+        blade2.rotation.y = Math.PI / 2;
+        propRig.add(blade1, blade2);
+        rotors.push(propRig);
+        armAssembly.add(propRig);
 
-        scene.add(drone);
-        drone.scale.setScalar(1.05);
-        drone.position.set(2.8, .25, .3);
-        drone.rotation.set(.2, -.55, .08);
+        // LED Indicators
+        const led = new THREE.Mesh(new THREE.SphereGeometry(0.035, 16, 16), pos.color);
+        led.position.set(pos.x, -0.05, pos.z);
+        armAssembly.add(led);
 
-        gsap.registerPlugin(ScrollTrigger);
-        const tl = gsap.timeline({
-            scrollTrigger: {
-                trigger: 'body',
-                start: 'top top',
-                end: 'bottom bottom',
-                scrub: 1.25
-            }
-        });
+        // Landing Struts
+        const strut = new THREE.Mesh(new THREE.CylinderGeometry(0.02, 0.01, 0.3, 8), plasticMat);
+        strut.position.set(pos.x, -0.15, pos.z);
+        armAssembly.add(strut);
 
-        tl.to(drone.position, {x: -2.8, y: .4, z: .4, ease: 'sine.inOut'}, 0)
-          .to(drone.rotation, {x: .28, y: .72, z: -.18, ease: 'sine.inOut'}, 0)
-          .to(drone.position, {x: 2.2, y: -.35, z: 1.0, ease: 'sine.inOut'}, .22)
-          .to(drone.rotation, {x: .48, y: -.4, z: .22, ease: 'sine.inOut'}, .22)
-          .to(drone.position, {x: -2.2, y: .15, z: .5, ease: 'sine.inOut'}, .52)
-          .to(drone.rotation, {x: -.12, y: .95, z: -.25, ease: 'sine.inOut'}, .52)
-          .to(drone.position, {x: 1.0, y: -.1, z: 1.8, ease: 'sine.inOut'}, .78)
-          .to(drone.rotation, {x: .08, y: .15, z: 0, ease: 'sine.inOut'}, .78)
-          .to(drone.position, {x: 4.5, y: .35, z: 1.0, ease: 'sine.inOut'}, 1);
+        drone.add(armAssembly);
+    });
 
-        const clock = new THREE.Clock();
-        function animate() {
-            requestAnimationFrame(animate);
-            const d = clock.getDelta();
-            rotors.forEach((r, i) => r.rotation.y += d * 46 * (i % 2 ? -1 : 1));
-            drone.rotation.y += Math.sin(performance.now() * 0.0007) * 0.0007;
-            renderer.render(scene, camera);
+    /* --- ANIMATION & SCROLL RIGGING --- */
+    // Initial Position applied to the GSAP rig, not the inner drone
+    flightRig.position.set(2.8, 0.25, 0.3);
+    flightRig.rotation.set(0.2, -0.55, 0.08);
+
+    gsap.registerPlugin(ScrollTrigger);
+    const tl = gsap.timeline({
+        scrollTrigger: {
+            trigger: 'body',
+            start: 'top top',
+            end: 'bottom bottom',
+            scrub: 1.5 // Increased scrub for smoother catch-up 
         }
-        animate();
+    });
 
-        addEventListener('resize', () => {
-            camera.aspect = innerWidth / innerHeight;
-            camera.updateProjectionMatrix();
-            renderer.setSize(innerWidth, innerHeight);
-        });
+    // Use power2.inOut for seamless, fluid path interpolation between scroll points
+    tl.to(flightRig.position, {x: -2.8, y: 0.4, z: 0.4, ease: 'power2.inOut'}, 0)
+      .to(flightRig.rotation, {x: 0.28, y: 0.72, z: -0.18, ease: 'power2.inOut'}, 0)
+      .to(flightRig.position, {x: 2.2, y: -0.35, z: 1.0, ease: 'power2.inOut'}, 0.22)
+      .to(flightRig.rotation, {x: 0.48, y: -0.4, z: 0.22, ease: 'power2.inOut'}, 0.22)
+      .to(flightRig.position, {x: -2.2, y: 0.15, z: 0.5, ease: 'power2.inOut'}, 0.52)
+      .to(flightRig.rotation, {x: -0.12, y: 0.95, z: -0.25, ease: 'power2.inOut'}, 0.52)
+      .to(flightRig.position, {x: 1.0, y: -0.1, z: 1.8, ease: 'power2.inOut'}, 0.78)
+      .to(flightRig.rotation, {x: 0.08, y: 0.15, z: 0, ease: 'power2.inOut'}, 0.78)
+      .to(flightRig.position, {x: 4.5, y: 0.35, z: 1.0, ease: 'power2.inOut'}, 1);
 
-        gsap.utils.toArray('.reveal').forEach((el, i) => 
-            gsap.to(el, {
-                opacity: 1, 
-                y: 0, 
-                duration: .8, 
-                ease: 'power3.out', 
-                delay: (i % 4) * .06, 
-                scrollTrigger: { trigger: el, start: 'top 88%', once: true }
-            })
-        );
+    const clock = new THREE.Clock();
+    
+    function animate() {
+        requestAnimationFrame(animate);
+        const time = performance.now() * 0.001;
+        
+        // Constant, high-speed rotor blur independent of scrolling
+        rotors.forEach((r, i) => r.rotation.y += (i % 2 === 0 ? 0.4 : -0.4));
+        
+        // Continuous, seamless idle hovering applied to the inner drone group
+        drone.position.y = Math.sin(time * 1.8) * 0.08;
+        drone.rotation.z = Math.sin(time * 1.2) * 0.02;
+        drone.rotation.x = Math.cos(time * 1.5) * 0.02;
 
-        function openModal(id) {
-            const m = document.getElementById(id);
-            if(m) { m.classList.remove('hidden'); m.classList.add('flex'); document.body.style.overflow = 'hidden'; }
+        renderer.render(scene, camera);
+    }
+    animate();
+
+    addEventListener('resize', () => {
+        camera.aspect = innerWidth / innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(innerWidth, innerHeight);
+    });
+
+    gsap.utils.toArray('.reveal').forEach((el, i) => 
+        gsap.to(el, {
+            opacity: 1, 
+            y: 0, 
+            duration: 0.8, 
+            ease: 'power3.out', 
+            delay: (i % 4) * 0.06, 
+            scrollTrigger: { trigger: el, start: 'top 88%', once: true }
+        })
+    );
+
+    function openModal(id) {
+        const m = document.getElementById(id);
+        if(m) { m.classList.remove('hidden'); m.classList.add('flex'); document.body.style.overflow = 'hidden'; }
+    }
+    function closeModal(id) {
+        const m = document.getElementById(id);
+        if(m) { m.classList.add('hidden'); m.classList.remove('flex'); document.body.style.overflow = 'auto'; }
+    }
+    document.addEventListener('keydown', e => {
+        if(e.key === 'Escape') {
+            document.querySelectorAll('[id^="modal-"]').forEach(m => m.classList.add('hidden'));
+            document.body.style.overflow = 'auto';
         }
-        function closeModal(id) {
-            const m = document.getElementById(id);
-            if(m) { m.classList.add('hidden'); m.classList.remove('flex'); document.body.style.overflow = 'auto'; }
-        }
-        document.addEventListener('keydown', e => {
-            if(e.key === 'Escape') {
-                document.querySelectorAll('[id^="modal-"]').forEach(m => m.classList.add('hidden'));
-                document.body.style.overflow = 'auto';
-            }
-        });
-        document.querySelectorAll('[id^="modal-"]').forEach(m => m.addEventListener('click', e => {
-            if(e.target === m) { m.classList.add('hidden'); document.body.style.overflow = 'auto'; }
-        }));
-    </script>
+    });
+    document.querySelectorAll('[id^="modal-"]').forEach(m => m.addEventListener('click', e => {
+        if(e.target === m) { m.classList.add('hidden'); document.body.style.overflow = 'auto'; }
+    }));
+</script>
 </body>
 </html>
