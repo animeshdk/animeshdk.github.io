@@ -415,7 +415,7 @@
         </div>
     </div>
 
-   <script>
+<script>
     const container = document.getElementById('canvas-container');
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(42, innerWidth / innerHeight, 0.1, 1000);
@@ -543,7 +543,6 @@
     });
 
     /* --- ANIMATION & SCROLL RIGGING --- */
-    // Initial Position applied to the GSAP rig, not the inner drone
     flightRig.position.set(2.8, 0.25, 0.3);
     flightRig.rotation.set(0.2, -0.55, 0.08);
 
@@ -553,11 +552,10 @@
             trigger: 'body',
             start: 'top top',
             end: 'bottom bottom',
-            scrub: 1.5 // Increased scrub for smoother catch-up 
+            scrub: 1.5
         }
     });
 
-    // Use power2.inOut for seamless, fluid path interpolation between scroll points
     tl.to(flightRig.position, {x: -2.8, y: 0.4, z: 0.4, ease: 'power2.inOut'}, 0)
       .to(flightRig.rotation, {x: 0.28, y: 0.72, z: -0.18, ease: 'power2.inOut'}, 0)
       .to(flightRig.position, {x: 2.2, y: -0.35, z: 1.0, ease: 'power2.inOut'}, 0.22)
@@ -568,8 +566,26 @@
       .to(flightRig.rotation, {x: 0.08, y: 0.15, z: 0, ease: 'power2.inOut'}, 0.78)
       .to(flightRig.position, {x: 4.5, y: 0.35, z: 1.0, ease: 'power2.inOut'}, 1);
 
-    const clock = new THREE.Clock();
+
+    /* --- CUSTOM CURSOR TRACKING --- */
+    const cursorDot = document.getElementById('cursorDot');
+    const cursorRing = document.getElementById('cursorRing');
     
+    // Start cursor off-screen so it doesn't default to the top-left corner
+    let mouseX = -100, mouseY = -100;
+    let ringX = -100, ringY = -100;
+
+    window.addEventListener('mousemove', (e) => {
+        mouseX = e.clientX;
+        mouseY = e.clientY;
+        
+        // Instantly move the center dot
+        cursorDot.style.left = mouseX + 'px';
+        cursorDot.style.top = mouseY + 'px';
+    });
+
+
+    /* --- MAIN RENDER LOOP --- */
     function animate() {
         requestAnimationFrame(animate);
         const time = performance.now() * 0.001;
@@ -582,10 +598,17 @@
         drone.rotation.z = Math.sin(time * 1.2) * 0.02;
         drone.rotation.x = Math.cos(time * 1.5) * 0.02;
 
+        // Smoothly interpolate the outer ring towards the current mouse position
+        ringX += (mouseX - ringX) * 0.15;
+        ringY += (mouseY - ringY) * 0.15;
+        cursorRing.style.left = ringX + 'px';
+        cursorRing.style.top = ringY + 'px';
+
         renderer.render(scene, camera);
     }
     animate();
 
+    /* --- EVENT LISTENERS & MODALS --- */
     addEventListener('resize', () => {
         camera.aspect = innerWidth / innerHeight;
         camera.updateProjectionMatrix();
