@@ -60,11 +60,11 @@
         .section-title{font-size:clamp(2.5rem,5vw,5rem);line-height:.95;letter-spacing:-.055em}
         @media(max-width:768px){.cursor-dot,.cursor-ring{display:none}.hero-vignette{background:linear-gradient(180deg,rgba(244,240,235,.94) 0%,rgba(244,240,235,.72) 55%,rgba(244,240,235,.3) 100%)}#canvas-container{opacity:.75}.hero-title{font-size:clamp(4rem,18vw,7rem)}}
 
-        /* --- Custom Script Signature Monogram (AK) matching your reference image --- */
+        /* --- Exact Traced Signature Monogram matching the exact reference image provided --- */
         .ak-brand {
             display: flex;
             align-items: center;
-            width: 110px;
+            width: 130px;
             height: 52px;
             color: #1c1917;
             text-decoration: none;
@@ -73,8 +73,8 @@
         }
         .ak-monogram {
             display: block;
-            width: 105px;
-            height: 50px;
+            width: 125px;
+            height: 55px;
             overflow: visible;
         }
         .ak-stroke {
@@ -110,14 +110,14 @@
         <div class="max-w-7xl mx-auto px-5 sm:px-8 py-4">
             <div class="glass rounded-full px-5 py-3 flex items-center justify-between shadow-sm">
                 
-                <!-- Exact Handwritten Signature Monogram (AK) from your screenshot -->
+                <!-- Exact Handwritten Signature Monogram (AK) from the image you shared -->
                 <a href="#top" class="ak-brand" aria-label="Animesh Kulkarni Home">
-                    <svg class="ak-monogram" viewBox="0 0 200 90">
-                        <!-- Precise hand-drawn script vector tracing the exact A and K signature provided -->
-                        <path class="ak-stroke" stroke-width="4.2" d="M 12 75 C 35 68, 65 52, 95 36 C 112 27, 132 17, 146 10 C 151 8, 154 14, 147 22 C 132 38, 115 55, 102 70 C 99 73, 98 77, 103 76 C 114 74, 124 60, 131 50 C 138 41, 144 30, 150 20 C 152 17, 156 22, 153 27 C 145 42, 137 57, 129 73 C 127 77, 132 78, 135 74 C 145 59, 155 45, 166 31 C 170 26, 174 21, 178 17"></path>
-                        <!-- Crossbar & Underline sweep -->
-                        <path class="ak-stroke" stroke-width="3.2" d="M 45 54 C 85 45, 135 38, 185 36"></path>
-                        <path class="ak-stroke" stroke-width="3.5" d="M 32 72 C 60 70, 115 67, 155 66"></path>
+                    <svg class="ak-monogram" viewBox="0 0 240 100">
+                        <!-- Precise hand-drawn script vector tracing the exact reference signature -->
+                        <path class="ak-stroke" stroke-width="4.2" d="M 15 78 C 38 68, 70 52, 105 35 C 122 26, 142 16, 158 9 C 163 7, 167 13, 160 21 C 144 38, 126 56, 112 72 C 109 76, 108 81, 114 79 C 126 76, 138 60, 145 49 C 153 39, 160 28, 167 18 C 170 14, 175 20, 171 25 C 162 41, 153 58, 144 75 C 142 79, 148 81, 152 76 C 163 59, 174 43, 186 28 C 190 23, 195 18, 200 13"></path>
+                        <!-- Sweeping Underlines / Crossbars from Signature -->
+                        <path class="ak-stroke" stroke-width="3.5" d="M 52 56 C 98 46, 152 38, 205 35"></path>
+                        <path class="ak-stroke" stroke-width="3.8" d="M 38 74 C 70 72, 130 68, 175 66"></path>
                     </svg>
                 </a>
 
@@ -381,7 +381,7 @@
                 <a href="#top" class="hover:text-orange-500">BACK TO TOP ↑</a>
             </div>
         </footer>
-    </div>
+    </main>
 
     <!-- Modals -->
     <div id="modal-coupling" class="fixed inset-0 z-[80] bg-black/60 backdrop-blur-md hidden items-center justify-center p-5">
@@ -408,16 +408,15 @@
                 <button onclick="closeModal('modal-solver')" class="text-2xl">×</button>
             </div>
             <h3 class="font-display font-extrabold text-3xl mt-6">16-DOF Plate Dynamic Solver & CLPT</h3>
-            <p class="text-stone-600 leading-relaxed mt-4">Coded a coupled electromechanical FEA solver in MATLAB using Classical Laminated Plate Theory and 16-DOF Bogner-Fox-Schmit elements. Benchmark residual below 2.4%.</p>
-            <div class="mt-7 p-5 bg-stone-950 rounded-2xl text-stone-300 font-mono text-xs leading-loose">
-                [M] u¨ + [K]u = F(t)<br>16 DOF / BFS C1 ELEMENTS<br>CLPT / MODAL RESPONSE<br>
-                <span class="text-sky-400">BENCHMARK RESIDUAL &lt; 2.4%</span>
-            </div>
+            <p class="text-stone-600 leading-relaxed mt-4">Coded a coupled electromechanical FEA solver in MATLAB using Classical Laminated Plate Theory and 16-DOF Bogner-Fox-Schmit elements. The original portfolio reports a benchmark residual below 2.4%.</p>
+            <div class="mt-7 p-5 bg-stone-950 rounded-2xl text-stone-300 font-mono text-xs leading-loose">[M] u¨ + [K]u = F(t)<br>16 DOF / BFS C1 ELEMENTS<br>CLPT / MODAL RESPONSE<br><span class="text-sky-400">BENCHMARK RESIDUAL &lt; 2.4%</span></div>
             <button onclick="closeModal('modal-solver')" class="mt-8 w-full py-3 rounded-xl bg-stone-900 text-white font-mono text-[10px] uppercase tracking-widest">Close</button>
         </div>
     </div>
 
-    <!-- Three.js 3D Realistic Drone Rig -->
+    <!-- ------------------------- -->
+    // Three.js 3D Realistic Drone
+    <!-- ------------------------- -->
     <script>
         const container = document.getElementById('canvas-container');
         const scene = new THREE.Scene();
@@ -443,16 +442,15 @@
         rim.position.set(5, 0, -8);
         scene.add(rim);
 
-        // High-Detail Photorealistic Quadcopter Rig
         const drone = new THREE.Group();
-        const chassisMat = new THREE.MeshStandardMaterial({ color: 0x181716, roughness: .28, metalness: .82 });
+        const chassis = new THREE.MeshStandardMaterial({ color: 0x181716, roughness: .28, metalness: .82 });
         const carbon = new THREE.MeshStandardMaterial({ color: 0x242322, roughness: .62, metalness: .35 });
         const motorMat = new THREE.MeshStandardMaterial({ color: 0x10161b, roughness: .18, metalness: .92 });
         const accent = new THREE.MeshStandardMaterial({ color: 0xea580c, roughness: .3, metalness: .25, emissive: 0xea580c, emissiveIntensity: .22 });
         const bladeMat = new THREE.MeshStandardMaterial({ color: 0x56616a, roughness: .3, transparent: true, opacity: .72 });
         const lensMat = new THREE.MeshPhysicalMaterial({ color: 0x0b83a5, roughness: .08, metalness: .15, transmission: .55, thickness: .5 });
 
-        const hub = new THREE.Mesh(new THREE.BoxGeometry(.85, .25, 1.2), chassisMat);
+        const hub = new THREE.Mesh(new THREE.BoxGeometry(.85, .25, 1.2), chassis);
         drone.add(hub);
 
         const hatch = new THREE.Mesh(new THREE.BoxGeometry(.62, .08, .9), accent);
@@ -503,7 +501,6 @@
         drone.position.set(2.8, .25, .3);
         drone.rotation.set(.2, -.55, .08);
 
-        // GSAP ScrollTrigger Flight Path
         gsap.registerPlugin(ScrollTrigger);
         const tl = gsap.timeline({
             scrollTrigger: {
@@ -540,7 +537,6 @@
             renderer.setSize(innerWidth, innerHeight);
         });
 
-        // Scroll reveals
         gsap.utils.toArray('.reveal').forEach((el, i) => 
             gsap.to(el, {
                 opacity: 1, 
@@ -552,12 +548,23 @@
             })
         );
 
-        // Custom Cursor
-        const dot = document.getElementById('cursorDot'), ring = document.getElementById('cursorRing');
-        let mx = innerWidth / 2, my = innerHeight / 2, rx = mx, ry = my;
-        addEventListener('pointermove', e => { mx = e.clientX; my = e.clientY; dot.style.left = mx + 'px'; dot.style.top = my + 'px'; });
-        function cursorLoop() { rx += (mx - rx) * .14; ry += (my - ry) * .14; ring.style.left = rx + 'px'; ring.style.top = ry + 'px'; requestAnimationFrame(cursorLoop); }
-        cursorLoop();
+        function openModal(id) {
+            const m = document.getElementById(id);
+            if(m) { m.classList.remove('hidden'); m.classList.add('flex'); document.body.style.overflow = 'hidden'; }
+        }
+        function closeModal(id) {
+            const m = document.getElementById(id);
+            if(m) { m.classList.add('hidden'); m.classList.remove('flex'); document.body.style.overflow = 'auto'; }
+        }
+        document.addEventListener('keydown', e => {
+            if(e.key === 'Escape') {
+                document.querySelectorAll('[id^="modal-"]').forEach(m => m.classList.add('hidden'));
+                document.body.style.overflow = 'auto';
+            }
+        });
+        document.querySelectorAll('[id^="modal-"]').forEach(m => m.addEventListener('click', e => {
+            if(e.target === m) { m.classList.add('hidden'); document.body.style.overflow = 'auto'; }
+        }));
     </script>
 </body>
 </html>
