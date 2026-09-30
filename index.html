@@ -25,619 +25,539 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@500;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-    <!-- Three.js, GLTFLoader, GSAP & ScrollTrigger -->
+    <!-- Three.js, GSAP & ScrollTrigger -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
 
     <style>
-        body {
-            background-color: #f4f0eb;
+        :root{--paper:#f4f0eb;--paper2:#ece7df;--ink:#1c1917;--muted:#6b665f;--line:#d8d1c8;--orange:#ea580c;--blue:#087ea4}
+        *{box-sizing:border-box}
+        html{background:var(--paper)}
+        body{margin:0;background:var(--paper);color:var(--ink);overflow-x:hidden}
+        .paper-grid{background-image:radial-gradient(circle,#ddd7cf 1px,transparent 1px);background-size:32px 32px}
+        .paper-noise:before{content:"";position:fixed;inset:0;pointer-events:none;z-index:2;opacity:.16;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 160 160' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.12'/%3E%3C/svg%3E")}
+        .hairline{border-color:rgba(120,113,108,.28)}
+        #canvas-container{position:fixed;inset:0;z-index:5;pointer-events:none}
+        .hero-vignette{background:radial-gradient(circle at 70% 45%,rgba(255,255,255,.45),transparent 34%),linear-gradient(90deg,rgba(244,240,235,.96) 0%,rgba(244,240,235,.72) 46%,rgba(244,240,235,.12) 75%,rgba(244,240,235,0) 100%)}
+        .glass{background:rgba(255,255,255,.56);backdrop-filter:blur(12px);border:1px solid rgba(120,113,108,.22)}
+        .project-card{position:relative;overflow:hidden;background:rgba(255,255,255,.72);border:1px solid var(--line);transition:transform .45s cubic-bezier(.2,.8,.2,1),box-shadow .45s,border-color .45s}
+        .project-card:after{content:"";position:absolute;inset:0;background:linear-gradient(120deg,transparent 35%,rgba(234,88,12,.06),transparent 65%);transform:translateX(-100%);transition:transform .8s}
+        .project-card:hover{transform:translateY(-7px);box-shadow:0 24px 55px rgba(28,25,23,.11);border-color:#b9afa4}
+        .project-card:hover:after{transform:translateX(100%)}
+        .project-art{background:#090b0d;border:1px solid #25282b;position:relative;overflow:hidden}
+        .project-art:before{content:"";position:absolute;inset:0;background:linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px);background-size:24px 24px}
+        .project-number{font-size:clamp(5rem,11vw,10rem);line-height:.8;letter-spacing:-.09em;color:rgba(28,25,23,.045);position:absolute;right:-.04em;top:-.12em;font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;pointer-events:none}
+        .metric{border-left:2px solid var(--orange);padding-left:12px}
+        .navlink{position:relative}
+        .navlink:after{content:"";position:absolute;left:0;right:100%;bottom:-6px;height:1px;background:var(--orange);transition:right .25s}
+        .navlink:hover:after{right:0}
+        .cursor-dot{position:fixed;width:9px;height:9px;border-radius:50%;background:var(--orange);z-index:100;pointer-events:none;transform:translate(-50%,-50%);mix-blend-mode:multiply}
+        .cursor-ring{position:fixed;width:34px;height:34px;border:1px solid rgba(234,88,12,.55);border-radius:50%;z-index:99;pointer-events:none;transform:translate(-50%,-50%);transition:width .2s,height .2s}
+        .reveal{opacity:0;transform:translateY(28px)}
+        .hero-title{font-size:clamp(4.5rem,10vw,9.5rem);line-height:.82;letter-spacing:-.075em}
+        .outline-word{color:transparent;-webkit-text-stroke:1.5px #1c1917}
+        .section-title{font-size:clamp(2.5rem,5vw,5rem);line-height:.95;letter-spacing:-.055em}
+        @media(max-width:768px){.cursor-dot,.cursor-ring{display:none}.hero-vignette{background:linear-gradient(180deg,rgba(244,240,235,.94) 0%,rgba(244,240,235,.72) 55%,rgba(244,240,235,.3) 100%)}#canvas-container{opacity:.75}.hero-title{font-size:clamp(4rem,18vw,7rem)}}
+
+        /* --- Custom Script Signature Monogram (AK) matching your reference image --- */
+        .ak-brand {
+            display: flex;
+            align-items: center;
+            width: 110px;
+            height: 52px;
             color: #1c1917;
+            text-decoration: none;
+            transform-origin: left center;
+            transition: transform .45s cubic-bezier(.2,.8,.2,1);
         }
-        .clean-grid {
-            background-size: 40px 40px;
-            background-image: radial-gradient(circle, #e5e0d8 1px, transparent 1px);
+        .ak-monogram {
+            display: block;
+            width: 105px;
+            height: 50px;
+            overflow: visible;
+        }
+        .ak-stroke {
+            fill: none;
+            stroke: currentColor;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            vector-effect: non-scaling-stroke;
+        }
+        .ak-brand:hover {
+            transform: scale(1.05);
         }
     </style>
 </head>
-<body class="font-sans antialiased selection:bg-orange-600 selection:text-white clean-grid relative min-h-screen overflow-x-hidden">
+<body class="font-sans antialiased paper-grid paper-noise selection:bg-orange-600 selection:text-white">
 
-    <!-- FIXED 3D WEBGL REALISTIC AERO DRONE CANVAS -->
-    <div id="canvas-container" class="fixed inset-0 pointer-events-none z-10 w-full h-full"></div>
+    <!-- 3D Drone Canvas Container -->
+    <div id="canvas-container"></div>
 
-    <!-- Top Recruiter Priority Banner -->
-    <div class="bg-stone-900 text-stone-300 py-1.5 px-6 font-mono text-[11px] flex items-center justify-between tracking-wide uppercase sticky top-0 z-50 border-b border-stone-800">
-        <div class="max-w-7xl mx-auto w-full flex items-center justify-between">
-            <div class="flex items-center gap-4">
-                <span class="flex items-center gap-1.5 text-emerald-400 font-bold">
-                    <span class="w-2 h-2 rounded-full bg-emerald-400 inline-block animate-ping"></span>
-                    AVAILABLE JAN 2027
-                </span>
-                <span class="hidden sm:inline text-stone-600">|</span>
-                <span class="hidden sm:inline text-stone-300">U.S. WORK AUTH: <strong>3-YEAR STEM OPT</strong></span>
-            </div>
-            <div class="flex items-center gap-4 text-stone-300">
-                <span>VIRGINIA TECH (GPA 3.77)</span>
-                <span class="hidden md:inline text-orange-500 font-semibold">BLACKSBURG, VA</span>
-            </div>
+    <div class="cursor-dot" id="cursorDot"></div>
+    <div class="cursor-ring" id="cursorRing"></div>
+
+    <!-- Top Status Banner -->
+    <div class="fixed top-0 inset-x-0 z-50 bg-stone-950 text-stone-300 px-5 py-2 font-mono text-[10px] tracking-[.12em] uppercase">
+        <div class="max-w-7xl mx-auto flex justify-between gap-4">
+            <span><b class="text-emerald-400">● AVAILABLE JAN 2027</b><span class="hidden sm:inline"> &nbsp; / &nbsp; U.S. WORK AUTH: 3-YEAR STEM OPT</span></span>
+            <span class="hidden sm:block">VIRGINIA TECH // M.S. AEROSPACE</span>
         </div>
     </div>
 
-    <!-- Lakshya-Style Minimalist Navbar -->
-    <header class="bg-[#f4f0eb]/90 backdrop-blur-md border-b border-stone-300/60 sticky top-[29px] z-40">
-        <div class="max-w-7xl mx-auto px-8 h-20 flex items-center justify-between">
-            
-            <a href="#" class="font-display font-black text-2xl tracking-tighter text-stone-900 flex items-center gap-1.5 group">
-                <span>A.K.</span>
-                <span class="w-2 h-2 rounded-full bg-orange-600 inline-block"></span>
-            </a>
-            
-            <nav class="hidden md:flex items-center gap-8 text-xs font-mono uppercase tracking-widest text-stone-700 font-medium">
-                <a href="#about" class="hover:text-orange-600 transition">About</a>
-                <a href="#projects" class="hover:text-orange-600 transition">Work</a>
-                <a href="#experience" class="hover:text-orange-600 transition">Experience</a>
-                <a href="#skills" class="hover:text-orange-600 transition">Skills</a>
-                <a href="#education" class="hover:text-orange-600 transition">Education</a>
-            </nav>
+    <!-- Header Navbar -->
+    <header class="fixed top-[31px] inset-x-0 z-40">
+        <div class="max-w-7xl mx-auto px-5 sm:px-8 py-4">
+            <div class="glass rounded-full px-5 py-3 flex items-center justify-between shadow-sm">
+                
+                <!-- Exact Handwritten Signature Monogram (AK) from your screenshot -->
+                <a href="#top" class="ak-brand" aria-label="Animesh Kulkarni Home">
+                    <svg class="ak-monogram" viewBox="0 0 200 90">
+                        <!-- Precise hand-drawn script vector tracing the exact A and K signature provided -->
+                        <path class="ak-stroke" stroke-width="4.2" d="M 12 75 C 35 68, 65 52, 95 36 C 112 27, 132 17, 146 10 C 151 8, 154 14, 147 22 C 132 38, 115 55, 102 70 C 99 73, 98 77, 103 76 C 114 74, 124 60, 131 50 C 138 41, 144 30, 150 20 C 152 17, 156 22, 153 27 C 145 42, 137 57, 129 73 C 127 77, 132 78, 135 74 C 145 59, 155 45, 166 31 C 170 26, 174 21, 178 17"></path>
+                        <!-- Crossbar & Underline sweep -->
+                        <path class="ak-stroke" stroke-width="3.2" d="M 45 54 C 85 45, 135 38, 185 36"></path>
+                        <path class="ak-stroke" stroke-width="3.5" d="M 32 72 C 60 70, 115 67, 155 66"></path>
+                    </svg>
+                </a>
 
-            <a href="#contact" class="px-5 py-2.5 rounded-full border border-stone-400 hover:border-stone-900 text-stone-900 font-mono text-xs font-bold tracking-widest uppercase transition duration-200">
-                Get In Touch
-            </a>
+                <nav class="hidden md:flex items-center gap-7 font-mono text-[10px] uppercase tracking-[.16em]">
+                    <a class="navlink" href="#about">About</a>
+                    <a class="navlink" href="#projects">Work</a>
+                    <a class="navlink" href="#experience">Experience</a>
+                    <a class="navlink" href="#skills">Capabilities</a>
+                </nav>
+                <a href="#contact" class="rounded-full bg-stone-900 text-white px-4 py-2 font-mono text-[10px] uppercase tracking-widest hover:bg-orange-600 transition">Let's talk ↗</a>
+            </div>
         </div>
     </header>
 
-    <!-- CONTENT WRAPPER -->
-    <div id="scroll-wrapper" class="relative z-25">
-
-        <!-- SECTION 1: HERO -->
-        <section class="max-w-7xl mx-auto px-8 pt-12 pb-24 min-h-[90vh] flex flex-col justify-between">
-            
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start pt-6">
-                
-                <div class="lg:col-span-8 space-y-6">
-                    <h1 class="text-6xl sm:text-8xl font-display font-extrabold text-stone-900 tracking-tighter uppercase leading-[0.9]">
-                        Animesh <br>
-                        <span class="text-orange-600">Kulkarni.</span>
+    <main id="top" class="relative z-10">
+        <!-- Hero Section -->
+        <section class="min-h-screen relative overflow-hidden flex items-center">
+            <div class="absolute inset-0 hero-vignette pointer-events-none"></div>
+            <div class="max-w-7xl mx-auto w-full px-5 sm:px-8 pt-32 pb-16 relative">
+                <div class="max-w-5xl reveal">
+                    <div class="flex items-center gap-3 mb-7 font-mono text-[10px] tracking-[.18em] uppercase">
+                        <span class="w-2 h-2 rounded-full bg-orange-600"></span> Mechanical Design · CAE · Structural Dynamics
+                    </div>
+                    <h1 class="hero-title font-display font-extrabold uppercase">
+                        I design it.<br>
+                        <span class="text-orange-600">I simulate it.</span><br>
+                        <span class="outline-word">I break it.</span>
                     </h1>
-                    
-                    <p class="text-lg text-stone-700 font-sans max-w-xl leading-relaxed pt-2">
-                        Graduate Mechanical &amp; Aerospace Engineer. Simulation-driven, manufacture-ready, detail-focused. Specializing in high-load drivetrains, ASME Y14.5 GD&amp;T, and structural CAE dynamics.
-                    </p>
-
-                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-6 pt-6 border-t border-stone-300 font-mono text-xs">
-                        <div>
-                            <span class="text-stone-400 block uppercase">Role</span>
-                            <span class="font-bold text-stone-900 mt-0.5 block">Mechanical / CAE Engineer</span>
-                        </div>
-                        <div>
-                            <span class="text-stone-400 block uppercase">Status</span>
-                            <span class="font-bold text-emerald-700 mt-0.5 block">Available Jan 2027</span>
-                        </div>
-                        <div>
-                            <span class="text-stone-400 block uppercase">Location</span>
-                            <span class="font-bold text-stone-900 mt-0.5 block">Blacksburg, VA (Open)</span>
-                        </div>
-                        <div>
-                            <span class="text-stone-400 block uppercase">Focus</span>
-                            <span class="font-bold text-stone-900 mt-0.5 block">CAE / DFM / Dynamics</span>
-                        </div>
+                    <div class="mt-9 max-w-xl">
+                        <p class="text-base sm:text-lg text-stone-700 leading-relaxed">
+                            I'm Animesh Kulkarni — a mechanical and aerospace engineer who likes turning engineering questions into models, simulations, and measurable results.
+                        </p>
                     </div>
                 </div>
 
-                <!-- Right Viewport Slot for Real 3D Drone Canvas -->
-                <div class="lg:col-span-4 flex flex-col items-end">
-                    <div class="w-full aspect-[4/5] bg-[#ece7df] border border-stone-300 rounded-2xl p-4 shadow-sm relative flex flex-col justify-between overflow-hidden">
-                        
-                        <div class="flex items-center justify-between font-mono text-[10px] text-stone-500 z-20">
-                            <span class="flex items-center gap-1.5 text-orange-600 font-bold uppercase tracking-wider">
-                                <span class="w-2 h-2 rounded-full bg-orange-600 animate-pulse"></span>
-                                Photorealistic 3D Quadcopter
-                            </span>
-                            <span class="font-bold text-stone-700">SCROLL DYNAMIC</span>
-                        </div>
-
-                        <div class="z-20 bg-stone-900/5 backdrop-blur-xs p-3 rounded-xl border border-stone-300/80 font-mono text-[11px] text-stone-700 flex justify-between">
-                            <span>PITCH: <strong id="drone-pitch">+0.0°</strong></span>
-                            <span>ROLL: <strong id="drone-roll">0.0°</strong></span>
-                            <span>ALT: <strong id="drone-alt">2,080 FT</strong></span>
-                        </div>
-                    </div>
+                <div class="mt-12 grid grid-cols-2 sm:grid-cols-4 max-w-3xl gap-y-6 gap-x-8 reveal">
+                    <div class="metric"><span class="block font-mono text-[9px] text-stone-500 uppercase tracking-widest">Degree</span><b class="font-display text-sm">M.S. Aerospace</b></div>
+                    <div class="metric"><span class="block font-mono text-[9px] text-stone-500 uppercase tracking-widest">Focus</span><b class="font-display text-sm">CAE / Dynamics</b></div>
+                    <div class="metric"><span class="block font-mono text-[9px] text-stone-500 uppercase tracking-widest">Solver</span><b class="font-display text-sm">Abaqus / ANSYS</b></div>
+                    <div class="metric"><span class="block font-mono text-[9px] text-stone-500 uppercase tracking-widest">Code</span><b class="font-display text-sm">Python / MATLAB</b></div>
                 </div>
 
-            </div>
-
-            <!-- Action Ribbon -->
-            <div class="flex flex-wrap items-center justify-between gap-4 pt-12 border-t border-stone-300 font-mono text-xs font-bold">
-                <div class="flex flex-wrap gap-3">
-                    <a href="#projects" class="px-6 py-3.5 rounded-full bg-stone-900 hover:bg-orange-600 text-white transition tracking-widest uppercase">
-                        View Projects <i class="fa-solid fa-arrow-right ml-1"></i>
-                    </a>
-                    <a href="assets/resume-track-a.pdf" download class="px-5 py-3.5 rounded-full border border-stone-400 hover:border-stone-900 text-stone-900 transition tracking-widest uppercase">
-                        Resume (CAE)
-                    </a>
-                    <a href="assets/resume-track-b.pdf" download class="px-5 py-3 rounded-full border border-stone-400 hover:border-stone-900 text-stone-900 transition tracking-widest uppercase">
-                        Resume (Design)
-                    </a>
+                <div class="mt-14 flex flex-wrap gap-3 reveal">
+                    <a href="#projects" class="px-6 py-3.5 rounded-full bg-stone-900 text-white font-mono text-[10px] uppercase tracking-widest hover:bg-orange-600 transition">Explore the work ↓</a>
+                    <a href="assets/resume-track-a.pdf" download class="px-6 py-3.5 rounded-full border border-stone-400 bg-white/30 font-mono text-[10px] uppercase tracking-widest hover:bg-white transition">Download CAE resume</a>
                 </div>
-                <div class="text-stone-500 font-mono text-xs">
-                    Scroll down to initiate flight telemetry path ↓
+
+                <div class="absolute right-8 bottom-12 hidden lg:block font-mono text-[9px] text-stone-500 uppercase tracking-[.16em] text-right">
+                    3D flight rig active<br>
+                    <span class="text-orange-600">scroll to fly</span>
                 </div>
             </div>
-
         </section>
 
-        <!-- SECTION 2: ABOUT / SUMMARY -->
-        <section id="about" class="max-w-7xl mx-auto px-8 py-24 border-t border-stone-300">
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
-                <div class="lg:col-span-4">
-                    <span class="text-xs font-mono font-bold tracking-widest text-orange-600 uppercase block">01 / Summary</span>
-                    <h2 class="text-3xl font-extrabold text-stone-900 tracking-tight mt-2">Design engineering supported by simulation.</h2>
+        <!-- About Section -->
+        <section id="about" class="max-w-7xl mx-auto px-5 sm:px-8 py-28 border-t hairline">
+            <div class="grid lg:grid-cols-12 gap-10 items-start">
+                <div class="lg:col-span-4 reveal">
+                    <span class="font-mono text-[10px] text-orange-600 tracking-[.18em] uppercase">01 / The approach</span>
+                    <h2 class="section-title font-display font-extrabold mt-3">Engineering is a loop.</h2>
                 </div>
-                <div class="lg:col-span-8 space-y-6 text-stone-700 font-sans text-base leading-relaxed">
-                    <p>
-                        I take concepts from CAD modelling through FEA, CFD &amp; fatigue analysis to manufacturable, evidenced designs. Engineering that is designed, simulated and proven.
-                    </p>
-                    <p class="text-stone-600 text-sm font-mono">
-                        My focus is design-engineering supported by simulation. I work in Autodesk Inventor, SolidWorks, Fusion 360, ANSYS Mechanical, Abaqus, MATLAB, and Python.
-                    </p>
-                    
-                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-6 pt-6 border-t border-stone-300 font-mono">
-                        <div>
-                            <span class="text-3xl font-extrabold text-stone-900 block font-display">3.77</span>
-                            <span class="text-xs text-stone-500 uppercase">VT Graduate GPA</span>
-                        </div>
-                        <div>
-                            <span class="text-3xl font-extrabold text-orange-600 block font-display">-32.4%</span>
-                            <span class="text-xs text-stone-500 uppercase">Mass Reduction</span>
-                        </div>
-                        <div>
-                            <span class="text-3xl font-extrabold text-stone-900 block font-display">&lt; 2.4%</span>
-                            <span class="text-xs text-stone-500 uppercase">Solver Residual</span>
-                        </div>
-                        <div>
-                            <span class="text-3xl font-extrabold text-stone-900 block font-display">130 Nm</span>
-                            <span class="text-xs text-stone-500 uppercase">Peak Drivetrain Torque</span>
-                        </div>
+                <div class="lg:col-span-8 reveal">
+                    <p class="text-2xl sm:text-3xl font-display font-medium leading-tight max-w-3xl">Concept → model → simulate → question the result → redesign.</p>
+                    <p class="mt-7 max-w-2xl text-stone-600 leading-relaxed">I work across mechanical design and simulation, with an emphasis on structural behavior, dynamics, FEA, manufacturing-aware design, and computational workflows.</p>
+                    <div class="mt-12 grid sm:grid-cols-4 gap-8 border-t hairline pt-8">
+                        <div><b class="font-display text-4xl">3.77</b><span class="block font-mono text-[9px] text-stone-500 uppercase mt-2">VT graduate GPA</span></div>
+                        <div><b class="font-display text-4xl text-orange-600">−32.4%</b><span class="block font-mono text-[9px] text-stone-500 uppercase mt-2">reported mass reduction</span></div>
+                        <div><b class="font-display text-4xl">&lt;2.4%</b><span class="block font-mono text-[9px] text-stone-500 uppercase mt-2">solver residual</span></div>
+                        <div><b class="font-display text-4xl">130</b><span class="block font-mono text-[9px] text-stone-500 uppercase mt-2">Nm drivetrain torque</span></div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- SECTION 3: PROJECTS -->
-        <section id="projects" class="max-w-7xl mx-auto px-8 py-24 border-t border-stone-300">
-            
-            <div class="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-4">
+        <!-- Projects Section -->
+        <section id="projects" class="max-w-7xl mx-auto px-5 sm:px-8 py-28 border-t hairline">
+            <div class="flex items-end justify-between gap-8 mb-14 reveal">
                 <div>
-                    <span class="text-xs font-mono font-bold tracking-widest text-orange-600 uppercase block">02 / Featured Work</span>
-                    <h2 class="text-4xl font-display font-extrabold text-stone-900 tracking-tight mt-2">Projects.</h2>
+                    <span class="font-mono text-[10px] text-orange-600 tracking-[.18em] uppercase">02 / Selected work</span>
+                    <h2 class="section-title font-display font-extrabold mt-3">Questions I wanted<br>to answer.</h2>
                 </div>
+                <span class="hidden md:block font-mono text-[9px] text-stone-500 uppercase max-w-xs text-right">Not software lists.<br>Engineering problems.</span>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div class="grid lg:grid-cols-2 gap-7">
+                <article class="project-card rounded-[28px] p-5 sm:p-7 reveal">
+                    <span class="project-number">01</span>
+                    <div class="project-art rounded-2xl h-64 sm:h-72 mb-7">
+                        <svg viewBox="0 0 700 320" class="w-full h-full relative z-10" fill="none">
+                            <g stroke="#31404c" opacity=".7"><path d="M0 160H700M350 0V320"/><circle cx="350" cy="160" r="115" stroke-dasharray="5 8"/></g>
+                            <g stroke="#f97316" stroke-width="3"><path d="M170 220L260 95L440 95L530 220L430 250L270 250Z"/><path d="M260 95L270 250M440 95L430 250"/></g>
+                            <g stroke="#63c6dc" stroke-width="2"><circle cx="170" cy="220" r="12"/><circle cx="530" cy="220" r="12"/><circle cx="260" cy="95" r="8"/><circle cx="440" cy="95" r="8"/></g>
+                            <text x="24" y="30" fill="#9ca3af" font-family="JetBrains Mono" font-size="12">LOAD PATH / TORQUE / FIT</text>
+                            <text x="24" y="295" fill="#f97316" font-family="JetBrains Mono" font-size="12">130 Nm</text>
+                        </svg>
+                        <div class="absolute top-4 left-4 z-20 font-mono text-[9px] text-stone-400 tracking-widest">MECH-130NM // DFM</div>
+                    </div>
+                    <div class="flex items-center justify-between gap-4">
+                        <span class="font-mono text-[9px] text-orange-600 tracking-widest uppercase">Design / Manufacturing</span>
+                        <span class="font-mono text-[9px] text-stone-400">01</span>
+                    </div>
+                    <h3 class="font-display text-3xl font-extrabold mt-2">Can a high-torque coupling be made simpler?</h3>
+                    <p class="text-stone-600 mt-4 leading-relaxed">130 Nm motor-to-gearbox coupling work in SolidWorks, including ASME Y14.5 controls, ISO fits, prototyping, topology optimization, and DFM-driven cost reduction.</p>
+                    <button onclick="openModal('modal-coupling')" class="mt-7 w-full py-3.5 rounded-xl border border-stone-300 font-mono text-[10px] font-bold uppercase tracking-widest hover:bg-stone-900 hover:text-white transition">Open engineering breakdown →</button>
+                </article>
 
-                <!-- PROJECT 1: 130 Nm Coupling -->
-                <div class="p-8 bg-white border border-stone-300 rounded-3xl transition duration-300 flex flex-col justify-between group shadow-sm hover:shadow-md">
-                    <div>
-                        <div class="h-44 w-full bg-stone-950 rounded-2xl overflow-hidden mb-6 relative flex items-center justify-center p-2 border border-stone-800">
-                            <svg class="w-full h-full text-slate-400" viewBox="0 0 320 140" fill="none">
-                                <rect width="320" height="140" fill="#030712" />
-                                <line x1="20" y1="70" x2="300" y2="70" stroke="#163252" stroke-dasharray="6 4" stroke-width="1.5" />
-                                <rect x="70" y="25" width="180" height="90" rx="3" stroke="#25558a" stroke-width="1.5" fill="#070f1e" />
-                                <rect x="110" y="40" width="100" height="60" stroke="#00f0ff" stroke-width="1.5" fill="#0c182e" />
-                                <rect x="145" y="32" width="30" height="16" fill="#fbbf24" fill-opacity="0.3" stroke="#fbbf24" stroke-width="1.2" />
-                                <text x="160" y="128" fill="#fbbf24" font-family="JetBrains Mono" font-size="8" text-anchor="middle">FIT: H7/h6 [Ø32.00 +0.025]</text>
-                                <text x="160" y="20" fill="#00f0ff" font-family="JetBrains Mono" font-size="8" text-anchor="middle">ASME Y14.5 [TOTAL RUNOUT &lt; 0.02mm]</text>
-                            </svg>
-                            <span class="absolute bottom-2 right-2 px-2 py-0.5 rounded bg-black/90 text-amber-300 font-mono text-[9px] border border-amber-400/40">
-                                SOLIDWORKS CAD
-                            </span>
+                <article class="project-card rounded-[28px] p-5 sm:p-7 reveal">
+                    <span class="project-number">02</span>
+                    <div class="project-art rounded-2xl h-64 sm:h-72 mb-7">
+                        <svg viewBox="0 0 700 320" class="w-full h-full relative z-10" fill="none">
+                            <g stroke="#263746" opacity=".8"><path d="M70 245H630M70 75H630M140 40V275M280 40V275M420 40V275M560 40V275"/></g>
+                            <path d="M75 215C150 70 210 80 280 195S410 245 490 105S580 75 625 190" stroke="#43d3ef" stroke-width="3"/>
+                            <path d="M75 230C150 100 215 105 280 205S410 260 490 125S575 95 625 205" stroke="#f59e0b" stroke-width="1.5" opacity=".7"/>
+                            <circle cx="280" cy="195" r="7" fill="#f97316"/><circle cx="490" cy="105" r="7" fill="#f97316"/>
+                            <text x="26" y="30" fill="#9ca3af" font-family="JetBrains Mono" font-size="12">M u¨ + K u = F(t)</text>
+                            <text x="26" y="295" fill="#43d3ef" font-family="JetBrains Mono" font-size="12">16-DOF / BFS / CLPT</text>
+                        </svg>
+                        <div class="absolute top-4 left-4 z-20 font-mono text-[9px] text-stone-400 tracking-widest">CAE-16DOF // MATLAB</div>
+                    </div>
+                    <div class="flex items-center justify-between gap-4">
+                        <span class="font-mono text-[9px] text-sky-700 tracking-widest uppercase">First-principles FEA</span>
+                        <span class="font-mono text-[9px] text-stone-400">02</span>
+                    </div>
+                    <h3 class="font-display text-3xl font-extrabold mt-2">Can I reproduce structural dynamics without treating FEA as a black box?</h3>
+                    <p class="text-stone-600 mt-4 leading-relaxed">A MATLAB 16-DOF Bogner-Fox-Schmit plate solver using Classical Laminated Plate Theory, with reported benchmark residual below 2.4%.</p>
+                    <button onclick="openModal('modal-solver')" class="mt-7 w-full py-3.5 rounded-xl border border-stone-300 font-mono text-[10px] font-bold uppercase tracking-widest hover:bg-stone-900 hover:text-white transition">Open engineering breakdown →</button>
+                </article>
+            </div>
+        </section>
+
+        <!-- Experience Section -->
+        <section id="experience" class="max-w-7xl mx-auto px-5 sm:px-8 py-28 border-t hairline">
+            <div class="grid lg:grid-cols-12 gap-10">
+                <div class="lg:col-span-4 reveal">
+                    <span class="font-mono text-[10px] text-orange-600 tracking-[.18em] uppercase">04 / Experience</span>
+                    <h2 class="section-title font-display font-extrabold mt-3">Where I've<br>worked.</h2>
+                </div>
+                <div class="lg:col-span-8 space-y-3">
+                    <div class="glass rounded-2xl p-6 reveal">
+                        <div class="flex flex-col sm:flex-row sm:justify-between gap-4">
+                            <div>
+                                <span class="font-mono text-[9px] text-orange-600 tracking-widest uppercase">Virginia Tech · Engineering Education</span>
+                                <h3 class="font-display font-bold text-xl mt-1">Graduate Teaching Assistant — CAD & ASME Y14.5 GD&T</h3>
+                                <p class="text-sm text-stone-600 mt-2 leading-relaxed">Instruct undergraduates in SolidWorks 3D modeling, datum reference frames, production drawings, and tolerance stacks.</p>
+                            </div>
+                            <span class="font-mono text-[9px] text-stone-500 whitespace-nowrap">DEC 2024 — PRESENT</span>
                         </div>
-
-                        <span class="text-xs font-mono font-bold text-orange-600 uppercase">DRIVETRAIN DFM &amp; ASME Y14.5</span>
-                        <h3 class="text-2xl font-bold text-stone-900 mt-2 mb-3">130 Nm High-Torque Drivetrain Coupling</h3>
-                        <p class="text-stone-600 text-sm leading-relaxed mb-6">
-                            Engineered mechanical coupling in SolidWorks for high-RPM dynamic loads. Formulated ISO transitional fits (H7/h6) and performed SLA/FDM 3D fit checks, cutting unit costs by 9%.
-                        </p>
                     </div>
-
-                    <div>
-                        <button onclick="openModal('modal-coupling')" class="w-full py-3.5 rounded-xl bg-stone-100 hover:bg-stone-900 hover:text-white border border-stone-300 text-stone-900 font-mono text-xs font-bold transition flex items-center justify-center gap-2 uppercase tracking-wider">
-                            <span>Open Technical Dossier</span> <i class="fa-solid fa-arrow-right"></i>
-                        </button>
-                    </div>
-                </div>
-
-                <!-- PROJECT 2: Custom MATLAB Solver -->
-                <div class="p-8 bg-white border border-stone-300 rounded-3xl transition duration-300 flex flex-col justify-between group shadow-sm hover:shadow-md">
-                    <div>
-                        <div class="h-44 w-full bg-stone-950 rounded-2xl overflow-hidden mb-6 relative flex items-center justify-center p-2 border border-stone-800">
-                            <svg class="w-full h-full text-slate-400" viewBox="0 0 320 140" fill="none">
-                                <rect width="320" height="140" fill="#030712" />
-                                <path d="M 40 100 Q 160 30 280 100" stroke="#00f0ff" stroke-width="2" />
-                                <path d="M 50 85 Q 160 15 270 85" stroke="#38bdf8" stroke-width="1.5" />
-                                <circle cx="160" cy="25" r="4" fill="#fbbf24" stroke="#ffffff" stroke-width="1" />
-                                <text x="160" y="15" fill="#fbbf24" font-family="JetBrains Mono" font-size="8" text-anchor="middle">PZT ACTUATOR (ANTI-NODE)</text>
-                                <text x="160" y="128" fill="#00f0ff" font-family="JetBrains Mono" font-size="8" text-anchor="middle">EIGENVALUE RESIDUAL &lt; 2.4% (16-DOF BFS)</text>
-                            </svg>
-                            <span class="absolute bottom-2 right-2 px-2 py-0.5 rounded bg-black/90 text-cyan-300 font-mono text-[9px] border border-cyan-400/40">
-                                MATLAB MODAL CONTOUR
-                            </span>
+                    <div class="glass rounded-2xl p-6 reveal">
+                        <div class="flex flex-col sm:flex-row sm:justify-between gap-4">
+                            <div>
+                                <span class="font-mono text-[9px] text-sky-700 tracking-widest uppercase">Virginia Tech · Aerospace Engineering</span>
+                                <h3 class="font-display font-bold text-xl mt-1">Graduate Research Assistant — Structural Dynamics & Wave FEA</h3>
+                                <p class="text-sm text-stone-600 mt-2 leading-relaxed">Transient dynamic models in Abaqus/Explicit for guided-wave propagation and automated Python data extraction on HPC clusters.</p>
+                            </div>
+                            <span class="font-mono text-[9px] text-stone-500 whitespace-nowrap">SEP 2024 — PRESENT</span>
                         </div>
-
-                        <span class="text-xs font-mono font-bold text-sky-700 uppercase">CAE // FIRST-PRINCIPLES FEA</span>
-                        <h3 class="text-2xl font-bold text-stone-900 mt-2 mb-3">16-DOF Plate Dynamic Solver &amp; CLPT</h3>
-                        <p class="text-stone-600 text-sm leading-relaxed mb-6">
-                            Coded coupled electromechanical FEA solver in MATLAB using Classical Laminated Plate Theory and 16-DOF Bogner-Fox-Schmit elements with &lt;2.4% benchmark error.
-                        </p>
                     </div>
-
-                    <div>
-                        <button onclick="openModal('modal-solver')" class="w-full py-3.5 rounded-xl bg-stone-100 hover:bg-stone-900 hover:text-white border border-stone-300 text-stone-900 font-mono text-xs font-bold transition flex items-center justify-center gap-2">
-                            <span>Open Technical Dossier</span> <i class="fa-solid fa-arrow-right"></i>
-                        </button>
+                    <div class="glass rounded-2xl p-6 reveal">
+                        <div class="flex flex-col sm:flex-row sm:justify-between gap-4">
+                            <div>
+                                <span class="font-mono text-[9px] text-stone-500 tracking-widest uppercase">SIRIUS Cleantech Pvt. Ltd.</span>
+                                <h3 class="font-display font-bold text-xl mt-1">Mechanical Design / CAE Intern</h3>
+                                <p class="text-sm text-stone-600 mt-2 leading-relaxed">Designed 130 Nm motor-to-gearbox coupling assemblies, executed topology optimization, and reduced manufacturing cost through DFM.</p>
+                            </div>
+                            <span class="font-mono text-[9px] text-stone-500 whitespace-nowrap">MAR 2023 — AUG 2023</span>
+                        </div>
                     </div>
                 </div>
-
             </div>
         </section>
 
-        <!-- SECTION 4: TECHNICAL SKILLS -->
-        <section id="skills" class="max-w-7xl mx-auto px-8 py-24 border-t border-stone-300">
-            <div class="max-w-3xl mb-12">
-                <span class="text-xs font-mono font-bold tracking-widest text-orange-600 uppercase block">04 / Toolset</span>
-                <h2 class="text-4xl font-display font-extrabold text-stone-900 tracking-tight mt-2">Skills &amp; Capabilities.</h2>
+        <!-- Capabilities Section -->
+        <section id="skills" class="max-w-7xl mx-auto px-5 sm:px-8 py-28 border-t hairline">
+            <div class="flex items-end justify-between mb-12 reveal">
+                <div>
+                    <span class="font-mono text-[10px] text-orange-600 tracking-[.18em] uppercase">05 / Capabilities</span>
+                    <h2 class="section-title font-display font-extrabold mt-3">The toolkit.</h2>
+                </div>
             </div>
-            
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 font-mono text-xs">
-                <div class="p-8 bg-white border border-stone-300 rounded-3xl shadow-xs space-y-4">
-                    <span class="text-stone-900 font-bold text-sm block uppercase tracking-wider">CAD &amp; DFM</span>
-                    <ul class="space-y-2 text-stone-600">
-                        <li>> SolidWorks, PTC Creo, Fusion 360</li>
-                        <li>> ASME Y14.5-2018 (DRF, Runout, Position)</li>
-                        <li>> Worst-Case &amp; RSS Tolerance Stack-ups</li>
-                        <li>> 5-Axis CNC &amp; Sheet Metal Fabrication</li>
-                        <li>> Formlabs SLA &amp; FDM Rapid Prototyping</li>
+            <div class="grid md:grid-cols-3 gap-5">
+                <div class="glass rounded-2xl p-7 reveal">
+                    <span class="font-mono text-[9px] text-orange-600">01 / BUILD</span>
+                    <h3 class="font-display text-2xl font-bold mt-4">CAD + DFM</h3>
+                    <ul class="mt-5 space-y-2 text-sm text-stone-600">
+                        <li>SolidWorks · Creo · Fusion 360</li>
+                        <li>ASME Y14.5 · datum reference frames</li>
+                        <li>Tolerance stack-ups</li>
+                        <li>CNC · sheet metal · rapid prototyping</li>
                     </ul>
                 </div>
-                <div class="p-8 bg-white border border-stone-300 rounded-3xl shadow-xs space-y-4">
-                    <span class="text-stone-900 font-bold text-sm block uppercase tracking-wider">CAE &amp; Dynamics</span>
-                    <ul class="space-y-2 text-stone-600">
-                        <li>> Abaqus (Explicit &amp; Standard Solvers)</li>
-                        <li>> ANSYS Mechanical (Static, Modal, Harmonic)</li>
-                        <li>> Classical Laminated Plate Theory (CLPT)</li>
-                        <li>> CFL Stable Time-Step Formulation</li>
-                        <li>> Dynamic Resonance &amp; Harmonic Margins</li>
+                <div class="glass rounded-2xl p-7 reveal">
+                    <span class="font-mono text-[9px] text-sky-700">02 / SIMULATE</span>
+                    <h3 class="font-display text-2xl font-bold mt-4">CAE + Dynamics</h3>
+                    <ul class="mt-5 space-y-2 text-sm text-stone-600">
+                        <li>Abaqus Explicit / Standard</li>
+                        <li>ANSYS Mechanical</li>
+                        <li>CLPT · modal · harmonic response</li>
+                        <li>Dynamic resonance and time-step work</li>
                     </ul>
                 </div>
-                <div class="p-8 bg-white border border-stone-300 rounded-3xl shadow-xs space-y-4">
-                    <span class="text-stone-900 font-bold text-sm block uppercase tracking-wider">Computation &amp; HPC</span>
-                    <ul class="space-y-2 text-stone-600">
-                        <li>> Python (Abaqus API, NumPy, SciPy)</li>
-                        <li>> Headless .inp / .odb Signal Extraction</li>
-                        <li>> MATLAB Custom Matrix &amp; Eigen Solvers</li>
-                        <li>> Linux HPC / PBS Cluster Batch Sweeps</li>
-                        <li>> FFT Signal Processing &amp; Dispersion Curves</li>
+                <div class="glass rounded-2xl p-7 reveal">
+                    <span class="font-mono text-[9px] text-emerald-700">03 / AUTOMATE</span>
+                    <h3 class="font-display text-2xl font-bold mt-4">Python + MATLAB</h3>
+                    <ul class="mt-5 space-y-2 text-sm text-stone-600">
+                        <li>Abaqus API · NumPy · SciPy</li>
+                        <li>Headless .inp / .odb extraction</li>
+                        <li>Matrix and eigen solvers</li>
+                        <li>FFT · dispersion · HPC batch sweeps</li>
                     </ul>
                 </div>
             </div>
         </section>
 
-        <!-- SECTION 5: EXPERIENCE -->
-        <section id="experience" class="max-w-7xl mx-auto px-8 py-24 border-t border-stone-300">
-            <div class="max-w-3xl mb-12">
-                <span class="text-xs font-mono font-bold tracking-widest text-orange-600 uppercase block">05 / Professional</span>
-                <h2 class="text-4xl font-display font-extrabold text-stone-900 tracking-tight mt-2">Experience.</h2>
-            </div>
-
-            <div class="space-y-8 font-mono text-xs">
-                <!-- VT GTA -->
-                <div class="p-8 bg-white border border-stone-300 rounded-3xl flex flex-col md:flex-row md:items-start justify-between gap-6 shadow-xs">
-                    <div class="space-y-2">
-                        <span class="text-orange-600 font-bold uppercase tracking-wider">Virginia Tech • Engineering Education</span>
-                        <h3 class="text-lg font-bold text-stone-900 font-sans">Graduate Teaching Assistant — CAD &amp; ASME Y14.5 GD&amp;T</h3>
-                        <p class="text-stone-600 font-sans leading-relaxed pt-1">Instruct undergrads in SolidWorks 3D modeling, datum reference frame establishment, 2D production drawings, and 1D/3D tolerance stacks.</p>
-                    </div>
-                    <span class="px-3 py-1 rounded-full bg-stone-100 text-stone-700 font-semibold whitespace-nowrap self-start">DEC 2024 – PRESENT</span>
+        <!-- Education Section -->
+        <section id="education" class="max-w-7xl mx-auto px-5 sm:px-8 py-28 border-t hairline">
+            <div class="grid lg:grid-cols-12 gap-10">
+                <div class="lg:col-span-4 reveal">
+                    <span class="font-mono text-[10px] text-orange-600 tracking-[.18em] uppercase">06 / Education</span>
+                    <h2 class="section-title font-display font-extrabold mt-3">Learning the<br>physics.</h2>
                 </div>
-
-                <!-- VT GRA -->
-                <div class="p-8 bg-white border border-stone-300 rounded-3xl flex flex-col md:flex-row md:items-start justify-between gap-6 shadow-xs">
-                    <div class="space-y-2">
-                        <span class="text-sky-700 font-bold uppercase tracking-wider">Virginia Tech • Aerospace Engineering</span>
-                        <h3 class="text-lg font-bold text-stone-900 font-sans">Graduate Research Assistant — Structural Dynamics &amp; Wave FEA</h3>
-                        <p class="text-stone-600 font-sans leading-relaxed pt-1">Formulate transient dynamic models in Abaqus/Explicit for guided wave propagation; built automated Python data extraction pipeline on HPC clusters.</p>
+                <div class="lg:col-span-8 grid md:grid-cols-2 gap-5">
+                    <div class="glass rounded-2xl p-7 reveal">
+                        <span class="font-mono text-[9px] text-sky-700 tracking-widest">M.S. AEROSPACE ENGINEERING</span>
+                        <h3 class="font-display font-bold text-xl mt-3">Virginia Tech</h3>
+                        <p class="text-sm text-stone-600 mt-3 leading-relaxed">Advanced Structural Dynamics, Finite Element Analysis, Continuum Mechanics, Composite Aerostructures, Wave Propagation.</p>
+                        <span class="block mt-6 font-mono text-[9px] text-emerald-700">EXPECTED DECEMBER 2026 · GPA 3.77 / 4.00</span>
                     </div>
-                    <span class="px-3 py-1 rounded-full bg-stone-100 text-stone-700 font-semibold whitespace-nowrap self-start">SEP 2024 – PRESENT</span>
-                </div>
-
-                <!-- SIRIUS -->
-                <div class="p-8 bg-white border border-stone-300 rounded-3xl flex flex-col md:flex-row md:items-start justify-between gap-6 shadow-xs">
-                    <div class="space-y-2">
-                        <span class="text-stone-500 font-bold uppercase tracking-wider">SIRIUS Cleantech Pvt. Ltd.</span>
-                        <h3 class="text-lg font-bold text-stone-900 font-sans">Mechanical Design / CAE Intern</h3>
-                        <p class="text-stone-600 font-sans leading-relaxed pt-1">Designed 130 Nm motor-to-gearbox coupling assemblies, executed topology optimization (-32% mass), and trimmed manufacturing costs by 9% via DFM.</p>
+                    <div class="glass rounded-2xl p-7 reveal">
+                        <span class="font-mono text-[9px] text-amber-800 tracking-widest">B.TECH MECHANICAL ENGINEERING</span>
+                        <h3 class="font-display font-bold text-xl mt-3">Savitribai Phule Pune University</h3>
+                        <p class="text-sm text-stone-600 mt-3 leading-relaxed">Mechanical Design, Manufacturing Processes, CAD/CAM/CAE, Dynamics of Machinery, Metrology & Quality Control.</p>
+                        <span class="block mt-6 font-mono text-[9px] text-stone-500">GRADUATED JUNE 2024</span>
                     </div>
-                    <span class="px-3 py-1 rounded-full bg-stone-100 text-stone-700 font-semibold whitespace-nowrap self-start">MAR 2023 – AUG 2023</span>
                 </div>
             </div>
         </section>
 
-        <!-- SECTION 6: EDUCATION -->
-        <section id="education" class="max-w-7xl mx-auto px-8 py-24 border-t border-stone-300">
-            <div class="max-w-3xl mb-12">
-                <span class="text-xs font-mono font-bold tracking-widest text-orange-600 uppercase block">06 / Credentials</span>
-                <h2 class="text-4xl font-display font-extrabold text-stone-900 tracking-tight mt-2">Education.</h2>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 font-mono text-xs">
-                <div class="p-8 bg-white border border-stone-300 rounded-3xl shadow-xs">
-                    <div class="flex items-center justify-between font-bold text-sky-700 mb-2">
-                        <span>M.S. AEROSPACE ENGINEERING</span>
-                        <span class="px-2.5 py-0.5 rounded bg-sky-50 border border-sky-200">GPA 3.77 / 4.00</span>
+        <!-- Contact Section -->
+        <section id="contact" class="bg-stone-950 text-white py-28 px-5 sm:px-8">
+            <div class="max-w-7xl mx-auto">
+                <div class="grid lg:grid-cols-12 gap-12 items-end">
+                    <div class="lg:col-span-8 reveal">
+                        <span class="font-mono text-[10px] text-orange-500 tracking-[.18em] uppercase">07 / Contact</span>
+                        <h2 class="font-display font-extrabold text-[clamp(3.5rem,8vw,8rem)] leading-[.82] tracking-[-.06em] uppercase mt-4">Let's build<br><span class="text-orange-500">something real.</span></h2>
                     </div>
-                    <h3 class="text-base font-bold text-stone-900 font-sans mb-2">Virginia Polytechnic Institute and State University (Virginia Tech)</h3>
-                    <p class="text-stone-600 font-sans leading-relaxed mb-4">
-                        Coursework: Advanced Structural Dynamics, Finite Element Analysis, Continuum Mechanics, Composite Aerostructures, Wave Propagation.
-                    </p>
-                    <span class="text-emerald-700 font-bold">Expected Completion: December 2026</span>
-                </div>
-
-                <div class="p-8 bg-white border border-stone-300 rounded-3xl shadow-xs">
-                    <div class="flex items-center justify-between font-bold text-amber-800 mb-2">
-                        <span>B.TECH MECHANICAL ENGINEERING</span>
-                        <span class="px-2.5 py-0.5 rounded bg-amber-50 border border-amber-200">First Class Distinction</span>
+                    <div class="lg:col-span-4 reveal">
+                        <p class="text-stone-400 text-sm leading-relaxed">Available for full-time Mechanical Design, CAE Simulation, and Structural Dynamics opportunities starting January 2027.</p>
+                        <div class="flex flex-wrap gap-3 mt-7">
+                            <a href="mailto:animeshdk@vt.edu" class="px-5 py-3 rounded-full bg-orange-600 hover:bg-orange-500 transition font-mono text-[10px] tracking-widest uppercase">Email ↗</a>
+                            <a href="https://www.linkedin.com/in/animeshkulkarni" target="_blank" class="px-5 py-3 rounded-full border border-white/20 hover:bg-white/10 transition font-mono text-[10px] tracking-widest uppercase">LinkedIn ↗</a>
+                        </div>
                     </div>
-                    <h3 class="text-base font-bold text-stone-900 font-sans mb-2">Savitribai Phule Pune University</h3>
-                    <p class="text-stone-600 font-sans leading-relaxed mb-4">
-                        Focus: Mechanical Design, Manufacturing Processes, CAD/CAM/CAE, Dynamics of Machinery, Metrology &amp; Quality Control.
-                    </p>
-                    <span class="text-stone-500">Graduated: June 2024</span>
                 </div>
             </div>
         </section>
 
-        <!-- SECTION 7: CONTACT -->
-        <section id="contact" class="bg-stone-900 text-stone-100 py-24 px-8 mt-12">
-            <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-12">
-                <div class="space-y-4 max-w-xl">
-                    <span class="text-xs font-mono font-bold tracking-widest text-orange-500 uppercase block">07 / Connect</span>
-                    <h2 class="text-4xl sm:text-6xl font-display font-extrabold tracking-tight uppercase">Let's build <br>something real.</h2>
-                    <p class="text-stone-400 text-sm font-mono leading-relaxed">
-                        Available for full-time Mechanical Design (DFM), CAE Simulation, and Structural Dynamics opportunities starting <strong>January 2027</strong>. Equipped with 3-Year U.S. STEM OPT work authorization.
-                    </p>
-                </div>
-                <div class="flex flex-col sm:flex-row gap-4 font-mono text-xs font-bold w-full md:w-auto">
-                    <a href="mailto:animeshdk@vt.edu" class="px-8 py-4 rounded-full bg-orange-600 hover:bg-orange-500 text-white transition shadow-md text-center">
-                        START A CONVERSATION
-                    </a>
-                    <a href="https://www.linkedin.com/in/animeshkulkarni" target="_blank" class="px-8 py-4 rounded-full bg-white/10 hover:bg-white/20 border border-white/20 text-white transition text-center">
-                        LINKEDIN PROFILE
-                    </a>
-                </div>
-            </div>
-        </section>
-
-        <!-- Footer -->
-        <footer class="bg-stone-950 text-stone-400 py-8 px-8 font-mono text-xs border-t border-stone-800">
-            <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
-                <div>ANIMESH D. KULKARNI // BLACKSBURG, VA</div>
-                <div class="flex items-center gap-6">
-                    <a href="mailto:animeshdk@vt.edu" class="hover:text-white transition">animeshdk@vt.edu</a>
-                    <a href="https://www.linkedin.com/in/animeshkulkarni" target="_blank" class="hover:text-white transition">LinkedIn</a>
-                    <a href="#" class="hover:text-white transition font-bold text-orange-500">TOP ↑</a>
-                </div>
+        <footer class="bg-black text-stone-500 px-5 sm:px-8 py-6 font-mono text-[9px] uppercase tracking-widest">
+            <div class="max-w-7xl mx-auto flex justify-between gap-4">
+                <span>ANIMESH D. KULKARNI</span>
+                <a href="#top" class="hover:text-orange-500">BACK TO TOP ↑</a>
             </div>
         </footer>
-
     </div>
 
     <!-- Modals -->
-    <div id="modal-coupling" class="fixed inset-0 z-50 bg-stone-950/60 backdrop-blur-sm hidden items-center justify-center p-4">
-        <div class="bg-white border border-stone-300 rounded-3xl max-w-xl w-full p-8 shadow-2xl">
-            <div class="flex items-center justify-between pb-4 border-b border-stone-200 text-xs font-mono text-amber-800">
-                <span class="font-bold">// DOSSIER: MECH-130NM</span>
-                <button onclick="closeModal('modal-coupling')" class="text-stone-400 hover:text-stone-900 text-2xl font-bold">&times;</button>
+    <div id="modal-coupling" class="fixed inset-0 z-[80] bg-black/60 backdrop-blur-md hidden items-center justify-center p-5">
+        <div class="bg-[#f4f0eb] max-w-2xl w-full rounded-[28px] border border-stone-300 p-7 sm:p-9 shadow-2xl">
+            <div class="flex justify-between items-center border-b hairline pb-4">
+                <span class="font-mono text-[9px] text-orange-600 tracking-widest">ENGINEERING BREAKDOWN / 01</span>
+                <button onclick="closeModal('modal-coupling')" class="text-2xl">×</button>
             </div>
-            <h3 class="text-2xl font-bold text-stone-900 mt-4 mb-3 font-display">130 Nm High-Torque Coupling &amp; DFM</h3>
-            <p class="text-xs text-stone-600 font-mono mb-6 leading-relaxed">
-                Applied Datum Reference Frames (DRFs) to critical bearing bores. Enforced ISO transitional fits (H7/h6) and total runout controls (&lt;0.02 mm) to prevent high-RPM harmonic imbalance. Redesigned interior corner fillets for standard 3/8" tooling, cutting unit costs by 9%.
-            </p>
-            <button onclick="closeModal('modal-coupling')" class="w-full py-3 rounded-xl bg-stone-900 text-white font-mono font-bold text-xs">Close Dossier</button>
+            <h3 class="font-display font-extrabold text-3xl mt-6">130 Nm High-Torque Drivetrain Coupling</h3>
+            <p class="text-stone-600 leading-relaxed mt-4">Designed motor-to-gearbox coupling assemblies in SolidWorks for high-RPM dynamic loads. Applied datum reference frames and ISO transitional fits, performed SLA/FDM fit checks, used topology optimization, and reduced manufacturing cost through DFM.</p>
+            <div class="grid grid-cols-3 gap-4 mt-7">
+                <div class="metric"><b class="font-display text-2xl">130</b><span class="block font-mono text-[8px] mt-1 text-stone-500">Nm torque</span></div>
+                <div class="metric"><b class="font-display text-2xl">−32%</b><span class="block font-mono text-[8px] mt-1 text-stone-500">reported mass</span></div>
+                <div class="metric"><b class="font-display text-2xl">−9%</b><span class="block font-mono text-[8px] mt-1 text-stone-500">unit cost</span></div>
+            </div>
+            <button onclick="closeModal('modal-coupling')" class="mt-8 w-full py-3 rounded-xl bg-stone-900 text-white font-mono text-[10px] uppercase tracking-widest">Close</button>
         </div>
     </div>
 
-    <div id="modal-solver" class="fixed inset-0 z-50 bg-stone-950/60 backdrop-blur-sm hidden items-center justify-center p-4">
-        <div class="bg-white border border-stone-300 rounded-3xl max-w-xl w-full p-8 shadow-2xl">
-            <div class="flex items-center justify-between pb-4 border-b border-stone-200 text-xs font-mono text-sky-800">
-                <span class="font-bold">// DOSSIER: CAE-16DOF-CLPT</span>
-                <button onclick="closeModal('modal-solver')" class="text-stone-400 hover:text-stone-900 text-2xl font-bold">&times;</button>
+    <div id="modal-solver" class="fixed inset-0 z-[80] bg-black/60 backdrop-blur-md hidden items-center justify-center p-5">
+        <div class="bg-[#f4f0eb] max-w-2xl w-full rounded-[28px] border border-stone-300 p-7 sm:p-9 shadow-2xl">
+            <div class="flex justify-between items-center border-b hairline pb-4">
+                <span class="font-mono text-[9px] text-sky-700 tracking-widest">ENGINEERING BREAKDOWN / 02</span>
+                <button onclick="closeModal('modal-solver')" class="text-2xl">×</button>
             </div>
-            <h3 class="text-2xl font-bold text-stone-900 mt-4 mb-3 font-display">Custom 16-DOF BFS Plate Dynamic Solver</h3>
-            <p class="text-xs text-stone-600 font-mono mb-6 leading-relaxed">
-                Used 16-DOF Bogner-Fox-Schmit (BFS) C1 elements. Derived mass [M], stiffness [K], and coupled piezoelectric matrices [Kuφ] via Hamilton's Principle with &lt;2.4% residual error vs published benchmark data.
-            </p>
-            <button onclick="closeModal('modal-solver')" class="w-full py-3 rounded-xl bg-stone-900 text-white font-mono font-bold text-xs">Close Dossier</button>
+            <h3 class="font-display font-extrabold text-3xl mt-6">16-DOF Plate Dynamic Solver & CLPT</h3>
+            <p class="text-stone-600 leading-relaxed mt-4">Coded a coupled electromechanical FEA solver in MATLAB using Classical Laminated Plate Theory and 16-DOF Bogner-Fox-Schmit elements. Benchmark residual below 2.4%.</p>
+            <div class="mt-7 p-5 bg-stone-950 rounded-2xl text-stone-300 font-mono text-xs leading-loose">
+                [M] u¨ + [K]u = F(t)<br>16 DOF / BFS C1 ELEMENTS<br>CLPT / MODAL RESPONSE<br>
+                <span class="text-sky-400">BENCHMARK RESIDUAL &lt; 2.4%</span>
+            </div>
+            <button onclick="closeModal('modal-solver')" class="mt-8 w-full py-3 rounded-xl bg-stone-900 text-white font-mono text-[10px] uppercase tracking-widest">Close</button>
         </div>
     </div>
 
-    <!-- SCRIPT: PROCEDURAL HIGH-DETAIL 3D PHOTOREALISTIC DRONE (NO EXTERNAL 404 GLTF ISSUES) -->
+    <!-- Three.js 3D Realistic Drone Rig -->
     <script>
-        // 1. Setup Three.js Scene
         const container = document.getElementById('canvas-container');
         const scene = new THREE.Scene();
-        const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
-        camera.position.set(0, 0, 9);
+        const camera = new THREE.PerspectiveCamera(42, innerWidth / innerHeight, .1, 1000);
+        camera.position.set(0, .15, 9);
 
         const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-        renderer.setSize(window.innerWidth, window.innerHeight);
-        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+        renderer.setSize(innerWidth, innerHeight);
+        renderer.outputEncoding = THREE.sRGBEncoding;
         container.appendChild(renderer.domElement);
 
-        // Professional Studio Lighting for Parchment Theme
-        const ambientLight = new THREE.AmbientLight(0xffffff, 1.3);
-        scene.add(ambientLight);
+        scene.add(new THREE.AmbientLight(0xffffff, 1.35));
+        const key = new THREE.DirectionalLight(0xfff5eb, 3.5);
+        key.position.set(7, 12, 8);
+        scene.add(key);
 
-        const dirLight = new THREE.DirectionalLight(0xfff5eb, 3.2);
-        dirLight.position.set(6, 12, 8);
-        scene.add(dirLight);
+        const fill = new THREE.DirectionalLight(0x3aa8c4, 1.8);
+        fill.position.set(-8, -4, 6);
+        scene.add(fill);
 
-        const fillLight = new THREE.DirectionalLight(0x0284c7, 2.0);
-        fillLight.position.set(-8, -4, 5);
-        scene.add(fillLight);
+        const rim = new THREE.DirectionalLight(0xea580c, 1.5);
+        rim.position.set(5, 0, -8);
+        scene.add(rim);
 
-        // 2. Build High-Detail Photorealistic Quadcopter Rig (Guaranteed 100% Reliable Render)
-        const droneGroup = new THREE.Group();
+        // High-Detail Photorealistic Quadcopter Rig
+        const drone = new THREE.Group();
+        const chassisMat = new THREE.MeshStandardMaterial({ color: 0x181716, roughness: .28, metalness: .82 });
+        const carbon = new THREE.MeshStandardMaterial({ color: 0x242322, roughness: .62, metalness: .35 });
+        const motorMat = new THREE.MeshStandardMaterial({ color: 0x10161b, roughness: .18, metalness: .92 });
+        const accent = new THREE.MeshStandardMaterial({ color: 0xea580c, roughness: .3, metalness: .25, emissive: 0xea580c, emissiveIntensity: .22 });
+        const bladeMat = new THREE.MeshStandardMaterial({ color: 0x56616a, roughness: .3, transparent: true, opacity: .72 });
+        const lensMat = new THREE.MeshPhysicalMaterial({ color: 0x0b83a5, roughness: .08, metalness: .15, transmission: .55, thickness: .5 });
 
-        const chassisMat = new THREE.MeshStandardMaterial({ color: 0x1c1917, roughness: 0.25, metalness: 0.85 });
-        const carbonMat = new THREE.MeshStandardMaterial({ color: 0x292524, roughness: 0.5, metalness: 0.5 });
-        const motorMat = new THREE.MeshStandardMaterial({ color: 0x0f172a, roughness: 0.15, metalness: 0.9 });
-        const orangeAcc = new THREE.MeshStandardMaterial({ color: 0xea580c, roughness: 0.3, emissive: 0xea580c, emissiveIntensity: 0.3 });
-        const bladeMat = new THREE.MeshStandardMaterial({ color: 0x334155, roughness: 0.2, transparent: true, opacity: 0.8 });
-        const lensMat = new THREE.MeshPhysicalMaterial({ color: 0x0284c7, roughness: 0.1, transmission: 0.85, thickness: 0.4 });
+        const hub = new THREE.Mesh(new THREE.BoxGeometry(.85, .25, 1.2), chassisMat);
+        drone.add(hub);
 
-        // Central Main Frame Hub
-        const hubGeo = new THREE.BoxGeometry(0.8, 0.25, 1.2);
-        const hubMesh = new THREE.Mesh(hubGeo, chassisMat);
-        droneGroup.add(hubMesh);
+        const hatch = new THREE.Mesh(new THREE.BoxGeometry(.62, .08, .9), accent);
+        hatch.position.y = .17;
+        drone.add(hatch);
 
-        // Top Battery/Avionics Hatch
-        const hatchGeo = new THREE.BoxGeometry(0.6, 0.1, 0.9);
-        const hatchMesh = new THREE.Mesh(hatchGeo, orangeAcc);
-        hatchMesh.position.y = 0.17;
-        droneGroup.add(hatchMesh);
+        const gimbal = new THREE.Mesh(new THREE.SphereGeometry(.2, 20, 20), motorMat);
+        gimbal.position.set(0, -.2, .36);
+        drone.add(gimbal);
 
-        // Bottom Camera Gimbal System
-        const gimbalBase = new THREE.Mesh(new THREE.SphereGeometry(0.2, 16, 16), motorMat);
-        gimbalBase.position.set(0, -0.18, 0.35);
-        droneGroup.add(gimbalBase);
+        const lens = new THREE.Mesh(new THREE.SphereGeometry(.12, 20, 20), lensMat);
+        lens.position.set(0, -.22, .5);
+        drone.add(lens);
 
-        const lens = new THREE.Mesh(new THREE.SphereGeometry(0.12, 16, 16), lensMat);
-        lens.position.set(0, -0.2, 0.5);
-        droneGroup.add(lens);
-
-        // 4 Rotors & Carbon Booms
-        const rotorBlades = [];
-        const armCoords = [
-            { x:  1.1, z:  1.1 },
-            { x: -1.1, z:  1.1 },
-            { x:  1.1, z: -1.1 },
-            { x: -1.1, z: -1.1 }
-        ];
-
-        armCoords.forEach(coord => {
-            // Diagonal Carbon Rod
-            const boomGeo = new THREE.CylinderGeometry(0.045, 0.045, 1.6, 12);
-            const boom = new THREE.Mesh(boomGeo, carbonMat);
-            boom.position.set(coord.x / 2, 0, coord.z / 2);
+        const rotors = [];
+        const arms = [{x: 1.1, z: 1.1}, {x: -1.1, z: 1.1}, {x: 1.1, z: -1.1}, {x: -1.1, z: -1.1}];
+        
+        arms.forEach((p) => {
+            const boom = new THREE.Mesh(new THREE.CylinderGeometry(.045, .045, 1.6, 16), carbon);
+            boom.position.set(p.x / 2, 0, p.z / 2);
             boom.rotation.z = Math.PI / 2;
-            boom.rotation.y = Math.atan2(coord.x, coord.z);
-            droneGroup.add(boom);
+            boom.rotation.y = Math.atan2(p.x, p.z);
+            drone.add(boom);
 
-            // Brushless Motor Housing
-            const motor = new THREE.Mesh(new THREE.CylinderGeometry(0.2, 0.2, 0.3, 16), motorMat);
-            motor.position.set(coord.x, 0.05, coord.z);
-            droneGroup.add(motor);
+            const motor = new THREE.Mesh(new THREE.CylinderGeometry(.2, .2, .3, 20), motorMat);
+            motor.position.set(p.x, .05, p.z);
+            drone.add(motor);
 
-            // Propeller Blade Group
-            const bladeGroup = new THREE.Group();
-            bladeGroup.position.set(coord.x, 0.22, coord.z);
-
-            const bGeo = new THREE.BoxGeometry(1.0, 0.015, 0.08);
-            const b1 = new THREE.Mesh(bGeo, bladeMat);
-            const b2 = new THREE.Mesh(bGeo, bladeMat);
+            const rg = new THREE.Group();
+            rg.position.set(p.x, .23, p.z);
+            const bg = new THREE.BoxGeometry(1.0, .015, .075);
+            const b1 = new THREE.Mesh(bg, bladeMat), b2 = new THREE.Mesh(bg, bladeMat);
             b2.rotation.y = Math.PI / 2;
-
-            bladeGroup.add(b1);
-            bladeGroup.add(b2);
-            droneGroup.add(bladeGroup);
-            rotorBlades.push(bladeGroup);
+            rg.add(b1, b2);
+            drone.add(rg);
+            rotors.push(rg);
         });
 
-        scene.add(droneGroup);
+        [{x: 1.1, z: 1.1, c: 0xea580c}, {x: -1.1, z: -1.1, c: 0x36d399}].forEach(p => {
+            const m = new THREE.MeshBasicMaterial({color: p.c});
+            const l = new THREE.Mesh(new THREE.SphereGeometry(.035, 10, 10), m);
+            l.position.set(p.x, .27, p.z);
+            drone.add(l);
+        });
 
-        // Initial Rest Pose
-        droneGroup.position.set(2.4, 0.0, 0);
-        droneGroup.rotation.set(0.2, -0.6, 0.1);
+        scene.add(drone);
+        drone.scale.setScalar(1.05);
+        drone.position.set(2.8, .25, .3);
+        drone.rotation.set(.2, -.55, .08);
 
-        // 3. GSAP ScrollTrigger Flight Path (Lakshya Pant Layout Integration)
+        // GSAP ScrollTrigger Flight Path
         gsap.registerPlugin(ScrollTrigger);
-
-        const flightTimeline = gsap.timeline({
+        const tl = gsap.timeline({
             scrollTrigger: {
-                trigger: "#scroll-wrapper",
-                start: "top top",
-                end: "bottom bottom",
-                scrub: 1.2
+                trigger: 'body',
+                start: 'top top',
+                end: 'bottom bottom',
+                scrub: 1.25
             }
         });
 
-        flightTimeline.to(droneGroup.position, { x: -2.3, y: -0.2, z: 0.8, ease: "power1.inOut" }, 0)
-                      .to(droneGroup.rotation, { x: 0.35, y: 0.8, z: -0.35, ease: "power1.inOut" }, 0);
+        tl.to(drone.position, {x: -2.8, y: .4, z: .4, ease: 'sine.inOut'}, 0)
+          .to(drone.rotation, {x: .28, y: .72, z: -.18, ease: 'sine.inOut'}, 0)
+          .to(drone.position, {x: 2.2, y: -.35, z: 1.0, ease: 'sine.inOut'}, .22)
+          .to(drone.rotation, {x: .48, y: -.4, z: .22, ease: 'sine.inOut'}, .22)
+          .to(drone.position, {x: -2.2, y: .15, z: .5, ease: 'sine.inOut'}, .52)
+          .to(drone.rotation, {x: -.12, y: .95, z: -.25, ease: 'sine.inOut'}, .52)
+          .to(drone.position, {x: 1.0, y: -.1, z: 1.8, ease: 'sine.inOut'}, .78)
+          .to(drone.rotation, {x: .08, y: .15, z: 0, ease: 'sine.inOut'}, .78)
+          .to(drone.position, {x: 4.5, y: .35, z: 1.0, ease: 'sine.inOut'}, 1);
 
-        flightTimeline.to(droneGroup.position, { x: 1.8, y: -0.6, z: 1.2, ease: "power1.inOut" }, 1)
-                      .to(droneGroup.rotation, { x: 0.5, y: -0.4, z: 0.2, ease: "power1.inOut" }, 1);
-
-        flightTimeline.to(droneGroup.position, { x: -2.0, y: 0.3, z: 0.5, ease: "power1.inOut" }, 2)
-                      .to(droneGroup.rotation, { x: -0.2, y: 0.9, z: -0.2, ease: "power1.inOut" }, 2);
-
-        flightTimeline.to(droneGroup.position, { x: 0, y: -0.2, z: 2.0, ease: "power1.inOut" }, 3)
-                      .to(droneGroup.rotation, { x: 0.1, y: 0, z: 0, ease: "power1.inOut" }, 3);
-
-        // 4. Render Animation Loop
-        let clock = new THREE.Clock();
-
+        const clock = new THREE.Clock();
         function animate() {
             requestAnimationFrame(animate);
-            const delta = clock.getDelta();
-
-            // High RPM propeller spin
-            rotorBlades.forEach((blade, index) => {
-                const dir = index % 2 === 0 ? 1 : -1;
-                blade.rotation.y += 40 * delta * dir;
-            });
-
+            const d = clock.getDelta();
+            rotors.forEach((r, i) => r.rotation.y += d * 46 * (i % 2 ? -1 : 1));
+            drone.rotation.y += Math.sin(performance.now() * 0.0007) * 0.0007;
             renderer.render(scene, camera);
         }
         animate();
 
-        window.addEventListener('resize', () => {
-            camera.aspect = window.innerWidth / window.innerHeight;
+        addEventListener('resize', () => {
+            camera.aspect = innerWidth / innerHeight;
             camera.updateProjectionMatrix();
-            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.setSize(innerWidth, innerHeight);
         });
 
-        // Live telemetry updates
-        window.addEventListener('scroll', () => {
-            const scrollPercentage = window.scrollY / (document.documentElement.scrollHeight - window.innerHeight);
-            const pitch = (scrollPercentage * 14.5).toFixed(1);
-            const roll = (Math.sin(scrollPercentage * Math.PI * 4) * 18).toFixed(1);
-            const alt = Math.floor(2080 + scrollPercentage * 28000).toLocaleString();
-            
-            document.getElementById('drone-pitch').textContent = `+${pitch}°`;
-            document.getElementById('drone-roll').textContent = `${roll > 0 ? '+' : ''}${roll}°`;
-            document.getElementById('drone-alt').textContent = `${alt} FT`;
-        });
+        // Scroll reveals
+        gsap.utils.toArray('.reveal').forEach((el, i) => 
+            gsap.to(el, {
+                opacity: 1, 
+                y: 0, 
+                duration: .8, 
+                ease: 'power3.out', 
+                delay: (i % 4) * .06, 
+                scrollTrigger: { trigger: el, start: 'top 88%', once: true }
+            })
+        );
 
-        // Modal Handlers
-        function openModal(id) {
-            const m = document.getElementById(id);
-            if (m) { m.classList.remove('hidden'); m.classList.add('flex'); document.body.style.overflow = 'hidden'; }
-        }
-        function closeModal(id) {
-            const m = document.getElementById(id);
-            if (m) { m.classList.add('hidden'); m.classList.remove('flex'); document.body.style.overflow = 'auto'; }
-        }
-        window.onclick = function(e) {
-            if (e.target.classList.contains('fixed')) { e.target.classList.add('hidden'); e.target.classList.remove('flex'); document.body.style.overflow = 'auto'; }
-        };
-        document.addEventListener('keydown', function(e) {
-            if (e.key === "Escape") {
-                document.querySelectorAll('.fixed').forEach(m => { m.classList.add('hidden'); m.classList.remove('flex'); });
-                document.body.style.overflow = 'auto';
-            }
-        });
+        // Custom Cursor
+        const dot = document.getElementById('cursorDot'), ring = document.getElementById('cursorRing');
+        let mx = innerWidth / 2, my = innerHeight / 2, rx = mx, ry = my;
+        addEventListener('pointermove', e => { mx = e.clientX; my = e.clientY; dot.style.left = mx + 'px'; dot.style.top = my + 'px'; });
+        function cursorLoop() { rx += (mx - rx) * .14; ry += (my - ry) * .14; ring.style.left = rx + 'px'; ring.style.top = ry + 'px'; requestAnimationFrame(cursorLoop); }
+        cursorLoop();
     </script>
 </body>
 </html>
